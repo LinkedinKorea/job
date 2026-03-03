@@ -1,1 +1,715 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>이력서 ↔ JD 매칭 분석기 (단일 파일)</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#111827;
+      --line:#1f2937;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --soft:#ffffff10;
+      --shadow:0 18px 45px #00000055;
+      --blue:#2563eb;
+      --blue2:#1d4ed8;
+      --good:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 700px at 15% 10%, #0b1b33 0%, transparent 60%),
+        radial-gradient(1100px 650px at 85% 20%, #1b0b33 0%, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Noto Sans KR",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    }
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:14px;padding:16px 18px;border-bottom:1px solid var(--line);
+      position:sticky;top:0;backdrop-filter: blur(10px);
+      background:#0b0f14cc;z-index:10;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:40px;height:40px;border-radius:14px;
+      display:grid;place-items:center;font-weight:900;
+      background:linear-gradient(135deg,var(--blue),#9333ea);
+      box-shadow:0 12px 35px #00000055;
+      user-select:none;
+    }
+    .title{font-weight:900}
+    .sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    button{
+      cursor:pointer;border:1px solid var(--line);
+      background:#0b1220;color:var(--text);
+      padding:10px 12px;border-radius:12px;
+      font-weight:700;
+    }
+    button:hover{background:#0b172c}
+    .primary{
+      background:linear-gradient(180deg,var(--blue),var(--blue2));
+      border-color:#1e3a8a;
+    }
+    .primary:hover{filter:brightness(1.05)}
+    .ghost{background:transparent}
+    main{
+      padding:18px;
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .card{
+      background:linear-gradient(180deg, #111827, #0b1220);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      min-width:0;
+    }
+    .full{grid-column:1 / -1}
+    h2{margin:0 0 12px 0;font-size:18px}
+    h3{margin:0 0 10px 0;font-size:16px}
+    label{font-size:13px;color:var(--muted)}
+    input,textarea{
+      width:100%;margin-top:6px;
+      background:#0b0f14;border:1px solid var(--line);
+      color:var(--text);border-radius:12px;
+      padding:10px 12px;outline:none;
+    }
+    textarea{resize:vertical;line-height:1.45}
+    input:focus,textarea:focus{border-color:#334155}
+    .formGrid{
+      display:grid;gap:10px;
+      grid-template-columns:1fr 1fr;
+    }
+    .block{display:block;margin-top:10px}
+    .twoCols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .hint{
+      margin-top:10px;font-size:12px;color:var(--muted);
+      background:var(--soft);border:1px dashed #334155;border-radius:12px;padding:10px 12px;
+    }
+    .empty{
+      color:var(--muted);
+      border:1px dashed #334155;
+      border-radius:14px;
+      padding:14px;
+      background:#0b1220;
+    }
+    .hidden{display:none}
+    .scoreRow{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch}
+    .scoreBox{
+      min-width:240px;
+      background:#0b0f14;border:1px solid var(--line);
+      border-radius:16px;padding:14px;
+    }
+    .scoreLabel{color:var(--muted);font-size:12px}
+    .scoreValue{font-size:46px;font-weight:950;line-height:1;margin-top:6px}
+    .scoreUnit{font-size:14px;color:var(--muted);margin-left:6px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      margin-top:10px;
+      padding:6px 10px;border-radius:999px;
+      background:var(--soft);border:1px solid var(--line);
+      color:var(--text);font-size:12px;font-weight:900;
+    }
+    .dot{width:8px;height:8px;border-radius:50%}
+    .breakdown{
+      flex:1;min-width:280px;
+      background:#0b0f14;border:1px solid var(--line);
+      border-radius:16px;padding:14px;
+    }
+    .barRow{display:grid;grid-template-columns:74px 1fr 56px;gap:10px;align-items:center;margin:9px 0}
+    .bar{height:10px;background:#0b1220;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+    .bar > div{height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#60a5fa)}
+    .barRow span{color:var(--muted);font-size:12px}
+    .barRow b{font-size:12px;text-align:right}
+    .resultGrid{
+      margin-top:14px;
+      display:grid;gap:14px;
+      grid-template-columns:1fr 1fr;
+    }
+    .panel{
+      background:#0b0f14;border:1px solid var(--line);
+      border-radius:16px;padding:14px;
+      min-width:0;
+    }
+    .panel ul, .panel ol{margin:8px 0 0 18px;color:var(--text)}
+    .panel li{margin:6px 0;line-height:1.35}
+    .small{margin-top:8px;color:var(--muted);font-size:12px}
+    details.raw{
+      margin-top:12px;
+      background:#0b0f14;border:1px solid var(--line);
+      border-radius:16px;padding:12px;
+    }
+    details.raw pre{
+      white-space:pre-wrap;word-break:break-word;
+      color:#cbd5e1;font-size:12px;margin:10px 0 0 0;
+    }
+    footer{
+      max-width:1200px;margin:0 auto;
+      padding:16px 18px 28px;
+      color:var(--muted);font-size:12px;
+    }
+    .row{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .chip{
+      font-size:12px;color:#cbd5e1;
+      border:1px solid var(--line);
+      background:#0b1220;
+      border-radius:999px;
+      padding:6px 10px;
+      user-select:none;
+    }
+    .copyBtn{
+      border:1px solid #334155;
+      background:#0b1220;
+    }
+    .copyBtn.ok{
+      border-color:#14532d;
+      background:#052e1a;
+      color:#bbf7d0;
+    }
+    .muted{color:var(--muted)}
+    @media (max-width: 980px){
+      main{grid-template-columns:1fr}
+      .formGrid{grid-template-columns:1fr}
+      .twoCols{grid-template-columns:1fr}
+      .resultGrid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">RM</div>
+    <div>
+      <div class="title">이력서 ↔ JD 매칭 분석기 (단일 파일)</div>
+      <div class="sub">정적 웹앱 · GitHub Pages 배포용 · 점수/근거/갭/개선안</div>
+    </div>
+  </div>
+  <div class="actions">
+    <button id="btnSample" class="ghost">샘플 입력</button>
+    <button id="btnRun" class="primary">매칭 분석</button>
+    <button id="btnReset">초기화</button>
+  </div>
+</header>
 
+<main>
+  <section class="card">
+    <h2>후보자 프로필</h2>
+
+    <div class="formGrid">
+      <label>이름
+        <input id="c_name" placeholder="예: 홍길동" />
+      </label>
+      <label>희망직무
+        <input id="c_role" placeholder="예: B2B 마케터 / SDR / 리크루터" />
+      </label>
+      <label>업종(도메인)
+        <input id="c_domain" placeholder="예: B2B SaaS / 제조 / 커머스" />
+      </label>
+      <label>희망 기업(옵션)
+        <input id="c_targetCompany" placeholder="예: 네이버 / 쿠팡 / 외국계 SaaS" />
+      </label>
+    </div>
+
+    <label class="block">역량/경험 내용 (자유 텍스트)
+      <textarea id="c_text" rows="12" placeholder="프로젝트, 성과, 사용 툴, 업무 범위 등을 붙여넣으세요."></textarea>
+    </label>
+
+    <div class="hint">
+      팁: 성과는 숫자(%, 기간, 금액 등)를 포함하면 점수와 근거가 더 강해집니다.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>JD 입력</h2>
+    <label class="block">채용공고(JD) 텍스트
+      <textarea id="j_text" rows="18" placeholder="JD를 그대로 붙여넣으세요. (Must/Nice/Responsibilities 등)"></textarea>
+    </label>
+
+    <div class="twoCols">
+      <label class="block">JD Must-have (옵션, 쉼표 구분)
+        <input id="j_must" placeholder="예: GA4, SQL, B2B, 리드 제너레이션" />
+      </label>
+      <label class="block">JD Nice-to-have (옵션, 쉼표 구분)
+        <input id="j_nice" placeholder="예: HubSpot, Salesforce, ABM" />
+      </label>
+    </div>
+
+    <div class="row">
+      <span class="chip">출력: 점수/근거/갭/개선안</span>
+      <span class="chip">로직 수정: 하단 JS의 TAXONOMY/가중치</span>
+    </div>
+
+    <div class="hint">
+      JD 텍스트만 넣어도 분석됩니다. Must/Nice는 넣으면 정확도가 더 좋아져요.
+    </div>
+  </section>
+
+  <section class="card full">
+    <h2>결과</h2>
+    <div id="resultEmpty" class="empty">
+      아직 분석 결과가 없습니다. 상단의 <b>매칭 분석</b>을 눌러주세요.
+    </div>
+
+    <div id="resultWrap" class="hidden">
+      <div class="scoreRow">
+        <div class="scoreBox">
+          <div class="scoreLabel">총점</div>
+          <div class="scoreValue"><span id="r_total">-</span><span class="scoreUnit">/100</span></div>
+          <div class="pill" id="r_grade">
+            <span class="dot" id="gradeDot"></span>
+            <span id="gradeText">-</span>
+          </div>
+
+          <div class="row">
+            <button id="btnCopyJson" class="copyBtn">JSON 복사</button>
+            <span class="muted" id="copyMsg"></span>
+          </div>
+        </div>
+
+        <div class="breakdown">
+          <div class="barRow"><span>직무</span><div class="bar"><div id="b_role"></div></div><b id="s_role"></b></div>
+          <div class="barRow"><span>역량</span><div class="bar"><div id="b_skill"></div></div><b id="s_skill"></b></div>
+          <div class="barRow"><span>도메인</span><div class="bar"><div id="b_domain"></div></div><b id="s_domain"></b></div>
+          <div class="barRow"><span>레벨</span><div class="bar"><div id="b_level"></div></div><b id="s_level"></b></div>
+          <div class="barRow"><span>성과</span><div class="bar"><div id="b_impact"></div></div><b id="s_impact"></b></div>
+        </div>
+      </div>
+
+      <div class="resultGrid">
+        <div class="panel">
+          <h3>매칭 근거 Top 5</h3>
+          <ol id="r_evidence"></ol>
+        </div>
+
+        <div class="panel">
+          <h3>갭 분석</h3>
+          <div class="small">Must-have 미충족</div>
+          <ul id="r_gapMust"></ul>
+          <div class="small">Nice-to-have 미충족</div>
+          <ul id="r_gapNice"></ul>
+        </div>
+
+        <div class="panel">
+          <h3>이력서 개선 액션</h3>
+          <ul id="r_actions"></ul>
+        </div>
+
+        <div class="panel">
+          <h3>리스크 플래그</h3>
+          <ul id="r_flags"></ul>
+        </div>
+      </div>
+
+      <details class="raw">
+        <summary>원본 JSON (디버그)</summary>
+        <pre id="r_json"></pre>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Sample · Resume ↔ JD Matcher · Customize TAXONOMY/weights in this single file.
+</footer>
+
+<script>
+  // =========================
+  // 1) 샘플 데이터
+  // =========================
+  const SAMPLE = {
+    candidate: {
+      name: "홍길동",
+      role: "B2B 마케터",
+      domain: "B2B SaaS",
+      targetCompany: "외국계 SaaS",
+      text: `
+- B2B SaaS에서 리드 제너레이션 캠페인 운영(LinkedIn Ads, Google Ads)
+- GA4 기반 퍼널 분석 및 전환율 개선(랜딩 A/B 테스트)
+- SQL로 리드/세일즈 파이프라인 리포팅, 월간 MQL 35% 증가
+- HubSpot으로 이메일 nurture 시퀀스 구축, MQL→SQL 전환 12%p 개선
+- 세일즈/CS/프로덕트와 협업하여 ICP 정의 및 콘텐츠 기획
+      `.trim()
+    },
+    jd: {
+      text: `
+[Role] Growth Marketer (B2B SaaS)
+
+[Responsibilities]
+- Build and optimize demand generation funnel (MQL/SQL)
+- Own paid media across LinkedIn/Google
+- Analyze performance with GA4 and dashboards
+- Work cross-functionally with Sales to improve conversion and pipeline
+
+[Requirements - Must]
+- 3+ years in B2B demand gen
+- Hands-on with GA4 and experimentation (A/B testing)
+- Comfortable with data (SQL or equivalent)
+- Strong stakeholder management
+
+[Nice-to-have]
+- HubSpot or Salesforce experience
+- ABM experience
+      `.trim(),
+      must: "B2B, GA4, A/B testing, SQL, LinkedIn Ads, stakeholder",
+      nice: "HubSpot, Salesforce, ABM"
+    }
+  };
+
+  // =========================
+  // 2) 유틸
+  // =========================
+  const $ = (id) => document.getElementById(id);
+
+  function normalizeText(s){
+    return (s || "")
+      .toLowerCase()
+      .replace(/[\u0000-\u001f]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function splitList(csv){
+    return (csv || "")
+      .split(",")
+      .map(x => x.trim())
+      .filter(Boolean);
+  }
+
+  function includesAny(text, keywords){
+    const t = normalizeText(text);
+    return keywords.filter(k => k && t.includes(normalizeText(k)));
+  }
+
+  function countOutcomeSignals(text){
+    const t = text || "";
+    const patterns = [
+      /(\d+)\s*%/g,
+      /(\d+)\s*(p|pp)\b/gi,
+      /(\d+)\s*(개월|달|주|일|month|months|week|weeks|day|days)\b/gi,
+      /(\d+)\s*(억|만|천|원|\$|usd|krw)\b/gi,
+      /\b(kpi|roi|mql|sql|pipeline|tth|conversion)\b/gi
+    ];
+    let cnt = 0;
+    for(const re of patterns){
+      const m = t.match(re);
+      if(m) cnt += Math.min(m.length, 6);
+    }
+    return Math.min(cnt, 10);
+  }
+
+  function gradeFromScore(total){
+    if(total >= 85) return { label: "A (Strong Fit)", color: "var(--good)" };
+    if(total >= 70) return { label: "B (Good Fit)", color: "var(--blue)" };
+    if(total >= 55) return { label: "C (Potential Fit)", color: "var(--warn)" };
+    return { label: "D (Weak Fit)", color: "var(--bad)" };
+  }
+
+  function setBar(id, value, max){
+    const el = $(id);
+    const pct = Math.max(0, Math.min(100, Math.round((value / max) * 100)));
+    el.style.width = pct + "%";
+  }
+
+  // =========================
+  // 3) 간단 TAXONOMY (여기 확장하면 정확도↑)
+  // =========================
+  const TAXONOMY = {
+    roleHints: {
+      "마케터": ["marketing","marketer","growth","demand gen","performance","paid","campaign","ads","acquisition"],
+      "리크루터": ["recruiter","talent","sourcing","screening","ats","pipeline","interview"],
+      "영업": ["sdr","bdr","sales","pipeline","outbound","crm","prospecting"]
+    },
+    domainHints: {
+      "b2b saas": ["b2b","saas","enterprise","mql","sql","pipeline","abm","lead gen"],
+      "커머스": ["ecommerce","d2c","cvr","aov","cart","retention","crm"],
+      "제조": ["manufacturing","factory","supply chain","procurement","qms"]
+    },
+    levelSignals: {
+      senior: ["lead","leading","manager","manage","strategy","budget","ownership","오너십","리드","매니저","전략","예산","팀"],
+      junior: ["assist","support","intern","주니어","인턴","보조"]
+    }
+  };
+
+  // =========================
+  // 4) 스코어 함수들 (가중치/계산식 수정 포인트)
+  // =========================
+  function scoreRoleFit(candidate, jdText){
+    const cRole = normalizeText(candidate.role);
+    const j = normalizeText(jdText);
+
+    let hit = 0;
+    for(const [k, hints] of Object.entries(TAXONOMY.roleHints)){
+      if(cRole.includes(normalizeText(k))){
+        hit += includesAny(j, hints).length;
+      }
+    }
+
+    const cText = normalizeText(candidate.text);
+    const common = includesAny(cText, ["mql","sql","pipeline","campaign","ga4","ab testing","a/b","ads","sourcing","ats","crm","linkedin"]);
+    hit += Math.min(common.length, 4);
+
+    const score = Math.max(0, Math.min(30, Math.round((hit / 10) * 30)));
+    const evidence = common.slice(0,3).map(k => `후보자 경험에서 '${k}' 관련 근거 발견`);
+    return { score, evidence };
+  }
+
+  function scoreSkillFit(candidateText, mustList, niceList){
+    const c = normalizeText(candidateText);
+    const mustHits = includesAny(c, mustList);
+    const niceHits = includesAny(c, niceList);
+
+    const mustRate = mustList.length ? (mustHits.length / mustList.length) : 0;
+    const niceRate = niceList.length ? (niceHits.length / niceList.length) : 0;
+
+    const score = Math.round((mustRate * 0.8 + niceRate * 0.2) * 25);
+    return { score, mustHits, niceHits };
+  }
+
+  function scoreDomainFit(candidateDomain, candidateText, jdText){
+    const d = normalizeText(candidateDomain);
+    const c = normalizeText(candidateText);
+    const j = normalizeText(jdText);
+
+    let hit = 0;
+    for(const [dk, hints] of Object.entries(TAXONOMY.domainHints)){
+      if(d.includes(dk)){
+        hit += includesAny(c, hints).length;
+        hit += includesAny(j, hints).length;
+      }
+    }
+
+    const score = Math.max(0, Math.min(15, Math.round((hit / 10) * 15)));
+    const evidence = includesAny(candidateText, ["b2b","saas","ecommerce","enterprise","abm","manufacturing"]).slice(0,3)
+      .map(k => `도메인 신호: '${k}'`);
+    return { score, evidence };
+  }
+
+  function scoreLevelFit(candidateText, jdText){
+    const c = normalizeText(candidateText);
+    const j = normalizeText(jdText);
+
+    const seniorHits = includesAny(c, TAXONOMY.levelSignals.senior);
+    const juniorHits = includesAny(c, TAXONOMY.levelSignals.junior);
+    const jdSenior = includesAny(j, TAXONOMY.levelSignals.senior);
+
+    let raw = 0;
+    raw += Math.min(seniorHits.length, 6) * (jdSenior.length ? 2 : 1);
+    raw -= Math.min(juniorHits.length, 3);
+
+    const score = Math.max(0, Math.min(15, Math.round((raw / 10) * 15)));
+    const evidence = seniorHits.slice(0,3).map(k => `레벨 신호: '${k}'`);
+    return { score, evidence };
+  }
+
+  function scoreImpact(candidateText){
+    const signals = countOutcomeSignals(candidateText);
+    const score = Math.max(0, Math.min(15, Math.round((signals / 10) * 15)));
+    const evidence = [];
+    if(signals >= 6) evidence.push("정량 성과/지표 신호가 충분히 포함됨");
+    else if(signals >= 3) evidence.push("일부 정량 성과 신호가 있으나 보강 여지 있음");
+    else evidence.push("정량 성과(%, 기간, 규모) 표현이 부족함");
+    return { score, evidence };
+  }
+
+  function buildActions(gapMust, gapNice){
+    const actions = [];
+    if(gapMust.length){
+      actions.push(`Must-have 갭(${gapMust.length}개)을 이력서 본문에 '근거 문장'으로 보강: ${gapMust.slice(0,3).join(", ")}${gapMust.length>3?" ...":""}`);
+    }
+    if(gapNice.length){
+      actions.push(`Nice-to-have 중 1~2개를 선택해 단기 프로젝트/학습으로 보완: ${gapNice.slice(0,3).join(", ")}`);
+    }
+    actions.push("성과 문장 템플릿: '무엇을(문제) → 어떻게(행동/툴) → 결과(수치)' 형태로 3~5개 재작성");
+    actions.push("JD Responsibilities 문장을 기준으로, 본인 경험 불릿을 1:1 매핑해 추가");
+    return actions;
+  }
+
+  function buildFlags(candidate, gapMust, total){
+    const flags = [];
+    if(gapMust.length >= 3) flags.push("필수요건(Must) 미충족 항목이 다수입니다.");
+    if(!candidate.text || candidate.text.length < 200) flags.push("후보자 입력 텍스트가 짧아 근거 추출이 약할 수 있습니다.");
+    if(total < 55) flags.push("현재 Fit이 낮습니다. 직무/도메인/필수역량 중 1개 축을 집중 보완 권장.");
+    return flags.length ? flags : ["특이 리스크 플래그 없음"];
+  }
+
+  function matchResumeToJD(payload){
+    const candidate = payload.candidate || {};
+    const jd = payload.jd || {};
+    const cText = candidate.text || "";
+    const jdText = jd.text || "";
+
+    const must = splitList(jd.must || "");
+    const nice = splitList(jd.nice || "");
+
+    const role = scoreRoleFit(candidate, jdText);                 // 0~30
+    const skill = scoreSkillFit(cText, must, nice);              // 0~25
+    const domain = scoreDomainFit(candidate.domain || "", cText, jdText); // 0~15
+    const level = scoreLevelFit(cText, jdText);                  // 0~15
+    const impact = scoreImpact(cText);                           // 0~15
+
+    const gapMust = must.filter(k => !includesAny(cText, [k]).length);
+    const gapNice = nice.filter(k => !includesAny(cText, [k]).length);
+
+    const total = role.score + skill.score + domain.score + level.score + impact.score;
+
+    const evidence = []
+      .concat(role.evidence)
+      .concat(domain.evidence)
+      .concat(level.evidence)
+      .concat(impact.evidence)
+      .slice(0,5);
+
+    return {
+      meta: { version: "single-0.1.0", computedAt: new Date().toISOString() },
+      inputSummary: {
+        candidateName: candidate.name || "",
+        candidateRole: candidate.role || "",
+        candidateDomain: candidate.domain || ""
+      },
+      score: {
+        total,
+        grade: gradeFromScore(total).label,
+        breakdown: { role: role.score, skill: skill.score, domain: domain.score, level: level.score, impact: impact.score }
+      },
+      matching: { mustHits: skill.mustHits, niceHits: skill.niceHits },
+      gaps: { mustMissing: gapMust, niceMissing: gapNice },
+      evidence,
+      actions: buildActions(gapMust, gapNice),
+      flags: buildFlags(candidate, gapMust, total)
+    };
+  }
+
+  // =========================
+  // 5) UI 로직
+  // =========================
+  function readPayload(){
+    return {
+      candidate: {
+        name: $("c_name").value.trim(),
+        role: $("c_role").value.trim(),
+        domain: $("c_domain").value.trim(),
+        targetCompany: $("c_targetCompany").value.trim(),
+        text: $("c_text").value.trim()
+      },
+      jd: {
+        text: $("j_text").value.trim(),
+        must: $("j_must").value.trim(),
+        nice: $("j_nice").value.trim()
+      }
+    };
+  }
+
+  function renderList(el, items, emptyText="없음"){
+    el.innerHTML = "";
+    const arr = (items && items.length) ? items : [emptyText];
+    arr.forEach(x => {
+      const li = document.createElement("li");
+      li.textContent = x;
+      el.appendChild(li);
+    });
+  }
+
+  function renderResult(res){
+    $("resultEmpty").classList.add("hidden");
+    $("resultWrap").classList.remove("hidden");
+
+    $("r_total").textContent = res.score.total;
+
+    const g = gradeFromScore(res.score.total);
+    $("gradeText").textContent = g.label;
+    $("gradeDot").style.background = g.color;
+
+    const b = res.score.breakdown;
+    $("s_role").textContent = `${b.role}/30`;
+    $("s_skill").textContent = `${b.skill}/25`;
+    $("s_domain").textContent = `${b.domain}/15`;
+    $("s_level").textContent = `${b.level}/15`;
+    $("s_impact").textContent = `${b.impact}/15`;
+
+    setBar("b_role", b.role, 30);
+    setBar("b_skill", b.skill, 25);
+    setBar("b_domain", b.domain, 15);
+    setBar("b_level", b.level, 15);
+    setBar("b_impact", b.impact, 15);
+
+    renderList($("r_evidence"), res.evidence, "근거 추출이 부족합니다. 입력 텍스트를 더 늘려보세요.");
+    renderList($("r_gapMust"), res.gaps.mustMissing, "없음");
+    renderList($("r_gapNice"), res.gaps.niceMissing, "없음");
+    renderList($("r_actions"), res.actions, "없음");
+    renderList($("r_flags"), res.flags, "없음");
+
+    $("r_json").textContent = JSON.stringify(res, null, 2);
+
+    // JSON 복사용 캐시
+    window.__LAST_RESULT__ = res;
+    $("copyMsg").textContent = "";
+    $("btnCopyJson").classList.remove("ok");
+    $("btnCopyJson").textContent = "JSON 복사";
+  }
+
+  function fillSample(){
+    $("c_name").value = SAMPLE.candidate.name;
+    $("c_role").value = SAMPLE.candidate.role;
+    $("c_domain").value = SAMPLE.candidate.domain;
+    $("c_targetCompany").value = SAMPLE.candidate.targetCompany;
+    $("c_text").value = SAMPLE.candidate.text;
+
+    $("j_text").value = SAMPLE.jd.text;
+    $("j_must").value = SAMPLE.jd.must;
+    $("j_nice").value = SAMPLE.jd.nice;
+  }
+
+  function resetAll(){
+    ["c_name","c_role","c_domain","c_targetCompany","c_text","j_text","j_must","j_nice"].forEach(id => $(id).value = "");
+    $("resultWrap").classList.add("hidden");
+    $("resultEmpty").classList.remove("hidden");
+    $("copyMsg").textContent = "";
+  }
+
+  $("btnSample").addEventListener("click", fillSample);
+  $("btnReset").addEventListener("click", resetAll);
+
+  $("btnRun").addEventListener("click", () => {
+    const payload = readPayload();
+    const res = matchResumeToJD(payload);
+    renderResult(res);
+  });
+
+  $("btnCopyJson").addEventListener("click", async () => {
+    const res = window.__LAST_RESULT__;
+    if(!res){
+      $("copyMsg").textContent = "먼저 매칭 분석을 실행하세요.";
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(JSON.stringify(res, null, 2));
+      $("btnCopyJson").classList.add("ok");
+      $("btnCopyJson").textContent = "복사됨";
+      $("copyMsg").textContent = "결과 JSON을 클립보드에 복사했습니다.";
+      setTimeout(() => {
+        $("btnCopyJson").classList.remove("ok");
+        $("btnCopyJson").textContent = "JSON 복사";
+        $("copyMsg").textContent = "";
+      }, 1400);
+    }catch(e){
+      $("copyMsg").textContent = "복사 실패: 브라우저 권한을 확인하세요.";
+    }
+  });
+</script>
+</body>
+</html>
