@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Linkedin Korea Jobs Tools</title>
+  <title>취업준비 Tools (Made by Linkedin Korea Partner)</title>
   <meta name="description" content="구직자용 AI 도구 포털" />
   <style>
     :root{
@@ -13,8 +13,13 @@
       --text:#e5e7eb;
       --muted:#9ca3af;
       --soft:#ffffff12;
-      --job:#10b981;
-      --job2:#047857;
+
+      /* button themes */
+      --btn1a:#3b82f6; /* blue */
+      --btn1b:#1d4ed8;
+      --btn2a:#f59e0b; /* amber */
+      --btn2b:#b45309;
+
       --shadow: 0 10px 30px #00000035;
     }
     *{box-sizing:border-box}
@@ -106,15 +111,23 @@
       gap:8px;
       padding:12px 14px;
       border-radius:14px;
-      border:1px solid var(--job2);
-      background: linear-gradient(180deg, var(--job), var(--job2));
       color:#fff;
       font-size:13.5px;
       font-weight:900;
       letter-spacing:.2px;
       box-shadow:0 10px 18px #00000035;
+      border:1px solid transparent;
+      background: linear-gradient(180deg, #666, #444);
     }
     .btn:hover{filter:brightness(1.06)}
+    .btn.btn1{
+      border-color: var(--btn1b);
+      background: linear-gradient(180deg, var(--btn1a), var(--btn1b));
+    }
+    .btn.btn2{
+      border-color: var(--btn2b);
+      background: linear-gradient(180deg, var(--btn2a), var(--btn2b));
+    }
 
     .notice{
       margin-top:18px;
@@ -126,8 +139,20 @@
       font-size:12.5px;
       line-height:1.6;
     }
+
+    .copyright{
+      margin-top:12px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background: #0b1220;
+      color:#cbd5e1;
+      font-size:12px;
+      line-height:1.55;
+    }
+
     .footer{
-      margin-top:18px;
+      margin-top:14px;
       padding-top:12px;
       border-top:1px solid var(--line);
       display:flex;
@@ -145,7 +170,7 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Linkedin Korea Job Tools</h1>
+    <h1>취업준비 Tools <span style="color:#cbd5e1;font-weight:800;">(Made by Linkedin Korea Partner)</span></h1>
     <div class="sub">
       구직자를 위한 AI 프롬프트/리서치 도구 모음입니다. 아래 도구를 선택해 바로 활용하세요.
     </div>
@@ -171,7 +196,7 @@
             </div>
           </div>
         </div>
-        <div class="btn">프롬프트 생성기 열기 →</div>
+        <div class="btn btn1">프롬프트 생성기 열기 →</div>
       </a>
 
       <!-- 2) 채용공고 추천 -->
@@ -190,7 +215,7 @@
             </div>
           </div>
         </div>
-        <div class="btn">채용공고 도구 열기 →</div>
+        <div class="btn btn2">채용공고 도구 열기 →</div>
       </a>
     </div>
 
@@ -199,8 +224,12 @@
       관련 공고를 함께 검토하여 본인의 역량 보완 방향을 지속적으로 점검하시기 바랍니다.
     </div>
 
+    <div class="copyright">
+      교육과 연계해 배포하는 자료이니 무단배포는 금합니다.
+    </div>
+
     <div class="footer">
-      <div>© <span id="yy"></span> Linkedin Korea Job Tools</div>
+      <div>© <span id="yy"></span> 취업준비 Tools (Made by Linkedin Korea Partner)</div>
       <div style="text-align:right;">
         Made by Kang wonjun (Linkedin Korea Patner)<br/>
         <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener">www.linkedin.com/in/ceohr</a>
