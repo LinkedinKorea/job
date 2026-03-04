@@ -24,6 +24,7 @@
       --a3:#22c55e; --a3b:#15803d; /* green */
       --a4:#a855f7; --a4b:#6d28d9; /* purple */
       --a5:#06b6d4; --a5b:#0e7490; /* cyan */
+      --a6:#f43f5e; --a6b:#be123c; /* rose */
 
       --ring:#93c5fd55;
     }
@@ -252,32 +253,7 @@
     .btn.btn3{border-color: var(--a3b); background: linear-gradient(180deg, var(--a3), var(--a3b));}
     .btn.btn4{border-color: var(--a4b); background: linear-gradient(180deg, var(--a4), var(--a4b));}
     .btn.btn5{border-color: var(--a5b); background: linear-gradient(180deg, var(--a5), var(--a5b));}
-
-    /* placeholder card for "add later" */
-    .placeholder{
-      border:1px dashed #2b4c7a;
-      background: #0b1b3318;
-      box-shadow:none;
-    }
-    .placeholder:hover{transform:none; border-color:#2b4c7a}
-    .placeholder .icon{opacity:.9}
-    .ghostBtn{
-      margin-top:auto;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:13.5px;
-      font-weight:950;
-      letter-spacing:.2px;
-      border:1px solid #334155;
-      background:#0b1220;
-      color:#cbd5e1;
-      box-shadow:0 12px 20px #00000025;
-      z-index:1;
-    }
+    .btn.btn6{border-color: var(--a6b); background: linear-gradient(180deg, var(--a6), var(--a6b));}
 
     .noteRow{
       margin-top:14px;
@@ -331,7 +307,8 @@
         <div>
           <h1>취업준비 Tools</h1>
           <div class="sub">
-            구직 준비를 <b>정보(리서치)</b> → <b>서류(이력서/자소서)</b> → <b>면접(스피치)</b> 흐름으로 정리했습니다. 필요한 단계의 도구를 바로 실행하세요.
+            구직 준비를 <b>정보(리서치)</b> → <b>서류(이력서/자소서)</b> → <b>면접(스피치/기출)</b> 흐름으로 정리했습니다.
+            필요한 단계의 도구를 바로 실행하세요.
           </div>
         </div>
         <div class="madeBy">✅ Made by Linkedin Korea Partner</div>
@@ -340,7 +317,7 @@
       <div class="kpiRow" aria-label="quick-info">
         <div class="kpi"><span class="dot"></span>기업/직무 리서치</div>
         <div class="kpi"><span class="dot" style="background:#a78bfa;box-shadow:0 0 0 4px #a78bfa22;"></span>서류 구조화</div>
-        <div class="kpi"><span class="dot" style="background:#34d399;box-shadow:0 0 0 4px #34d39922;"></span>면접 실전 스피치</div>
+        <div class="kpi"><span class="dot" style="background:#34d399;box-shadow:0 0 0 4px #34d39922;"></span>면접 실전 대비</div>
       </div>
     </div>
 
@@ -355,7 +332,6 @@
       </div>
 
       <div class="grid">
-        <!-- 기업/역량분석 -->
         <a class="card" href="/prompt/" aria-label="기업/역량분석 AI 프롬프트 생성기">
           <div class="topRow">
             <div class="icon">🧠</div>
@@ -375,7 +351,6 @@
           <div class="btn btn1">정보 도구 열기 →</div>
         </a>
 
-        <!-- 채용공고 추천 -->
         <a class="card" href="/jobpost/" aria-label="채용공고 추천 AI 프롬프트 생성기">
           <div class="topRow">
             <div class="icon">🔎</div>
@@ -408,7 +383,6 @@
       </div>
 
       <div class="grid">
-        <!-- 이력서-JD 매칭 -->
         <a class="card" href="/resume-jd-matcher/" aria-label="이력서-JD 매칭 분석기">
           <div class="topRow">
             <div class="icon">🧩</div>
@@ -428,7 +402,6 @@
           <div class="btn btn3">서류 도구 열기 →</div>
         </a>
 
-        <!-- 자기소개서 구조설계 -->
         <a class="card" href="/resume-prompt/" aria-label="자기소개서 구조설계 AI 프롬프트">
           <div class="topRow">
             <div class="icon">✍️</div>
@@ -455,18 +428,18 @@
       <div class="sectionHeader">
         <div class="sectionLeft">
           <div class="sectionTitle">🎤 면접 <span class="badge">Interview</span></div>
-          <span class="badge" style="opacity:.9">스피치/답변</span>
+          <span class="badge" style="opacity:.9">스피치/기출</span>
         </div>
-        <div class="hint">실전 전달력(1분 스피치 등)을 만드는 단계</div>
+        <div class="hint">실전 답변(1분 스피치 + 기출 대비)을 만드는 단계</div>
       </div>
 
       <div class="grid">
         <!-- 1분 스피치 -->
-        <a class="card" href="/speech/" aria-label="면접 1분 스피치 AI 프롬프트 생성기">
+        <a class="card" href="/speech/" aria-label="구직자 면접용 1분 스피치 생성기">
           <div class="topRow">
             <div class="icon">🗣️</div>
             <div>
-              <div class="title">면접 1분 스피치 AI 프롬프트 생성기</div>
+              <div class="title">구직자 면접용 1분 스피치 생성기</div>
               <div class="desc">
                 기본 정보 + 자기소개서 기반으로, 지원 기업/직무에 맞춘 1분 스피치를 3가지 버전으로 생성합니다.
               </div>
@@ -481,26 +454,25 @@
           <div class="btn btn5">면접 도구 열기 →</div>
         </a>
 
-        <!-- 오른쪽 추가 공간(placeholder) -->
-        <div class="card placeholder" aria-label="추가 도구 영역 (예정)">
+        <!-- Interview(기출/유형별) -->
+        <a class="card" href="/interview/" aria-label="면접 기출/유형별 질문 도구">
           <div class="topRow">
-            <div class="icon">➕</div>
+            <div class="icon">📚</div>
             <div>
-              <div class="title">추가 도구 (예정)</div>
+              <div class="title">면접 기출/유형별 질문 도구</div>
               <div class="desc">
-                면접 답변/압박질문/케이스 인터뷰 등 확장 도구를 이 영역에 추가할 수 있습니다.<br/>
-                (현재는 빈 공간으로 유지)
+                인성/역량 등 선택한 면접 유형 기준으로 기출 질문을 정리하고, 없을 경우 준비/답변 방향을 제안합니다.
               </div>
               <div class="meta">
-                <span class="tag">면접 Q&A</span>
-                <span class="tag">압박질문</span>
-                <span class="tag">추가 예정</span>
+                <span class="tag">인성/역량</span>
+                <span class="tag">기출 정리</span>
+                <span class="tag">답변 가이드</span>
               </div>
             </div>
           </div>
           <div class="divider"></div>
-          <div class="ghostBtn">여기에 다음 도구를 추가하세요</div>
-        </div>
+          <div class="btn btn6">면접 도구 열기 →</div>
+        </a>
       </div>
     </div>
 
