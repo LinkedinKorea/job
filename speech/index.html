@@ -26,13 +26,16 @@
       --shadow:0 18px 45px #00000055;
       --radius:18px;
       --radius2:22px;
+
+      /* ✅ input 폰트 통일(이름과 동일) */
+      --formFont: system-ui,-apple-system,"Noto Sans KR","Segoe UI",Roboto,Arial,sans-serif;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
       color:var(--text);
-      font-family:system-ui,-apple-system,"Noto Sans KR","Segoe UI",Roboto,Arial,sans-serif;
+      font-family:var(--formFont);
       background:
         radial-gradient(1200px 700px at 12% 10%, #0b1b33 0%, transparent 60%),
         radial-gradient(900px 520px at 90% 22%, #140a33 0%, transparent 55%),
@@ -137,6 +140,8 @@
       color:#cbd5e1;
       margin:0 0 6px 2px;
     }
+
+    /* ✅ 모든 입력/텍스트영역/셀렉트에 동일 폰트 적용 */
     input, textarea, select{
       width:100%;
       border:1px solid #334155;
@@ -146,6 +151,11 @@
       padding:11px 12px;
       outline:none;
       font-size:14px;
+      font-family:var(--formFont);
+      font-weight:400;
+      letter-spacing:-0.1px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
     textarea{
       min-height:112px;
@@ -178,6 +188,7 @@
       align-items:center;
       gap:8px;
       user-select:none;
+      font-family:var(--formFont);
     }
     button:active{transform:translateY(1px)}
     .btnPrimary{background:linear-gradient(180deg, var(--blue) 0%, var(--blue2) 100%)}
@@ -195,6 +206,14 @@
       margin-left:auto;
       font-size:12px;
       color:var(--muted);
+    }
+
+    /* ✅ 초기화 버튼을 더 우측으로 떨어뜨려 시인성 개선 */
+    #btnReset{
+      margin-left:18px; /* 핵심 변경 */
+    }
+    @media (max-width: 520px){
+      #btnReset{ margin-left:0; }
     }
 
     .outBox{
@@ -237,12 +256,20 @@
       line-height:1.55;
       font-size:13px;
     }
+
+    /* ✅ 우측하단 공지(footer) 줄바꿈/가독성 개선 */
     .footer{
       margin-top:14px;
       color:var(--muted);
       font-size:12px;
       text-align:center;
-      line-height:1.6;
+      line-height:1.7;
+      white-space:normal;
+      word-break:keep-all;
+    }
+    .footer .line{
+      display:block;
+      margin:2px 0;
     }
   </style>
 </head>
@@ -375,9 +402,12 @@
           </div>
 
           <div class="footer">
-            AI를 활용한 작성은 구조를 잡는 단순 참고과정일 뿐임으로, 기업 및 직무분석을 활용해 맞춤형 자소서를 완성하시기 바랍니다.<br/>
-            Made by 강원준_Linkedin Korea Partner HR Point(2026) ·
-            <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener">LinkedIn</a>
+            <span class="line">AI를 활용한 작성은 구조를 잡는 단순 참고과정일 뿐임으로,</span>
+            <span class="line">기업 및 직무분석을 활용해 맞춤형 자소서를 완성하시기 바랍니다.</span>
+            <span class="line">
+              Made by 강원준_Linkedin Korea Partner HR Point(2026) ·
+              <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener">LinkedIn</a>
+            </span>
           </div>
         </div>
       </section>
@@ -597,7 +627,6 @@ ${inputBlock}
         await navigator.clipboard.writeText(text);
         return true;
       }catch(e){
-        // fallback
         const ta = document.createElement("textarea");
         ta.value = text;
         document.body.appendChild(ta);
@@ -633,6 +662,7 @@ ${inputBlock}
 
     $("btnBuild").addEventListener("click", buildPrompt);
 
+    // ✅ 샘플 입력 시 자동 생성 금지: buildPrompt() 호출 제거
     $("btnSample").addEventListener("click", ()=>{
       $("name").value = "홍길동";
       $("major").value = "경영학";
@@ -658,7 +688,9 @@ ${inputBlock}
 `(선택) 자소서 일부:
 저는 문제를 정의하고 데이터를 통해 가설을 검증한 뒤 실행으로 연결하는 데 강점이 있습니다... (중략)`;
       $("language").value = "ko";
-      buildPrompt();
+
+      $("status").textContent = "샘플이 입력되었습니다. ‘프롬프트 생성’을 눌러 생성하세요.";
+      // buildPrompt(); // 🚫 자동 생성 제거
     });
 
     $("btnReset").addEventListener("click", ()=>{
@@ -684,7 +716,6 @@ ${inputBlock}
       setCopyState($("btnCopyMini"), ok);
     });
 
-    // Ctrl + Enter to build
     document.addEventListener("keydown", (e)=>{
       if(e.ctrlKey && e.key === "Enter"){
         e.preventDefault();
