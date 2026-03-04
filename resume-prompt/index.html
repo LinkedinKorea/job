@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>자기소개서 구조설계 AI 프롬프트 생성기 (STAR)</title>
+  <meta name="description" content="STAR 구조 자동 설계 + 기업 맞춤 문장 + 기존 자소서 코칭/수정용 프롬프트 생성기" />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#111827;
+      --line:#1f2937;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --soft:#ffffff12;
+
+      --blue:#2563eb;
+      --blue2:#1d4ed8;
+
+      --amber:#f59e0b;
+      --amber2:#b45309;
+
+      --green:#22c55e;
+      --green2:#16a34a;
+
+      --shadow:0 12px 32px #00000040;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1000px 600px at 18% 10%, #0b1b33 0%, transparent 60%),
+        radial-gradient(900px 520px at 85% 22%, #140a33 0%, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Noto Sans KR","Malgun Gothic",Segoe UI,Roboto,Arial,sans-serif;
+      line-height:1.45;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:22px}
+    header{
+      display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
+      padding:8px 6px 18px 6px;
+    }
+    .title h1{margin:0;font-size:22px;letter-spacing:-0.3px}
+    .title p{margin:6px 0 0 0;color:var(--muted);font-size:13px}
+    .pillbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill{
+      padding:6px 10px;border:1px solid var(--line);border-radius:999px;
+      background:#0b1220;color:#cbd5e1;font-size:12px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+    }
+    .card{
+      background:linear-gradient(180deg,#0f172a 0%, #0b1220 100%);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .card .hd h2{
+      margin:0;font-size:15px;letter-spacing:-0.2px
+    }
+    .card .bd{padding:14px 16px}
+    .row{display:grid;grid-template-columns: 1fr 1fr;gap:10px}
+    @media (max-width: 620px){ .row{grid-template-columns:1fr} }
+    label{display:block;font-size:12px;color:#cbd5e1;margin:0 0 6px 0}
+    input[type="text"], textarea, select{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0b0f14;
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:120px;resize:vertical}
+    .muted{color:var(--muted);font-size:12px}
+    .sep{height:10px}
+    .toggles{
+      display:flex;gap:8px;flex-wrap:wrap
+    }
+    .toggle{
+      display:flex;gap:8px;align-items:center;
+      padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#0b0f14;
+      cursor:pointer;user-select:none;
+    }
+    .toggle input{accent-color: var(--blue)}
+    .checks{
+      display:grid;grid-template-columns: 1fr 1fr;gap:8px;
+    }
+    @media (max-width: 620px){ .checks{grid-template-columns:1fr} }
+    .check{
+      display:flex;gap:8px;align-items:flex-start;
+      padding:10px 10px;border:1px solid var(--line);border-radius:12px;background:#0b0f14;
+    }
+    .check input{margin-top:2px;accent-color: var(--green)}
+    .check .k{font-size:13px}
+    .check .d{font-size:12px;color:var(--muted);margin-top:2px}
+    .btnbar{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end
+    }
+    .btn{
+      border:0;cursor:pointer;
+      padding:11px 14px;border-radius:14px;
+      color:white;font-weight:700;
+      box-shadow:0 10px 26px #0000002c;
+      transition: transform .06s ease, filter .2s ease;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.blue{background:linear-gradient(180deg,var(--blue) 0%, var(--blue2) 100%)}
+    .btn.amber{background:linear-gradient(180deg,var(--amber) 0%, var(--amber2) 100%)}
+    .btn.green{background:linear-gradient(180deg,var(--green) 0%, var(--green2) 100%)}
+    .btn.ghost{
+      background:transparent;color:var(--text);
+      border:1px solid var(--line);
+      box-shadow:none;
+      font-weight:600;
+    }
+    .out{
+      width:100%;
+      min-height:360px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size:12.5px;
+      white-space:pre-wrap;
+    }
+    .notice{
+      padding:10px 12px;border-radius:12px;background:var(--soft);border:1px dashed #ffffff24;
+      color:#d1d5db;font-size:12px;
+    }
+    .small{font-size:11px;color:var(--muted)}
+    .rightTop{
+      display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end
+    }
+    .badge{
+      font-size:11px;color:#cbd5e1;border:1px solid var(--line);padding:5px 8px;border-radius:999px;background:#0b0f14;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>자기소개서 구조설계 AI 프롬프트 생성기 (STAR)</h1>
+        <p>기본정보 + 희망직무/기업/업종 입력 → STAR 구조 설계 + 기업 맞춤 문장 생성 / (선택) 기존 자소서 코칭·수정 프롬프트를 자동 생성합니다.</p>
+      </div>
+      <div class="pillbar">
+        <span class="pill">✅ GitHub Pages 단일 파일</span>
+        <span class="pill">✅ STAR 자동 설계</span>
+        <span class="pill">✅ 기업 맞춤 톤/키워드</span>
+        <span class="pill">✅ 선택: 기존 자소서 코칭</span>
+      </div>
+    </header>
+
+    <div class="grid">
+
+      <!-- LEFT: Inputs -->
+      <section class="card">
+        <div class="hd">
+          <h2>입력</h2>
+          <div class="rightTop">
+            <span class="badge" id="saveState">자동저장: ON</span>
+            <button class="btn ghost" id="btnLoadSample" type="button">샘플 입력</button>
+            <button class="btn ghost" id="btnReset" type="button">초기화</button>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div class="row">
+            <div>
+              <label>이름</label>
+              <input id="name" type="text" placeholder="예: 원준" />
+            </div>
+            <div>
+              <label>전공</label>
+              <input id="major" type="text" placeholder="예: 경영학 / 컴퓨터공학 / 산업공학 등" />
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="row">
+            <div>
+              <label>희망직무</label>
+              <input id="role" type="text" placeholder="예: HR 컨설턴트 / 데이터 분석 / 마케팅 / 영업 등" />
+            </div>
+            <div>
+              <label>희망업종</label>
+              <input id="industry" type="text" placeholder="예: IT/SaaS / 금융 / 제조 / 유통 등" />
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="row">
+            <div>
+              <label>희망기업</label>
+              <input id="company" type="text" placeholder="예: 네이버 / 삼성전자 / 쿠팡 / 외국계 등" />
+            </div>
+            <div>
+              <label>지원 포지션/공고명 (선택)</label>
+              <input id="postingTitle" type="text" placeholder="예: HRBP (채용/조직문화) / Sales Associate 등" />
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <label>기업/공고 정보 (선택)</label>
+          <textarea id="companyInfo" placeholder="예: 회사 핵심가치, 최근 뉴스, 서비스/제품, 채용공고 JD 요약/전문 등을 붙여넣기"></textarea>
+          <div class="small">Tip: JD 전문을 그대로 넣으면 맞춤 키워드 추출 정확도가 올라갑니다.</div>
+
+          <div class="sep"></div>
+
+          <label>출력 모드</label>
+          <div class="toggles">
+            <label class="toggle"><input type="radio" name="mode" value="design" checked /> 구조 설계(신규 작성)</label>
+            <label class="toggle"><input type="radio" name="mode" value="coach" /> 코칭/수정(기존 자소서)</label>
+          </div>
+
+          <div class="sep"></div>
+
+          <label>자기소개서 항목 선택 (생성/수정 대상)</label>
+          <div class="checks" id="sections">
+            <label class="check">
+              <input type="checkbox" value="지원동기" checked />
+              <div>
+                <div class="k">지원동기</div>
+                <div class="d">기업/직무 핏, 산업 맥락, 입사 이유</div>
+              </div>
+            </label>
+            <label class="check">
+              <input type="checkbox" value="직무역량" checked />
+              <div>
+                <div class="k">직무역량</div>
+                <div class="d">핵심 스킬·경험을 STAR로 정리</div>
+              </div>
+            </label>
+            <label class="check">
+              <input type="checkbox" value="협업/커뮤니케이션" checked />
+              <div>
+                <div class="k">협업/커뮤니케이션</div>
+                <div class="d">갈등/조율/리딩 경험</div>
+              </div>
+            </label>
+            <label class="check">
+              <input type="checkbox" value="문제해결/성과" checked />
+              <div>
+                <div class="k">문제해결/성과</div>
+                <div class="d">지표·결과 중심 성과 스토리</div>
+              </div>
+            </label>
+            <label class="check">
+              <input type="checkbox" value="성장과정/가치관" />
+              <div>
+                <div class="k">성장과정/가치관</div>
+                <div class="d">직무와 연결되는 가치·태도</div>
+              </div>
+            </label>
+            <label class="check">
+              <input type="checkbox" value="입사 후 포부" checked />
+              <div>
+                <div class="k">입사 후 포부</div>
+                <div class="d">90일/6개월/1년 실행계획</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="sep"></div>
+
+          <label>내 경험/소재 메모 (권장)</label>
+          <textarea id="experienceMemo" placeholder="예: 프로젝트/인턴/대외활동/수상/성과/갈등 해결/리더십 경험 등 소재를 bullet로 적어주세요. (없으면 비워도 됨)"></textarea>
+
+          <div class="sep"></div>
+
+          <label>기존 자기소개서 원문 (선택 / 코칭 모드에서 사용)</label>
+          <textarea id="existingEssay" placeholder="여기에 기존 자소서를 붙여넣으면, 문장·논리·STAR·기업맞춤 관점으로 코칭/수정하도록 프롬프트가 생성됩니다."></textarea>
+
+          <div class="sep"></div>
+
+          <div class="notice">
+            생성된 프롬프트를 그대로 ChatGPT/LLM에 붙여넣으면 됩니다. <br/>
+            <span class="small">권장: 모델에게 “추가 질문부터” 하게 해서 소재 부족을 먼저 보완하도록 설계했습니다.</span>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="btnbar">
+            <button class="btn green" id="btnGenerate" type="button">프롬프트 생성</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Output -->
+      <section class="card">
+        <div class="hd">
+          <h2>출력 (AI에 그대로 복붙)</h2>
+          <div class="rightTop">
+            <button class="btn blue" id="btnCopy" type="button">복사</button>
+            <button class="btn amber" id="btnCopyMini" type="button">미니프롬프트 복사</button>
+          </div>
+        </div>
+        <div class="bd">
+          <textarea id="output" class="out" placeholder="왼쪽 정보를 입력하고 [프롬프트 생성]을 누르세요." spellcheck="false"></textarea>
+          <div class="sep"></div>
+          <div class="muted">
+            - “미니프롬프트”는 길이를 줄여 빠르게 돌릴 때 유용합니다. <br/>
+            - 본문이 길면, 생성 후 “1) 질문만 먼저 2) 최종본 작성” 순서로 진행하세요.
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const fields = [
+      "name","major","role","industry","company","postingTitle",
+      "companyInfo","experienceMemo","existingEssay"
+    ];
+
+    function getMode(){
+      return document.querySelector('input[name="mode"]:checked')?.value || "design";
+    }
+
+    function getSelectedSections(){
+      return [...document.querySelectorAll('#sections input[type="checkbox"]:checked')].map(x=>x.value);
+    }
+
+    function escTripleBacktick(text){
+      // prevent breaking fenced blocks
+      return (text || "").replace(/```/g, "``\\`");
+    }
+
+    function buildPrompt({mini=false}){
+      const name = $("name").value.trim();
+      const major = $("major").value.trim();
+      const role = $("role").value.trim();
+      const industry = $("industry").value.trim();
+      const company = $("company").value.trim();
+      const postingTitle = $("postingTitle").value.trim();
+      const companyInfo = $("companyInfo").value.trim();
+      const experienceMemo = $("experienceMemo").value.trim();
+      const existingEssay = $("existingEssay").value.trim();
+      const mode = getMode();
+      const sections = getSelectedSections();
+
+      const sectionsText = sections.length ? sections.join(", ") : "(선택 없음)";
+
+      const header = mini
+        ? `당신은 한국 채용시장 자기소개서 전문 코치이자 리크루터 관점의 첨삭가입니다. 아래 정보를 바탕으로 STAR 기반으로 자소서를 설계/수정하세요.`
+        : `역할(Role)
+당신은 "한국 채용시장" 기준으로 합격 가능성을 높이는 자기소개서 전문 컨설턴트(현업 리크루터 관점)입니다.
+목표: STAR 구조 자동 설계 + 기업/직무 맞춤 키워드 반영 + 문장 품질(명확성/설득/간결) 향상.
+
+원칙(중요)
+1) 먼저 "추가 질문"을 7~12개 내로 하세요. (경험/성과/수치/역할/갈등/학습/동기/기업관심도 등)
+2) 사용자가 답하면 최종 산출물을 작성하세요.
+3) 근거 없는 과장 금지. 수치/사실이 없으면 "추정/가정"이라고 표기하거나 질문으로 보완하세요.
+4) 각 항목은 STAR로 설계: S(상황) T(과제) A(행동) R(결과/학습) + 직무역량 매핑.
+5) 기업/직무 맞춤: JD/회사정보에서 핵심 키워드 8~15개 추출 → 문장에 자연스럽게 삽입.
+6) 한국식 자소서 톤: 과도한 미사여구 금지, 능동태, 구체적 행동/성과 중심, 1인칭 시점 유지.`;
+
+      const inputBlock = `지원자 정보
+- 이름: ${name || "(미입력)"}
+- 전공: ${major || "(미입력)"}
+- 희망직무: ${role || "(미입력)"}
+- 희망업종: ${industry || "(미입력)"}
+- 희망기업: ${company || "(미입력)"}
+- 지원 포지션/공고명: ${postingTitle || "(미입력)"}
+
+대상 항목(생성/수정): ${sectionsText}
+
+기업/공고 정보(선택, 그대로 참고)
+\`\`\`
+${escTripleBacktick(companyInfo) || "(없음)"}
+\`\`\`
+
+내 경험/소재 메모(권장)
+\`\`\`
+${escTripleBacktick(experienceMemo) || "(없음)"}
+\`\`\``;
+
+      const essayBlock = `기존 자기소개서 원문(선택)
+\`\`\`
+${escTripleBacktick(existingEssay) || "(없음)"}
+\`\`\``;
+
+      const tasksDesignMini = `요청:
+1) 위 정보를 기반으로 항목별 STAR 개요를 만들고,
+2) 기업/직무 키워드 반영하여 항목별 최종 문장을 작성하세요.
+3) 부족한 정보는 먼저 질문하세요.`;
+
+      const tasksCoachMini = `요청:
+1) 기존 자소서를 항목별로 분해해 STAR 관점으로 진단하고,
+2) 논리/임팩트/맞춤 키워드 관점에서 "수정본"과 "코칭 포인트"를 제공하세요.
+3) 부족한 정보는 먼저 질문하세요.`;
+
+      const tasksDesignFull = `작업 지시(Deliverables)
+A. 사전 진단
+- (1) JD/회사정보 기반 핵심 키워드 8~15개 추출 (표로)
+- (2) 지원자 메모 기반 "쓸만한 경험 후보" 3~6개 선정 + 어떤 항목에 쓰면 좋은지 추천
+- (3) 누락 정보/리스크(과장 가능성, 근거 부족 등) 체크
+
+B. 추가 질문 7~12개 (우선 출력)
+- 질문은 "답변하기 쉽게" 선택지/예시를 곁들일 것
+
+C. 최종 산출물(사용자 답변 후 작성)
+- 선택된 각 항목별로:
+  1) STAR 구조 (S/T/A/R) + 사용된 역량(competency) 명시
+  2) 최종 자소서 문장(권장 분량: 600~900자/항목; 사용자가 분량 제시 시 준수)
+  3) 기업/직무 맞춤 포인트(어떤 키워드가 어디에 반영됐는지 3~6줄)
+  4) 면접 꼬리질문 3개 + 모범 답변 방향
+
+D. 품질 규칙
+- 동일 의미 반복 제거, 한 문장 최대 2개 메시지
+- 수치/기간/범위는 가능한 구체화(없으면 질문)
+- '열정/성실' 같은 추상어는 행동/성과로 치환`;
+
+      const tasksCoachFull = `작업 지시(Deliverables)
+A. 사전 진단
+- (1) JD/회사정보 기반 핵심 키워드 8~15개 추출 (표로)
+- (2) 기존 자소서에서 항목별 핵심 주장(Claim)과 근거(Evidence) 분해
+- (3) STAR 누락/약한 부분 표시 (예: 결과가 없음, 행동이 모호함, 직무 연결 약함)
+
+B. 추가 질문 7~12개 (우선 출력)
+- 특히 수치/성과/본인 기여도/협업 상황을 보완하는 질문 위주
+
+C. 수정본 제공(사용자 답변 반영 후)
+- 선택된 각 항목별로:
+  1) 문제점 요약(3~6개 bullet)
+  2) 개선 전략(어떻게 고쳤는지)
+  3) 수정본(기업/직무 맞춤 키워드 포함)
+  4) Before/After 핵심 변화(표 1개)
+
+D. 문장 코칭 규칙
+- 모호한 표현(많이/열심히/성장) → 행동/도구/기여/성과로 치환
+- 기업명/직무명/산업 맥락을 문장 초반에 배치해 핏을 선명하게`;
+
+      const close = mini
+        ? `출력 형식:
+- 먼저: 추가 질문(번호)
+- 다음: STAR 개요(항목별)
+- 마지막: 최종 문장(항목별) + 코칭 포인트(짧게)`
+        : `출력 형식(반드시 지킬 것)
+1) 추가 질문 7~12개만 먼저 출력 (이 단계에서는 자소서 최종문장을 쓰지 말 것)
+2) 사용자가 답하면: A~D에 따라 최종 산출물 작성`;
+
+      let tasks;
+      if (mini){
+        tasks = (mode === "coach") ? tasksCoachMini : tasksDesignMini;
+      } else {
+        tasks = (mode === "coach") ? tasksCoachFull : tasksDesignFull;
+      }
+
+      const includeEssay = (mode === "coach"); // coach mode expects essay
+      const body = [
+        header,
+        "",
+        inputBlock,
+        includeEssay ? ("\n" + essayBlock) : "",
+        "",
+        tasks,
+        "",
+        close
+      ].filter(Boolean).join("\n");
+
+      return body.trim();
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    function save(){
+      const data = {};
+      fields.forEach(f => data[f] = $(f).value);
+      data.mode = getMode();
+      data.sections = getSelectedSections();
+      localStorage.setItem("starPromptBuilder.v1", JSON.stringify(data));
+    }
+
+    function load(){
+      const raw = localStorage.getItem("starPromptBuilder.v1");
+      if(!raw) return;
+      try{
+        const data = JSON.parse(raw);
+        fields.forEach(f => { if (data[f] !== undefined) $(f).value = data[f]; });
+        if (data.mode){
+          const r = document.querySelector(`input[name="mode"][value="${data.mode}"]`);
+          if (r) r.checked = true;
+        }
+        if (Array.isArray(data.sections)){
+          document.querySelectorAll('#sections input[type="checkbox"]').forEach(cb=>{
+            cb.checked = data.sections.includes(cb.value);
+          });
+        }
+      }catch(e){}
+    }
+
+    function resetAll(){
+      fields.forEach(f => $(f).value = "");
+      document.querySelector('input[name="mode"][value="design"]').checked = true;
+      document.querySelectorAll('#sections input[type="checkbox"]').forEach((cb, i)=>{
+        // default checks as defined in HTML (keep initial defaults by reloading? We'll hard-set common ones)
+        const defaults = new Set(["지원동기","직무역량","협업/커뮤니케이션","문제해결/성과","입사 후 포부"]);
+        cb.checked = defaults.has(cb.value);
+      });
+      $("output").value = "";
+      localStorage.removeItem("starPromptBuilder.v1");
+    }
+
+    function loadSample(){
+      $("name").value = "원준";
+      $("major").value = "경영학(복수전공: 데이터분석)";
+      $("role").value = "HR 컨설턴트 / 채용·조직문화";
+      $("industry").value = "IT/SaaS";
+      $("company").value = "가상의 SaaS 기업 A";
+      $("postingTitle").value = "HRBP (채용·조직문화)";
+      $("companyInfo").value =
+`[회사정보/JD 요약 예시]
+- 핵심가치: Customer Obsession, Ownership, Data-driven
+- HRBP: 채용 전략/프로세스 개선, Hiring Manager 파트너링, 조직문화 프로그램 운영
+- 우대: 데이터 기반 의사결정, ATS/HRIS 활용, 이해관계자 커뮤니케이션`;
+      $("experienceMemo").value =
+`[경험소재 예시]
+- 인턴: 채용 운영(서류~면접) 개선 → 리드타임 20% 단축 (근거 수치/기간 필요)
+- 프로젝트: 채용공고 데이터 수집/분석으로 전공 적합도 점수 모델 설계
+- 협업: 현업/외주/내부팀 간 요구사항 조율로 일정 리스크 해소
+- 성과: 설문 기반 온보딩 개선안 제안 및 실행`;
+      document.querySelector('input[name="mode"][value="design"]').checked = true;
+      $("existingEssay").value = "";
+      save();
+    }
+
+    // events
+    window.addEventListener("load", load);
+    fields.forEach(f => $(f).addEventListener("input", save));
+    document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener("change", save));
+    document.querySelectorAll('#sections input[type="checkbox"]').forEach(cb => cb.addEventListener("change", save));
+
+    $("btnGenerate").addEventListener("click", ()=>{
+      const mode = getMode();
+      if (mode === "coach" && !$("existingEssay").value.trim()){
+        // allow but warn inside prompt instead of blocking
+      }
+      $("output").value = buildPrompt({mini:false});
+      save();
+    });
+
+    $("btnCopy").addEventListener("click", async ()=>{
+      const text = $("output").value.trim() || buildPrompt({mini:false});
+      const ok = await copyText(text);
+      $("btnCopy").textContent = ok ? "복사됨" : "복사 실패";
+      setTimeout(()=> $("btnCopy").textContent = "복사", 1200);
+    });
+
+    $("btnCopyMini").addEventListener("click", async ()=>{
+      const text = buildPrompt({mini:true});
+      const ok = await copyText(text);
+      $("btnCopyMini").textContent = ok ? "복사됨" : "복사 실패";
+      setTimeout(()=> $("btnCopyMini").textContent = "미니프롬프트 복사", 1200);
+    });
+
+    $("btnReset").addEventListener("click", ()=>{
+      resetAll();
+      $("saveState").textContent = "자동저장: ON";
+    });
+
+    $("btnLoadSample").addEventListener("click", loadSample);
+  </script>
+</body>
+</html>
