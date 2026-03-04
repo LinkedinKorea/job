@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>자기소개서 구조설계 AI 프롬프트 생성기 (STAR)</title>
-  <meta name="description" content="STAR 구조 자동 설계 + 기업 맞춤 문장 + 기존 자소서 코칭/수정용 프롬프트 생성기" />
+  <meta name="description" content="기업/직무 분석 + STAR 구조 설계 + 항목별 추천 + 짧은 예시 생성 프롬프트 생성기" />
   <style>
     :root{
       --bg:#0b0f14;
@@ -130,7 +130,7 @@
     }
     .out{
       width:100%;
-      min-height:360px;
+      min-height:380px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       font-size:12.5px;
       white-space:pre-wrap;
@@ -146,6 +146,21 @@
     .badge{
       font-size:11px;color:#cbd5e1;border:1px solid var(--line);padding:5px 8px;border-radius:999px;background:#0b0f14;
     }
+
+    footer{
+      margin-top:18px;
+      padding:16px 10px 10px 10px;
+      border-top:1px solid var(--line);
+      text-align:center;
+      color:var(--muted);
+      font-size:12.5px;
+    }
+    footer a{color:#cbd5e1;text-decoration:none;border-bottom:1px dotted #ffffff3a}
+    footer a:hover{filter:brightness(1.12)}
+    .kbd{
+      font-size:11px;color:#cbd5e1;border:1px solid var(--line);
+      padding:3px 8px;border-radius:999px;background:#0b0f14;
+    }
   </style>
 </head>
 <body>
@@ -153,13 +168,13 @@
     <header>
       <div class="title">
         <h1>자기소개서 구조설계 AI 프롬프트 생성기 (STAR)</h1>
-        <p>기본정보 + 희망직무/기업/업종 입력 → STAR 구조 설계 + 기업 맞춤 문장 생성 / (선택) 기존 자소서 코칭·수정 프롬프트를 자동 생성합니다.</p>
+        <p>희망기업·희망직무 기반 <b>기업/직무 분석 → 항목 추천/구조 설계 → STAR 설계 → 짧은 예시</b>까지 한 번에 프롬프트로 만듭니다.</p>
       </div>
       <div class="pillbar">
         <span class="pill">✅ GitHub Pages 단일 파일</span>
-        <span class="pill">✅ STAR 자동 설계</span>
-        <span class="pill">✅ 기업 맞춤 톤/키워드</span>
-        <span class="pill">✅ 선택: 기존 자소서 코칭</span>
+        <span class="pill">✅ 기업/직무 분석 포함</span>
+        <span class="pill">✅ 항목별 추천/STAR 구조</span>
+        <span class="pill">✅ 짧은 예시 출력</span>
       </div>
     </header>
 
@@ -170,7 +185,7 @@
         <div class="hd">
           <h2>입력</h2>
           <div class="rightTop">
-            <span class="badge" id="saveState">자동저장: ON</span>
+            <span class="kbd">Ctrl + Enter 생성</span>
             <button class="btn ghost" id="btnLoadSample" type="button">샘플 입력</button>
             <button class="btn ghost" id="btnReset" type="button">초기화</button>
           </div>
@@ -180,7 +195,7 @@
           <div class="row">
             <div>
               <label>이름</label>
-              <input id="name" type="text" placeholder="예: 원준" />
+              <input id="name" type="text" placeholder="예: 홍길동" />
             </div>
             <div>
               <label>전공</label>
@@ -193,7 +208,7 @@
           <div class="row">
             <div>
               <label>희망직무</label>
-              <input id="role" type="text" placeholder="예: HR 컨설턴트 / 데이터 분석 / 마케팅 / 영업 등" />
+              <input id="role" type="text" placeholder="예: HRBP / 데이터 분석 / 마케팅 / 영업 등" />
             </div>
             <div>
               <label>희망업종</label>
@@ -218,13 +233,13 @@
 
           <label>기업/공고 정보 (선택)</label>
           <textarea id="companyInfo" placeholder="예: 회사 핵심가치, 최근 뉴스, 서비스/제품, 채용공고 JD 요약/전문 등을 붙여넣기"></textarea>
-          <div class="small">Tip: JD 전문을 그대로 넣으면 맞춤 키워드 추출 정확도가 올라갑니다.</div>
+          <div class="small">Tip: JD 전문을 그대로 넣으면 맞춤 키워드 추출 정확도가 올라갑니다. (없어도 ‘희망기업/희망직무’ 기반 리서치 지시를 포함합니다)</div>
 
           <div class="sep"></div>
 
           <label>출력 모드</label>
           <div class="toggles">
-            <label class="toggle"><input type="radio" name="mode" value="design" checked /> 구조 설계(신규 작성)</label>
+            <label class="toggle"><input type="radio" name="mode" value="design" checked /> 분석+구조설계(신규 작성)</label>
             <label class="toggle"><input type="radio" name="mode" value="coach" /> 코칭/수정(기존 자소서)</label>
           </div>
 
@@ -247,17 +262,17 @@
               </div>
             </label>
             <label class="check">
-              <input type="checkbox" value="협업/커뮤니케이션" checked />
-              <div>
-                <div class="k">협업/커뮤니케이션</div>
-                <div class="d">갈등/조율/리딩 경험</div>
-              </div>
-            </label>
-            <label class="check">
               <input type="checkbox" value="문제해결/성과" checked />
               <div>
                 <div class="k">문제해결/성과</div>
                 <div class="d">지표·결과 중심 성과 스토리</div>
+              </div>
+            </label>
+            <label class="check">
+              <input type="checkbox" value="협업/커뮤니케이션" checked />
+              <div>
+                <div class="k">협업/커뮤니케이션</div>
+                <div class="d">갈등/조율/리딩 경험</div>
               </div>
             </label>
             <label class="check">
@@ -279,7 +294,7 @@
           <div class="sep"></div>
 
           <label>내 경험/소재 메모 (권장)</label>
-          <textarea id="experienceMemo" placeholder="예: 프로젝트/인턴/대외활동/수상/성과/갈등 해결/리더십 경험 등 소재를 bullet로 적어주세요. (없으면 비워도 됨)"></textarea>
+          <textarea id="experienceMemo" placeholder="예: 프로젝트/인턴/대외활동/수상/성과/갈등 해결/리더십 경험 등을 bullet로 적어주세요. (없으면 비워도 됨)"></textarea>
 
           <div class="sep"></div>
 
@@ -289,8 +304,8 @@
           <div class="sep"></div>
 
           <div class="notice">
-            생성된 프롬프트를 그대로 ChatGPT/LLM에 붙여넣으면 됩니다. <br/>
-            <span class="small">권장: 모델에게 “추가 질문부터” 하게 해서 소재 부족을 먼저 보완하도록 설계했습니다.</span>
+            생성된 프롬프트를 그대로 생성형 AI에 붙여넣어 사용하세요. <br/>
+            <span class="small">주의: 본 도구는 ‘구조 설계/참고’ 목적입니다. 사실/수치/경험은 본인 기준으로 검증·보완해야 합니다.</span>
           </div>
 
           <div class="sep"></div>
@@ -314,33 +329,32 @@
           <textarea id="output" class="out" placeholder="왼쪽 정보를 입력하고 [프롬프트 생성]을 누르세요." spellcheck="false"></textarea>
           <div class="sep"></div>
           <div class="muted">
-            - “미니프롬프트”는 길이를 줄여 빠르게 돌릴 때 유용합니다. <br/>
-            - 본문이 길면, 생성 후 “1) 질문만 먼저 2) 최종본 작성” 순서로 진행하세요.
+            - 길게 나오면: ① 질문만 먼저 받기 → ② 답변 후 최종본 작성 순서로 진행하세요. <br/>
+            - “미니프롬프트”는 빠른 테스트/반복에 유용합니다.
           </div>
         </div>
       </section>
 
     </div>
+
+    <!-- Footer (job.linkedinkorea.com 스타일 반영) -->
+    <footer>
+      AI를 활용한 작성은 구조를 잡는 단순 참고과정일 뿐임으로, 기업 및 직무분석을 활용해 맞춤형 자소서를 완성하시기 바랍니다.<br/><br/>
+      Made by 강원준_Linkedin Korea Partner HR Point(2026) ·
+      <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/ceohr</a>
+    </footer>
   </div>
 
   <script>
     const $ = (id) => document.getElementById(id);
 
-    const fields = [
-      "name","major","role","industry","company","postingTitle",
-      "companyInfo","experienceMemo","existingEssay"
-    ];
-
     function getMode(){
       return document.querySelector('input[name="mode"]:checked')?.value || "design";
     }
-
     function getSelectedSections(){
       return [...document.querySelectorAll('#sections input[type="checkbox"]:checked')].map(x=>x.value);
     }
-
     function escTripleBacktick(text){
-      // prevent breaking fenced blocks
       return (text || "").replace(/```/g, "``\\`");
     }
 
@@ -356,22 +370,21 @@
       const existingEssay = $("existingEssay").value.trim();
       const mode = getMode();
       const sections = getSelectedSections();
-
       const sectionsText = sections.length ? sections.join(", ") : "(선택 없음)";
 
       const header = mini
-        ? `당신은 한국 채용시장 자기소개서 전문 코치이자 리크루터 관점의 첨삭가입니다. 아래 정보를 바탕으로 STAR 기반으로 자소서를 설계/수정하세요.`
+        ? `당신은 한국 채용시장 기준의 자기소개서 코치/리크루터입니다. 아래 정보를 바탕으로 "기업/직무 분석 → 항목 추천 → STAR 구조 → 짧은 예시"를 제공하세요.`
         : `역할(Role)
-당신은 "한국 채용시장" 기준으로 합격 가능성을 높이는 자기소개서 전문 컨설턴트(현업 리크루터 관점)입니다.
-목표: STAR 구조 자동 설계 + 기업/직무 맞춤 키워드 반영 + 문장 품질(명확성/설득/간결) 향상.
+당신은 한국 채용시장 기준으로 자기소개서 합격 가능성을 높이는 전문 코치(현업 리크루터 관점)입니다.
+목표: (1) 기업/직무 분석 (2) 자소서 항목 추천/구조 설계 (3) STAR 자동 설계 (4) 짧은 예시 생성 (5) 필요 시 코칭/수정.
 
-원칙(중요)
-1) 먼저 "추가 질문"을 7~12개 내로 하세요. (경험/성과/수치/역할/갈등/학습/동기/기업관심도 등)
-2) 사용자가 답하면 최종 산출물을 작성하세요.
-3) 근거 없는 과장 금지. 수치/사실이 없으면 "추정/가정"이라고 표기하거나 질문으로 보완하세요.
-4) 각 항목은 STAR로 설계: S(상황) T(과제) A(행동) R(결과/학습) + 직무역량 매핑.
-5) 기업/직무 맞춤: JD/회사정보에서 핵심 키워드 8~15개 추출 → 문장에 자연스럽게 삽입.
-6) 한국식 자소서 톤: 과도한 미사여구 금지, 능동태, 구체적 행동/성과 중심, 1인칭 시점 유지.`;
+중요 원칙(반드시 준수)
+1) 먼저 "추가 질문"을 7~12개 내로 제시하고, 답변 전에는 최종 자소서 장문을 작성하지 말 것.
+2) 기업/직무 정보는 최신성이 중요하므로, 가능하면 웹 리서치를 수행하고 출처 링크를 함께 제시할 것.
+3) 웹 리서치가 불가하거나 근거가 약하면 "확인 불가"로 표시하고, 가정이 들어가면 "가정"이라고 명시할 것.
+4) 과장 금지: 수치/성과/역할은 사용자가 준 정보만 사용. 부족하면 질문으로 보완.
+5) 한국식 자소서 톤: 간결/명확/능동태/구체 행동/성과 중심. 추상어(열정/성실) 남발 금지.
+6) 각 항목은 STAR로 설계: S(상황) T(과제) A(행동) R(결과/학습) + 직무역량(Competency) 매핑.`;
 
       const inputBlock = `지원자 정보
 - 이름: ${name || "(미입력)"}
@@ -398,86 +411,128 @@ ${escTripleBacktick(experienceMemo) || "(없음)"}
 ${escTripleBacktick(existingEssay) || "(없음)"}
 \`\`\``;
 
-      const tasksDesignMini = `요청:
-1) 위 정보를 기반으로 항목별 STAR 개요를 만들고,
-2) 기업/직무 키워드 반영하여 항목별 최종 문장을 작성하세요.
-3) 부족한 정보는 먼저 질문하세요.`;
+      // --- Core tasks: analysis -> recommendation -> STAR -> short examples ---
+      const tasksMini = (mode === "coach")
+        ? `요청:
+1) 기업/직무 핵심요약 + 키워드 추출
+2) 항목별(선택된 항목) STAR 구조 설계 + 짧은 예시(120~200자)
+3) 기존 자소서가 있으면 문제점/수정본도 함께 (단, 질문 먼저)`
+        : `요청:
+1) 기업/직무 핵심요약 + 키워드 추출
+2) 항목별(선택된 항목) 구조 추천 + STAR 구조 + 짧은 예시(120~200자)
+3) 단, 질문 먼저`;
 
-      const tasksCoachMini = `요청:
-1) 기존 자소서를 항목별로 분해해 STAR 관점으로 진단하고,
-2) 논리/임팩트/맞춤 키워드 관점에서 "수정본"과 "코칭 포인트"를 제공하세요.
-3) 부족한 정보는 먼저 질문하세요.`;
+      const tasksFull = (mode === "coach")
+        ? `작업 지시(Deliverables)
+0) 웹 리서치 지시(가능하면 수행)
+- 희망기업(${company || "미입력"})의: 주요 사업/제품, 최근 전략/이슈, 핵심가치/문화
+- 희망직무(${role || "미입력"})의: 주요 역할, 필요 역량, KPI/성과지표
+- 출처 링크 3~8개 제시(회사 공식, IR/보도자료, 채용공고, 신뢰도 높은 매체 우선)
+- 불확실하면 '확인 불가'로 표기
 
-      const tasksDesignFull = `작업 지시(Deliverables)
-A. 사전 진단
-- (1) JD/회사정보 기반 핵심 키워드 8~15개 추출 (표로)
-- (2) 지원자 메모 기반 "쓸만한 경험 후보" 3~6개 선정 + 어떤 항목에 쓰면 좋은지 추천
-- (3) 누락 정보/리스크(과장 가능성, 근거 부족 등) 체크
+1) 기업 분석(구조화)
+[기업 분석]
+- 주요 사업/제품(핵심 고객/수익모델 포함)
+- 최근 방향성(우선순위/성장영역)
+- 핵심 가치/문화(채용 관점 해석)
+[직무 분석]
+- 주요 역할(업무흐름/협업대상 포함)
+- 필요한 역량 TOP5(근거와 함께)
+- 대표 KPI/성과 지표(예시 포함)
 
-B. 추가 질문 7~12개 (우선 출력)
-- 질문은 "답변하기 쉽게" 선택지/예시를 곁들일 것
+2) 자소서 질문/항목 추천(기업·직무 기반)
+- 실제 기업들이 자주 묻는 질문 스타일로 6~10개 생성
+- 선택된 항목(${sectionsText}) 각각에 대해:
+  a) 기업이 이 항목을 묻는 이유
+  b) 작성 전략(키워드/논리 흐름)
+  c) 추천 경험 유형(어떤 경험이 유리한지)
 
-C. 최종 산출물(사용자 답변 후 작성)
-- 선택된 각 항목별로:
-  1) STAR 구조 (S/T/A/R) + 사용된 역량(competency) 명시
-  2) 최종 자소서 문장(권장 분량: 600~900자/항목; 사용자가 분량 제시 시 준수)
-  3) 기업/직무 맞춤 포인트(어떤 키워드가 어디에 반영됐는지 3~6줄)
-  4) 면접 꼬리질문 3개 + 모범 답변 방향
+3) 추가 질문 7~12개 (여기까지만 먼저 출력)
+- 수치/기간/본인기여도/갈등상황/의사결정근거를 보완하는 질문 위주
+- 각 질문에 '답변 예시 형식'을 붙여 사용자가 쉽게 답하도록 유도
 
-D. 품질 규칙
-- 동일 의미 반복 제거, 한 문장 최대 2개 메시지
-- 수치/기간/범위는 가능한 구체화(없으면 질문)
-- '열정/성실' 같은 추상어는 행동/성과로 치환`;
+4) 사용자 답변을 받은 뒤 최종 산출물(그 다음 단계)
+- 각 항목별로:
+  (1) STAR 설계(S/T/A/R) + 역량 매핑(Competency)
+  (2) 짧은 예시(120~200자) 1개: 기업/직무 키워드 포함
+  (3) 최종 자소서 문장(권장 600~900자/항목, 요청 분량 우선)
+  (4) 코칭 포인트(개선 전/후 핵심 변화)
+  (5) 면접 꼬리질문 3개 + 답변 방향
 
-      const tasksCoachFull = `작업 지시(Deliverables)
-A. 사전 진단
-- (1) JD/회사정보 기반 핵심 키워드 8~15개 추출 (표로)
-- (2) 기존 자소서에서 항목별 핵심 주장(Claim)과 근거(Evidence) 분해
-- (3) STAR 누락/약한 부분 표시 (예: 결과가 없음, 행동이 모호함, 직무 연결 약함)
+5) 기존 자소서가 제공된 경우(코칭)
+- 문장/논리/STAR/기업맞춤 관점에서:
+  - 문제점 3~6개 bullet
+  - 수정 전략
+  - 수정본 제공(과장 금지, 근거 부족 시 질문)
 
-B. 추가 질문 7~12개 (우선 출력)
-- 특히 수치/성과/본인 기여도/협업 상황을 보완하는 질문 위주
+품질 규칙
+- 반복/군더더기 제거, 1문장 1메시지
+- 추상어는 행동/도구/성과로 치환
+- 정보 부족 시 임의로 꾸미지 말고 질문할 것`
+        : `작업 지시(Deliverables)
+0) 웹 리서치 지시(가능하면 수행)
+- 희망기업(${company || "미입력"})의: 주요 사업/제품, 최근 전략/이슈, 핵심가치/문화
+- 희망직무(${role || "미입력"})의: 주요 역할, 필요 역량, KPI/성과지표
+- 출처 링크 3~8개 제시(회사 공식, IR/보도자료, 채용공고, 신뢰도 높은 매체 우선)
+- 불확실하면 '확인 불가'로 표기
 
-C. 수정본 제공(사용자 답변 반영 후)
-- 선택된 각 항목별로:
-  1) 문제점 요약(3~6개 bullet)
-  2) 개선 전략(어떻게 고쳤는지)
-  3) 수정본(기업/직무 맞춤 키워드 포함)
-  4) Before/After 핵심 변화(표 1개)
+1) 기업 분석 & 직무 분석(구조화)
+[기업 분석]
+- 주요 사업/제품(핵심 고객/수익모델 포함)
+- 최근 방향성(우선순위/성장영역)
+- 핵심 가치/문화(채용 관점 해석)
+[직무 분석]
+- 주요 역할(업무흐름/협업대상 포함)
+- 필요한 역량 TOP5(근거와 함께)
+- 대표 KPI/성과 지표(예시 포함)
 
-D. 문장 코칭 규칙
-- 모호한 표현(많이/열심히/성장) → 행동/도구/기여/성과로 치환
-- 기업명/직무명/산업 맥락을 문장 초반에 배치해 핏을 선명하게`;
+2) 항목 추천 & 구조 설계(선택된 항목 기준)
+- 선택된 항목(${sectionsText}) 각각에 대해:
+  a) 기업이 이 항목을 묻는 이유
+  b) 추천 구조(도입→핵심 주장→STAR 근거→직무 연결→마무리)
+  c) STAR 설계(S/T/A/R) + 역량 매핑
+  d) ‘이 항목에서 반드시 넣어야 할 키워드’ 5~8개
+- 추가로, 기업/직무 기반 자소서 질문 6~10개 생성(실제 문항 스타일)
+
+3) 추가 질문 7~12개 (여기까지만 먼저 출력)
+- 수치/기간/본인기여도/도구/의사결정근거/협업 갈등 보완 질문 중심
+- 각 질문에 '답변 템플릿' 첨부
+
+4) 사용자 답변을 받은 뒤 최종 산출물(그 다음 단계)
+- 각 항목별로:
+  (1) STAR 최종 설계(S/T/A/R) + 역량 매핑
+  (2) 짧은 예시(120~200자) 1개: 기업/직무 키워드 포함
+  (3) 최종 자소서 문장(권장 600~900자/항목, 요청 분량 우선)
+  (4) 기업/직무 맞춤 포인트 3~6줄(어떤 키워드가 어디에 반영됐는지)
+  (5) 면접 꼬리질문 3개 + 답변 방향
+
+품질 규칙
+- 반복/군더더기 제거, 1문장 1메시지
+- 추상어는 행동/도구/성과로 치환
+- 정보 부족 시 임의로 꾸미지 말고 질문할 것`;
 
       const close = mini
-        ? `출력 형식:
-- 먼저: 추가 질문(번호)
-- 다음: STAR 개요(항목별)
-- 마지막: 최종 문장(항목별) + 코칭 포인트(짧게)`
+        ? `출력 순서:
+1) 추가 질문
+2) 기업/직무 분석 요약
+3) 항목별 구조/STAR
+4) 짧은 예시(각 항목 1개)`
         : `출력 형식(반드시 지킬 것)
-1) 추가 질문 7~12개만 먼저 출력 (이 단계에서는 자소서 최종문장을 쓰지 말 것)
-2) 사용자가 답하면: A~D에 따라 최종 산출물 작성`;
+1) 추가 질문 7~12개만 먼저 출력 (이 단계에서는 장문 최종 자소서 작성 금지)
+2) 사용자가 답하면: 위 Deliverables에 따라 최종 산출물 작성`;
 
-      let tasks;
-      if (mini){
-        tasks = (mode === "coach") ? tasksCoachMini : tasksDesignMini;
-      } else {
-        tasks = (mode === "coach") ? tasksCoachFull : tasksDesignFull;
-      }
+      const includeEssay = (mode === "coach");
 
-      const includeEssay = (mode === "coach"); // coach mode expects essay
-      const body = [
+      return [
         header,
         "",
         inputBlock,
         includeEssay ? ("\n" + essayBlock) : "",
         "",
-        tasks,
+        mini ? tasksMini : tasksFull,
         "",
         close
-      ].filter(Boolean).join("\n");
-
-      return body.trim();
+      ].filter(Boolean).join("\n").trim();
     }
 
     async function copyText(text){
@@ -485,7 +540,6 @@ D. 문장 코칭 규칙
         await navigator.clipboard.writeText(text);
         return true;
       }catch(e){
-        // fallback
         const ta = document.createElement("textarea");
         ta.value = text;
         document.body.appendChild(ta);
@@ -496,48 +550,30 @@ D. 문장 코칭 규칙
       }
     }
 
-    function save(){
-      const data = {};
-      fields.forEach(f => data[f] = $(f).value);
-      data.mode = getMode();
-      data.sections = getSelectedSections();
-      localStorage.setItem("starPromptBuilder.v1", JSON.stringify(data));
-    }
-
-    function load(){
-      const raw = localStorage.getItem("starPromptBuilder.v1");
-      if(!raw) return;
-      try{
-        const data = JSON.parse(raw);
-        fields.forEach(f => { if (data[f] !== undefined) $(f).value = data[f]; });
-        if (data.mode){
-          const r = document.querySelector(`input[name="mode"][value="${data.mode}"]`);
-          if (r) r.checked = true;
-        }
-        if (Array.isArray(data.sections)){
-          document.querySelectorAll('#sections input[type="checkbox"]').forEach(cb=>{
-            cb.checked = data.sections.includes(cb.value);
-          });
-        }
-      }catch(e){}
-    }
-
     function resetAll(){
-      fields.forEach(f => $(f).value = "");
+      $("name").value = "";
+      $("major").value = "";
+      $("role").value = "";
+      $("industry").value = "";
+      $("company").value = "";
+      $("postingTitle").value = "";
+      $("companyInfo").value = "";
+      $("experienceMemo").value = "";
+      $("existingEssay").value = "";
       document.querySelector('input[name="mode"][value="design"]').checked = true;
-      document.querySelectorAll('#sections input[type="checkbox"]').forEach((cb, i)=>{
-        // default checks as defined in HTML (keep initial defaults by reloading? We'll hard-set common ones)
-        const defaults = new Set(["지원동기","직무역량","협업/커뮤니케이션","문제해결/성과","입사 후 포부"]);
+
+      const defaults = new Set(["지원동기","직무역량","문제해결/성과","협업/커뮤니케이션","입사 후 포부"]);
+      document.querySelectorAll('#sections input[type="checkbox"]').forEach(cb=>{
         cb.checked = defaults.has(cb.value);
       });
+
       $("output").value = "";
-      localStorage.removeItem("starPromptBuilder.v1");
     }
 
     function loadSample(){
-      $("name").value = "원준";
+      $("name").value = "홍길동";
       $("major").value = "경영학(복수전공: 데이터분석)";
-      $("role").value = "HR 컨설턴트 / 채용·조직문화";
+      $("role").value = "HRBP (채용·조직문화)";
       $("industry").value = "IT/SaaS";
       $("company").value = "가상의 SaaS 기업 A";
       $("postingTitle").value = "HRBP (채용·조직문화)";
@@ -548,28 +584,16 @@ D. 문장 코칭 규칙
 - 우대: 데이터 기반 의사결정, ATS/HRIS 활용, 이해관계자 커뮤니케이션`;
       $("experienceMemo").value =
 `[경험소재 예시]
-- 인턴: 채용 운영(서류~면접) 개선 → 리드타임 20% 단축 (근거 수치/기간 필요)
+- 인턴: 채용 운영(서류~면접) 개선 → 리드타임 단축(기간/수치 필요)
 - 프로젝트: 채용공고 데이터 수집/분석으로 전공 적합도 점수 모델 설계
-- 협업: 현업/외주/내부팀 간 요구사항 조율로 일정 리스크 해소
+- 협업: 현업/내부팀 간 요구사항 조율로 일정 리스크 해소
 - 성과: 설문 기반 온보딩 개선안 제안 및 실행`;
-      document.querySelector('input[name="mode"][value="design"]').checked = true;
       $("existingEssay").value = "";
-      save();
+      document.querySelector('input[name="mode"][value="design"]').checked = true;
     }
 
-    // events
-    window.addEventListener("load", load);
-    fields.forEach(f => $(f).addEventListener("input", save));
-    document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener("change", save));
-    document.querySelectorAll('#sections input[type="checkbox"]').forEach(cb => cb.addEventListener("change", save));
-
     $("btnGenerate").addEventListener("click", ()=>{
-      const mode = getMode();
-      if (mode === "coach" && !$("existingEssay").value.trim()){
-        // allow but warn inside prompt instead of blocking
-      }
       $("output").value = buildPrompt({mini:false});
-      save();
     });
 
     $("btnCopy").addEventListener("click", async ()=>{
@@ -586,12 +610,16 @@ D. 문장 코칭 규칙
       setTimeout(()=> $("btnCopyMini").textContent = "미니프롬프트 복사", 1200);
     });
 
-    $("btnReset").addEventListener("click", ()=>{
-      resetAll();
-      $("saveState").textContent = "자동저장: ON";
-    });
-
+    $("btnReset").addEventListener("click", resetAll);
     $("btnLoadSample").addEventListener("click", loadSample);
+
+    // Ctrl + Enter to generate
+    document.addEventListener("keydown", (e)=>{
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+        e.preventDefault();
+        $("output").value = buildPrompt({mini:false});
+      }
+    });
   </script>
 </body>
 </html>
