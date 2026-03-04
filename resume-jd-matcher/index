@@ -80,14 +80,14 @@
     h2{margin:0 0 12px 0;font-size:18px}
     h3{margin:0 0 10px 0;font-size:16px}
     label{font-size:13px;color:var(--muted)}
-    input,textarea{
+    input,textarea,select{
       width:100%;margin-top:6px;
       background:#0b0f14;border:1px solid var(--line);
       color:var(--text);border-radius:12px;
       padding:10px 12px;outline:none;
     }
     textarea{resize:vertical;line-height:1.45}
-    input:focus,textarea:focus{border-color:#334155}
+    input:focus,textarea:focus,select:focus{border-color:#334155}
     .formGrid{
       display:grid;gap:10px;
       grid-template-columns:1fr 1fr;
@@ -182,6 +182,33 @@
       color:#bbf7d0;
     }
     .muted{color:var(--muted)}
+    .mini{
+      font-size:12px;color:var(--muted);
+      margin-top:8px;
+    }
+    .btnSmall{
+      padding:8px 10px;border-radius:10px;font-size:13px;
+    }
+    .warn{
+      border-color:#7c2d12;background:#1b0f0a;
+    }
+    .ok{
+      border-color:#14532d;background:#071a12;
+    }
+    .autoBox{
+      margin-top:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#0b1220;
+      padding:12px;
+    }
+    .autoBox h4{
+      margin:0 0 8px 0;font-size:13px;color:#cbd5e1;
+    }
+    .autoBox .note{
+      font-size:12px;color:var(--muted);
+      margin-top:6px;
+    }
     @media (max-width: 980px){
       main{grid-template-columns:1fr}
       .formGrid{grid-template-columns:1fr}
@@ -196,7 +223,7 @@
     <div class="logo">RM</div>
     <div>
       <div class="title">이력서 ↔ JD 매칭 분석기 (단일 파일)</div>
-      <div class="sub">정적 웹앱 · GitHub Pages 배포용 · 점수/근거/갭/개선안</div>
+      <div class="sub">샘플 추천 · Must/Nice 자동 추출 · 점수/근거/갭/개선안</div>
     </div>
   </div>
   <div class="actions">
@@ -225,37 +252,71 @@
       </label>
     </div>
 
+    <div class="autoBox">
+      <h4>역량/경험 샘플 추천</h4>
+      <div class="twoCols">
+        <label class="block">템플릿 선택
+          <select id="tpl_select">
+            <option value="b2b_marketer">B2B 마케터 / Growth</option>
+            <option value="recruiter">리크루터 / TA</option>
+            <option value="sdr">SDR / BDR</option>
+            <option value="pm">PM / PO</option>
+            <option value="data">데이터 분석 / BI</option>
+            <option value="cs">CS / AM</option>
+          </select>
+        </label>
+        <label class="block">작성 가이드(숫자 포함)
+          <select id="tpl_style">
+            <option value="star">STAR(상황-과제-행동-결과)</option>
+            <option value="metric">Metric 중심(지표/전환/규모)</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <button id="btnInsertTpl" class="btnSmall ok">샘플 넣기</button>
+        <button id="btnAppendTpl" class="btnSmall">샘플 추가</button>
+        <span class="mini">‘샘플 넣기’는 덮어쓰기, ‘샘플 추가’는 아래에 이어붙입니다.</span>
+      </div>
+      <div class="note">원준님은 템플릿 문장만 바꿔도 퀄리티가 확 올라갑니다. (하단 JS의 TEMPLATES)</div>
+    </div>
+
     <label class="block">역량/경험 내용 (자유 텍스트)
       <textarea id="c_text" rows="12" placeholder="프로젝트, 성과, 사용 툴, 업무 범위 등을 붙여넣으세요."></textarea>
     </label>
 
     <div class="hint">
-      팁: 성과는 숫자(%, 기간, 금액 등)를 포함하면 점수와 근거가 더 강해집니다.
+      팁: 성과는 숫자(%, 기간, 금액 등)를 포함하면 점수/근거가 강해집니다. 예) “MQL 35%↑”, “전환율 12%p 개선”, “TTH 30% 단축”
     </div>
   </section>
 
   <section class="card">
     <h2>JD 입력</h2>
-    <label class="block">채용공고(JD) 텍스트
-      <textarea id="j_text" rows="18" placeholder="JD를 그대로 붙여넣으세요. (Must/Nice/Responsibilities 등)"></textarea>
+    <label class="block">JD 혹은 채용공고 전체 복붙하기
+      <textarea id="j_text" rows="18" placeholder="JD/채용공고를 그대로 붙여넣으세요. (Must/Nice/Requirements/Preferred/Responsibilities 등)"></textarea>
     </label>
 
+    <div class="autoBox">
+      <h4>Must-have / Nice-to-have 자동 추천</h4>
+      <div class="row">
+        <button id="btnAutoExtract" class="btnSmall primary">JD에서 자동 추출</button>
+        <button id="btnAutoLight" class="btnSmall">자동 추출(가볍게)</button>
+        <span class="mini">채용공고에 “자격요건/필수/우대/Requirements/Preferred” 같은 섹션이 있으면 더 잘 뽑힙니다.</span>
+      </div>
+      <div class="note">자동 추출은 휴리스틱(키워드/섹션 파싱) 기반입니다. 필요하면 직접 수정해서 쓰세요.</div>
+    </div>
+
     <div class="twoCols">
-      <label class="block">JD Must-have (옵션, 쉼표 구분)
+      <label class="block">JD Must-have (쉼표 구분)
         <input id="j_must" placeholder="예: GA4, SQL, B2B, 리드 제너레이션" />
       </label>
-      <label class="block">JD Nice-to-have (옵션, 쉼표 구분)
+      <label class="block">JD Nice-to-have (쉼표 구분)
         <input id="j_nice" placeholder="예: HubSpot, Salesforce, ABM" />
       </label>
     </div>
 
     <div class="row">
       <span class="chip">출력: 점수/근거/갭/개선안</span>
-      <span class="chip">로직 수정: 하단 JS의 TAXONOMY/가중치</span>
-    </div>
-
-    <div class="hint">
-      JD 텍스트만 넣어도 분석됩니다. Must/Nice는 넣으면 정확도가 더 좋아져요.
+      <span class="chip">수정 포인트: TEMPLATES / JD 자동추출 / TAXONOMY</span>
     </div>
   </section>
 
@@ -324,7 +385,7 @@
 </main>
 
 <footer>
-  Sample · Resume ↔ JD Matcher · Customize TAXONOMY/weights in this single file.
+  Sample · Resume ↔ JD Matcher · 단일 파일 버전 (샘플 추천 + Must/Nice 자동 추출)
 </footer>
 
 <script>
@@ -338,11 +399,16 @@
       domain: "B2B SaaS",
       targetCompany: "외국계 SaaS",
       text: `
-- B2B SaaS에서 리드 제너레이션 캠페인 운영(LinkedIn Ads, Google Ads)
-- GA4 기반 퍼널 분석 및 전환율 개선(랜딩 A/B 테스트)
-- SQL로 리드/세일즈 파이프라인 리포팅, 월간 MQL 35% 증가
-- HubSpot으로 이메일 nurture 시퀀스 구축, MQL→SQL 전환 12%p 개선
-- 세일즈/CS/프로덕트와 협업하여 ICP 정의 및 콘텐츠 기획
+[핵심 요약]
+- B2B SaaS에서 Demand Gen/Performance Marketing 운영
+- GA4/SQL 기반 퍼널 분석, 전환 개선(실험/A-B 테스트)
+- MQL 35%↑ / MQL→SQL 12%p 개선 / CPL 18% 절감
+
+[경험]
+- LinkedIn Ads/Google Ads로 리드 제너레이션 캠페인 운영(월 예산 2,000만원)
+- 랜딩/폼 전환 A/B 테스트로 CVR 2.1%→3.0% 개선(+0.9%p)
+- SQL로 리드·파이프라인 리포트 자동화(주 4h 절감), Sales 협업으로 ICP 재정의
+- HubSpot nurture 시퀀스 구축, 전환율 12%p 개선 및 파이프라인 기여 1.2억
       `.trim()
     },
     jd: {
@@ -364,14 +430,162 @@
 [Nice-to-have]
 - HubSpot or Salesforce experience
 - ABM experience
-      `.trim(),
-      must: "B2B, GA4, A/B testing, SQL, LinkedIn Ads, stakeholder",
-      nice: "HubSpot, Salesforce, ABM"
+      `.trim()
     }
   };
 
   // =========================
-  // 2) 유틸
+  // 2) 템플릿(직무별 샘플 추천) - 여기만 바꿔도 실사용 퀄리티↑
+  // =========================
+  const TEMPLATES = {
+    b2b_marketer: {
+      star: `
+[핵심 요약]
+- (도메인)에서 (목표지표: MQL/SQL/매출) 중심의 퍼널 개선 경험
+- (툴) 기반 성과 측정 및 실험(A/B) 운영
+- (협업) Sales/CS/PD와 이해관계자 조율 및 실행
+
+[프로젝트 1] 리드 제너레이션 퍼널 개선
+- 상황: (문제/현황: 예. CPL 상승, 전환 저하)
+- 과제: (목표: 예. MQL +30%, CPL -15%)
+- 행동: (채널/타게팅/크리에이티브/랜딩 테스트, GA4 이벤트 설계)
+- 결과: (MQL __%↑ / CPL __%↓ / CVR __%p 개선)
+
+[프로젝트 2] Nurture/CRM 개선
+- 행동: (HubSpot/Marketo 이메일 시퀀스, 세그먼트/리드스코어링)
+- 결과: (MQL→SQL __%p↑ / 파이프라인 __원 기여)
+      `.trim(),
+      metric: `
+[핵심 역량/지표]
+- Paid: LinkedIn Ads, Google Ads / 예산: __만원~__만원/월
+- Measurement: GA4, UTM, Dashboard / 실험: A/B 테스트 __회
+- Data: SQL(또는 Looker/BigQuery) / 리포트 자동화로 __시간 절감
+- Outcome: MQL __%↑, SQL __%↑, CPL __%↓, CVR __%p↑, Pipeline __원
+
+[대표 성과 불릿(예시)]
+- (채널) 캠페인 리빌드로 CPL __% 절감, 월 MQL __% 증가
+- 랜딩 전환 실험으로 CVR __%p 개선(기간: __주)
+- ICP 재정의 + 콘텐츠 개선으로 SQL 전환율 __%p 상승
+      `.trim()
+    },
+
+    recruiter: {
+      star: `
+[핵심 요약]
+- (직무군) 채용 리드 경험 / 소싱-스크리닝-오퍼-온보딩 프로세스 운영
+- Hiring Manager 협업으로 JD/평가 기준 정렬 및 전형 효율 개선
+- 지표 기반 운영: Time-to-Hire, Offer Acceptance, Funnel Conversion
+
+[프로젝트] 채용 퍼널 개선
+- 상황: (TTH 장기화/지원자 품질 저하 등)
+- 과제: (TTH __% 단축, 합격률 __%p 개선)
+- 행동: (소싱 채널 다각화, LinkedIn 검색스트링, 면접 질문/평가표 표준화)
+- 결과: (TTH __일 단축 / 오퍼 수락률 __%p↑ / 파이프라인 __명 확보)
+      `.trim(),
+      metric: `
+[채용 운영 지표/역량]
+- Sourcing: LinkedIn Recruiter, Boolean, Talent Pool 운영
+- Process: ATS(Workday/Greenhouse) / 구조화 면접 / 평가표 설계
+- Outcome: TTH __%↓, Offer Acceptance __%p↑, Funnel Conversion __%p↑
+- Stakeholder: HM/리더십/HRBP 커뮤니케이션, 우선순위 조정
+
+[대표 성과 불릿]
+- (직무) 포지션 __건을 __주 내 클로징, TTH __일 단축
+- 소싱 파이프라인 __명 구축, 1차 통과율 __%p 개선
+      `.trim()
+    },
+
+    sdr: {
+      star: `
+[핵심 요약]
+- Outbound/Inbound 리드 대응 및 파이프라인 창출 경험
+- 메시징/시퀀스 개선 및 콜 스크립트 최적화
+- CRM 기반 리포팅 및 Sales 협업
+
+[프로젝트] 파이프라인 창출
+- 상황: (미팅 세팅 저조/응답률 저하)
+- 과제: (미팅 __%↑, 응답률 __%p↑)
+- 행동: (타깃 계정 리스트/세그먼트, 메시지 A/B, 시퀀스 개선)
+- 결과: (월 미팅 __건, 파이프라인 __원 창출)
+      `.trim(),
+      metric: `
+[성과 지표]
+- 콜: 일 __통 / 이메일: __건 / 미팅: 월 __건
+- 응답률: __% / 전환율: __% / 파이프라인: __원
+- Tools: Salesforce/HubSpot, Outreach/Salesloft
+
+[대표 성과 불릿]
+- 메시징 개선으로 응답률 __%→__% (기간 __주)
+- 월 미팅 __건 달성, 파이프라인 __원 기여
+      `.trim()
+    },
+
+    pm: {
+      star: `
+[핵심 요약]
+- 문제 정의 → 가설 → 우선순위 → 실험/출시 → 지표 개선 사이클 운영
+- 이해관계자 조율(디자인/개발/영업/CS) 및 로드맵 관리
+- 데이터 기반 의사결정(GA/SQL/Amplitude 등)
+
+[프로젝트] 기능 개선/런칭
+- 상황: (유저 이탈/전환 저하)
+- 과제: (전환 __%p↑, 리텐션 __%↑)
+- 행동: (유저 리서치, 요구사항 정의, PRD, 실험 설계)
+- 결과: (지표 개선 및 운영 효율화)
+      `.trim(),
+      metric: `
+[지표/산출물]
+- PRD/유저스토리/백로그/우선순위(RICE)
+- KPI: Activation, Retention, Conversion, NPS
+- Outcome: 전환 __%p↑, 리텐션 __%↑, 문의 __%↓
+      `.trim()
+    },
+
+    data: {
+      star: `
+[핵심 요약]
+- 데이터 모델링/지표 정의/대시보드 운영 경험
+- SQL 기반 분석 및 인사이트로 비즈니스 액션 도출
+- 자동화로 반복 리포팅 시간 절감
+
+[프로젝트] KPI 대시보드 구축
+- 상황: (지표 정의 불명확/데이터 사일로)
+- 과제: (공통 KPI 정의, 리포팅 자동화)
+- 행동: (SQL, ETL/ELT, Looker/BI 구축)
+- 결과: (주간 리포트 __시간 절감, 의사결정 리드타임 단축)
+      `.trim(),
+      metric: `
+[기술/성과]
+- SQL, BigQuery/Snowflake, Looker/Tableau
+- 데이터 품질/정합성 개선, 지표 표준화
+- Outcome: 리포팅 __시간 절감, 전환 __%p 개선 기여
+      `.trim()
+    },
+
+    cs: {
+      star: `
+[핵심 요약]
+- 고객 이슈 해결 및 리텐션/업셀 기여
+- VOC 분석으로 제품/프로세스 개선 제안
+- SLA/CSAT/NPS 지표 관리
+
+[프로젝트] 고객 이탈 방지
+- 상황: (이탈 증가/불만 누적)
+- 과제: (이탈률 __%↓, CSAT __점↑)
+- 행동: (이슈 유형화, 헬프센터/가이드 개선, 세일즈/PD 협업)
+- 결과: (이탈률 개선, 재구매/업셀 기여)
+      `.trim(),
+      metric: `
+[지표/역량]
+- CSAT/NPS/SLA/First Response Time
+- VOC 태깅/분석, 헬프센터 개선, 온보딩 프로그램
+- Outcome: 이탈 __%↓, CSAT __점↑
+      `.trim()
+    }
+  };
+
+  // =========================
+  // 3) 유틸
   // =========================
   const $ = (id) => document.getElementById(id);
 
@@ -390,6 +604,19 @@
       .filter(Boolean);
   }
 
+  function uniq(arr){
+    const seen = new Set();
+    const out = [];
+    for(const x of arr){
+      const k = normalizeText(x);
+      if(!k) continue;
+      if(seen.has(k)) continue;
+      seen.add(k);
+      out.push(x.trim());
+    }
+    return out;
+  }
+
   function includesAny(text, keywords){
     const t = normalizeText(text);
     return keywords.filter(k => k && t.includes(normalizeText(k)));
@@ -402,7 +629,7 @@
       /(\d+)\s*(p|pp)\b/gi,
       /(\d+)\s*(개월|달|주|일|month|months|week|weeks|day|days)\b/gi,
       /(\d+)\s*(억|만|천|원|\$|usd|krw)\b/gi,
-      /\b(kpi|roi|mql|sql|pipeline|tth|conversion)\b/gi
+      /\b(kpi|roi|mql|sql|pipeline|tth|conversion|cvr|cpl|cac|ltv|nps|csat)\b/gi
     ];
     let cnt = 0;
     for(const re of patterns){
@@ -426,11 +653,190 @@
   }
 
   // =========================
-  // 3) 간단 TAXONOMY (여기 확장하면 정확도↑)
+  // 4) JD에서 Must/Nice 자동 추출 (휴리스틱)
+  // =========================
+
+  // 4-1) 섹션 컷: 필수/우대/Requirements/Preferred 같은 구간 찾기
+  function extractSections(jdText){
+    const lines = (jdText || "").split(/\r?\n/).map(x => x.trim()).filter(x => x.length);
+    const joined = lines.join("\n");
+
+    const markers = [
+      { key:"must", re: /(필수|자격요건|요구사항|requirements|must|must-have)/i },
+      { key:"nice", re: /(우대|선호|preferred|nice|nice-to-have|plus)/i },
+      { key:"resp", re: /(담당업무|주요업무|responsibilities|what you.?ll do|role)/i }
+    ];
+
+    const idx = [];
+    for(let i=0;i<lines.length;i++){
+      const l = lines[i];
+      for(const m of markers){
+        if(m.re.test(l)) idx.push({i, key:m.key});
+      }
+    }
+    idx.sort((a,b)=>a.i-b.i);
+
+    function sliceFrom(key){
+      const start = idx.find(x=>x.key===key)?.i;
+      if(start===undefined) return "";
+      const next = idx.find(x=>x.i>start && x.key!==key)?.i;
+      const part = lines.slice(start, next ?? lines.length).join("\n");
+      return part;
+    }
+
+    return {
+      must: sliceFrom("must"),
+      nice: sliceFrom("nice"),
+      resp: sliceFrom("resp"),
+      all: joined
+    };
+  }
+
+  // 4-2) 토큰 추출: 불릿/콤마/슬래시/괄호 기반으로 후보 키워드 뽑기
+  function tokenizeCandidateSkills(text){
+    const raw = (text || "")
+      .replace(/[•·●■▪▶➤]/g, "\n- ")
+      .replace(/[()［］【】]/g, " ")
+      .replace(/[|]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // 불릿 라인 우선
+    const lines = raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+
+    const pieces = [];
+    for(const line of lines){
+      // "- X, Y, Z" 또는 "X / Y" 분리
+      const cleaned = line.replace(/^[-*]\s*/,"");
+      const split = cleaned.split(/[,/｜·•]| and | or | 또는 | 및 /i).map(x=>x.trim()).filter(Boolean);
+      for(const s of split){
+        if(s.length < 2) continue;
+        pieces.push(s);
+      }
+    }
+
+    // 너무 긴 문장 제거 + 숫자만 제거
+    const filtered = pieces
+      .map(s => s.replace(/\d+/g,"").trim())
+      .filter(s => s.length >= 2 && s.length <= 28);
+
+    return filtered;
+  }
+
+  // 4-3) “기술/툴/역량” 사전(공고에 자주 등장)
+  const SKILL_DICT = [
+    // Marketing/Growth
+    "ga4","google analytics","google ads","linkedin ads","meta ads","ab test","a/b test","experiment",
+    "seo","sem","crm","hubspot","marketo","salesforce","tableau","looker","mixpanel","amplitude",
+    "mql","sql","pipeline","cpl","cac","ltv","cvr","retention","abm","icp",
+    // Recruiting/HR
+    "linkedin recruiter","boolean search","sourcing","ats","workday","greenhouse","lever",
+    "structured interview","채용","소싱","면접","평가표","리크루팅",
+    // Sales
+    "sdr","bdr","outbound","inbound","prospecting","cold email","cold call","deal","crm",
+    // Data
+    "sql","python","r","bigquery","snowflake","dbt","etl","elt","dashboard","bi",
+    // PM
+    "prd","user story","backlog","roadmap","wireframe","figma","jira","confluence",
+    // CS
+    "csat","nps","sla","voc","onboarding"
+  ];
+
+  function normalizeSkillItem(s){
+    return normalizeText(s)
+      .replace(/[\[\]{}()]/g," ")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+
+  function isLikelySkill(s){
+    const t = normalizeSkillItem(s);
+    if(!t) return false;
+
+    // 너무 일반 단어/문장 제외
+    const stop = ["합니다","가능","우대","필수","경력","이상","관련","업무","담당","전공","학력","지원","분","및","또는","the","and","or","with"];
+    if(stop.includes(t)) return false;
+
+    // 문장형 제외(공백이 너무 많으면)
+    const words = t.split(" ");
+    if(words.length >= 7) return false;
+
+    // dict 포함이면 통과
+    for(const d of SKILL_DICT){
+      if(t.includes(normalizeText(d))) return true;
+    }
+
+    // 대문자 약어/툴 느낌(짧고 알파/숫자 조합) 허용
+    if(/^[a-z0-9\+\#\.\-]{2,12}$/.test(t)) return true;
+
+    // 한국어 스킬도 일부 허용(짧은 명사구)
+    if(/[가-힣]/.test(t) && t.length <= 10) return true;
+
+    return false;
+  }
+
+  function autoExtractMustNice(jdText, mode="strict"){
+    const sections = extractSections(jdText);
+    const mustText = sections.must || "";
+    const niceText = sections.nice || "";
+
+    // 1) 섹션이 있으면 섹션 우선
+    let mustTokens = tokenizeCandidateSkills(mustText);
+    let niceTokens = tokenizeCandidateSkills(niceText);
+
+    // 2) 섹션이 약하면 전체에서 보조 추출
+    const fallback = tokenizeCandidateSkills(sections.all);
+
+    function pick(tokens, maxN){
+      const out = [];
+      for(const x of tokens){
+        if(isLikelySkill(x)) out.push(x);
+      }
+      return uniq(out).slice(0, maxN);
+    }
+
+    // strict: must/nice 각각 제한 더 엄격
+    // light: 섹션이 없을 때 전체에서 더 적극적으로 뽑음
+    const mustMax = mode==="strict" ? 10 : 12;
+    const niceMax = mode==="strict" ? 10 : 12;
+
+    let mustPicked = pick(mustTokens, mustMax);
+    let nicePicked = pick(niceTokens, niceMax);
+
+    // 섹션이 비어있거나 너무 적으면 전체에서 채우기
+    if(mustPicked.length < 4){
+      mustPicked = uniq(mustPicked.concat(pick(fallback, mustMax))).slice(0, mustMax);
+    }
+    if(nicePicked.length < 3){
+      // nice는 must와 겹치지 않게
+      const fb = pick(fallback, niceMax).filter(x => !mustPicked.map(normalizeSkillItem).includes(normalizeSkillItem(x)));
+      nicePicked = uniq(nicePicked.concat(fb)).slice(0, niceMax);
+    }
+
+    // strict 모드에서는 must/nice 중복 제거 + must에 더 “핵심” 단어 우선(간단 규칙)
+    if(mode==="strict"){
+      const coreBias = ["ga4","sql","b2b","saas","mql","pipeline","sourcing","ats","crm","ab test","a/b test","salesforce","hubspot"];
+      mustPicked.sort((a,b)=>{
+        const aa = coreBias.some(k => normalizeSkillItem(a).includes(normalizeText(k))) ? 0 : 1;
+        const bb = coreBias.some(k => normalizeSkillItem(b).includes(normalizeText(k))) ? 0 : 1;
+        return aa - bb;
+      });
+      mustPicked = mustPicked.slice(0, mustMax);
+
+      nicePicked = nicePicked
+        .filter(x => !mustPicked.map(normalizeSkillItem).includes(normalizeSkillItem(x)))
+        .slice(0, niceMax);
+    }
+
+    return { must: mustPicked, nice: nicePicked };
+  }
+
+  // =========================
+  // 5) 간단 TAXONOMY (매칭 로직)
   // =========================
   const TAXONOMY = {
     roleHints: {
-      "마케터": ["marketing","marketer","growth","demand gen","performance","paid","campaign","ads","acquisition"],
+      "마케터": ["marketing","marketer","growth","demand gen","performance","paid","campaign","ads","acquisition","lead gen"],
       "리크루터": ["recruiter","talent","sourcing","screening","ats","pipeline","interview"],
       "영업": ["sdr","bdr","sales","pipeline","outbound","crm","prospecting"]
     },
@@ -445,9 +851,6 @@
     }
   };
 
-  // =========================
-  // 4) 스코어 함수들 (가중치/계산식 수정 포인트)
-  // =========================
   function scoreRoleFit(candidate, jdText){
     const cRole = normalizeText(candidate.role);
     const j = normalizeText(jdText);
@@ -460,7 +863,7 @@
     }
 
     const cText = normalizeText(candidate.text);
-    const common = includesAny(cText, ["mql","sql","pipeline","campaign","ga4","ab testing","a/b","ads","sourcing","ats","crm","linkedin"]);
+    const common = includesAny(cText, ["mql","sql","pipeline","campaign","ga4","ab test","a/b","ads","sourcing","ats","crm","linkedin"]);
     hit += Math.min(common.length, 4);
 
     const score = Math.max(0, Math.min(30, Math.round((hit / 10) * 30)));
@@ -575,7 +978,7 @@
       .slice(0,5);
 
     return {
-      meta: { version: "single-0.1.0", computedAt: new Date().toISOString() },
+      meta: { version: "single-0.2.0", computedAt: new Date().toISOString() },
       inputSummary: {
         candidateName: candidate.name || "",
         candidateRole: candidate.role || "",
@@ -595,7 +998,7 @@
   }
 
   // =========================
-  // 5) UI 로직
+  // 6) UI 로직
   // =========================
   function readPayload(){
     return {
@@ -655,7 +1058,6 @@
 
     $("r_json").textContent = JSON.stringify(res, null, 2);
 
-    // JSON 복사용 캐시
     window.__LAST_RESULT__ = res;
     $("copyMsg").textContent = "";
     $("btnCopyJson").classList.remove("ok");
@@ -670,8 +1072,11 @@
     $("c_text").value = SAMPLE.candidate.text;
 
     $("j_text").value = SAMPLE.jd.text;
-    $("j_must").value = SAMPLE.jd.must;
-    $("j_nice").value = SAMPLE.jd.nice;
+
+    // 샘플은 자동 추출해서 채우기
+    const rec = autoExtractMustNice(SAMPLE.jd.text, "strict");
+    $("j_must").value = rec.must.join(", ");
+    $("j_nice").value = rec.nice.join(", ");
   }
 
   function resetAll(){
@@ -680,6 +1085,48 @@
     $("resultEmpty").classList.remove("hidden");
     $("copyMsg").textContent = "";
   }
+
+  function insertTemplate(mode){
+    const key = $("tpl_select").value;
+    const style = $("tpl_style").value;
+    const tpl = (TEMPLATES[key] && TEMPLATES[key][style]) ? TEMPLATES[key][style] : "";
+    if(!tpl) return;
+
+    const ta = $("c_text");
+    if(mode === "replace"){
+      ta.value = tpl;
+      return;
+    }
+    // append
+    const cur = ta.value.trim();
+    ta.value = cur ? (cur + "\n\n" + tpl) : tpl;
+  }
+
+  function autoExtract(mode){
+    const jdText = $("j_text").value.trim();
+    if(!jdText){
+      alert("먼저 JD/채용공고 텍스트를 붙여넣어 주세요.");
+      return;
+    }
+    const rec = autoExtractMustNice(jdText, mode);
+    $("j_must").value = rec.must.join(", ");
+    $("j_nice").value = rec.nice.join(", ");
+  }
+
+  // JD 입력 시 “가볍게” 자동 제안(너무 공격적이면 싫을 수 있으니: 조건부)
+  let __autoSuggested = false;
+  $("j_text").addEventListener("input", () => {
+    const jdText = $("j_text").value;
+    if(__autoSuggested) return;
+
+    // 길이가 충분히 길어졌을 때 한 번만
+    if(jdText && jdText.length > 600 && !$("j_must").value.trim() && !$("j_nice").value.trim()){
+      const rec = autoExtractMustNice(jdText, "light");
+      $("j_must").value = rec.must.join(", ");
+      $("j_nice").value = rec.nice.join(", ");
+      __autoSuggested = true;
+    }
+  });
 
   $("btnSample").addEventListener("click", fillSample);
   $("btnReset").addEventListener("click", resetAll);
@@ -710,6 +1157,12 @@
       $("copyMsg").textContent = "복사 실패: 브라우저 권한을 확인하세요.";
     }
   });
+
+  $("btnInsertTpl").addEventListener("click", () => insertTemplate("replace"));
+  $("btnAppendTpl").addEventListener("click", () => insertTemplate("append"));
+
+  $("btnAutoExtract").addEventListener("click", () => autoExtract("strict"));
+  $("btnAutoLight").addEventListener("click", () => autoExtract("light"));
 </script>
 </body>
 </html>
