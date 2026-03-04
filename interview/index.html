@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>면접 기출문제·전략 AI 프롬프트 생성기</title>
+  <meta name="description" content="기업/직무 요약 + 면접 유형별 기출문제(표) + 맞춤 전략 프롬프트 생성기" />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#111827;
+      --line:#1f2937;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --soft:#ffffff12;
+
+      --blue:#2563eb;
+      --blue2:#1d4ed8;
+
+      --amber:#f59e0b;
+      --amber2:#b45309;
+
+      --green:#22c55e;
+      --green2:#16a34a;
+
+      --purple:#7c3aed;
+      --purple2:#5b21b6;
+
+      --shadow:0 12px 32px #00000040;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1000px 600px at 18% 10%, #0b1b33 0%, transparent 60%),
+        radial-gradient(900px 520px at 85% 22%, #140a33 0%, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Noto Sans KR","Malgun Gothic",Segoe UI,Roboto,Arial,sans-serif;
+      line-height:1.45;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:22px}
+    header{
+      display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
+      padding:8px 6px 18px 6px;
+    }
+    .title h1{margin:0;font-size:22px;letter-spacing:-0.3px}
+    .title p{margin:6px 0 0 0;color:var(--muted);font-size:13px}
+    .pillbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pill{
+      padding:6px 10px;border:1px solid var(--line);border-radius:999px;
+      background:#0b1220;color:#cbd5e1;font-size:12px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+    }
+    .card{
+      background:linear-gradient(180deg,#0f172a 0%, #0b1220 100%);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .card .hd h2{
+      margin:0;font-size:15px;letter-spacing:-0.2px
+    }
+    .card .bd{padding:14px 16px}
+    .row{display:grid;grid-template-columns: 1fr 1fr;gap:10px}
+    @media (max-width: 620px){ .row{grid-template-columns:1fr} }
+    label{display:block;font-size:12px;color:#cbd5e1;margin:0 0 6px 0}
+    input[type="text"], textarea, select{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0b0f14;
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:110px;resize:vertical}
+    .muted{color:var(--muted);font-size:12px}
+    .sep{height:10px}
+    .btnbar{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between
+    }
+    .btnRight{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end
+    }
+    .btn{
+      border:0;cursor:pointer;
+      padding:11px 14px;border-radius:14px;
+      color:white;font-weight:800;
+      box-shadow:0 10px 26px #0000002c;
+      transition: transform .06s ease, filter .2s ease;
+      user-select:none;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.blue{background:linear-gradient(180deg,var(--blue) 0%, var(--blue2) 100%)}
+    .btn.amber{background:linear-gradient(180deg,var(--amber) 0%, var(--amber2) 100%)}
+    .btn.green{background:linear-gradient(180deg,var(--green) 0%, var(--green2) 100%)}
+    .btn.purple{background:linear-gradient(180deg,var(--purple) 0%, var(--purple2) 100%)}
+    .btn.ghost{
+      background:transparent;color:var(--text);
+      border:1px solid var(--line);
+      box-shadow:none;
+      font-weight:650;
+    }
+    .out{
+      width:100%;
+      min-height:420px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size:12.5px;
+      white-space:pre-wrap;
+    }
+    .notice{
+      padding:10px 12px;border-radius:12px;background:var(--soft);border:1px dashed #ffffff24;
+      color:#d1d5db;font-size:12px;
+    }
+    .small{font-size:11px;color:var(--muted)}
+    .rightTop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .kbd{
+      font-size:11px;color:#cbd5e1;border:1px solid var(--line);
+      padding:3px 8px;border-radius:999px;background:#0b0f14;
+    }
+
+    .cases{
+      display:grid;grid-template-columns: 1fr 1fr;gap:8px;
+      margin-top:6px;
+    }
+    @media (max-width: 620px){ .cases{grid-template-columns:1fr} }
+    .caseBtn{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:10px 12px;border-radius:14px;border:1px solid var(--line);
+      background:#0b0f14;color:var(--text);cursor:pointer;
+      user-select:none;
+    }
+    .caseBtn .t{font-weight:800;font-size:13px}
+    .caseBtn .d{font-size:12px;color:var(--muted)}
+    .caseBtn.active{
+      border-color:#ffffff35;
+      box-shadow:0 0 0 2px #ffffff0f inset;
+      background:linear-gradient(180deg,#0b1220 0%, #0b0f14 100%);
+    }
+    .caseTag{
+      font-size:11px;border:1px solid #ffffff22;border-radius:999px;padding:4px 8px;color:#cbd5e1;
+      background:#0b1220;
+      white-space:nowrap;
+    }
+
+    footer{
+      margin-top:18px;
+      padding:16px 10px 10px 10px;
+      border-top:1px solid var(--line);
+      text-align:center;
+      color:var(--muted);
+      font-size:12.5px;
+    }
+    footer a{color:#cbd5e1;text-decoration:none;border-bottom:1px dotted #ffffff3a}
+    footer a:hover{filter:brightness(1.12)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>면접 기출문제·전략 AI 프롬프트 생성기</h1>
+        <p>입력값 기반 <b>기업/직무 특징 요약 → 면접 유형별 기출문제(표) → 맞춤 전략/모범답변 구조</b>를 한 번에 프롬프트로 만듭니다.</p>
+      </div>
+      <div class="pillbar">
+        <span class="pill">✅ 기출문제 표로 정리</span>
+        <span class="pill">✅ 전공/역량 우선 추천</span>
+        <span class="pill">✅ 유형별 전략 포함</span>
+        <span class="pill">✅ 복붙용 프롬프트</span>
+      </div>
+    </header>
+
+    <div class="grid">
+
+      <!-- LEFT: Inputs -->
+      <section class="card">
+        <div class="hd">
+          <h2>입력</h2>
+          <div class="rightTop">
+            <span class="kbd">Ctrl + Enter 생성</span>
+            <button class="btn ghost" id="btnLoadSample" type="button">샘플 입력</button>
+            <button class="btn ghost" id="btnReset" type="button">초기화</button>
+          </div>
+        </div>
+
+        <div class="bd">
+          <div class="row">
+            <div>
+              <label>이름</label>
+              <input id="name" type="text" placeholder="예: 홍길동" />
+            </div>
+            <div>
+              <label>전공 (우선 질문 추천 기준)</label>
+              <input id="major" type="text" placeholder="예: 경영학 / 컴퓨터공학 / 산업공학 등" />
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="row">
+            <div>
+              <label>희망직무</label>
+              <input id="role" type="text" placeholder="예: HRBP / 데이터 분석 / 마케팅 / 영업 등" />
+            </div>
+            <div>
+              <label>희망기업</label>
+              <input id="company" type="text" placeholder="예: 네이버 / 삼성전자 / 쿠팡 / 외국계 등" />
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="row">
+            <div>
+              <label>신입/경력</label>
+              <select id="level">
+                <option value="신입" selected>신입</option>
+                <option value="경력">경력</option>
+              </select>
+            </div>
+            <div>
+              <label>연차 (선택)</label>
+              <input id="years" type="text" placeholder="예: 0 / 2 / 5 / 10 (신입은 0 또는 비워도 됨)" />
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <label>내 역량/스킬/도구 키워드 (우선 질문 추천 기준)</label>
+          <textarea id="skills" placeholder="예: 데이터분석(SQL/파이썬), 엑셀/대시보드, ATS/HRIS, GA4, B2B 영업, 협업/조율 등 (없으면 비워도 됨)"></textarea>
+
+          <div class="sep"></div>
+
+          <label>채용공고/JD 또는 회사 정보 (선택, 붙여넣기)</label>
+          <textarea id="jd" placeholder="예: JD 전문, 공고 요약, 회사 핵심가치/제품/서비스/최근 뉴스 등을 붙여넣기 (없어도 됨)"></textarea>
+          <div class="small">Tip: JD를 넣으면 ‘기출문제 우선순위’가 더 정교해집니다.</div>
+
+          <div class="sep"></div>
+
+          <label>면접 유형 선택 (복수 선택 가능)</label>
+          <div class="cases" id="cases">
+            <div class="caseBtn active" data-case="인성면접">
+              <div>
+                <div class="t">인성면접</div>
+                <div class="d">가치관·태도·조직적합</div>
+              </div>
+              <span class="caseTag">Culture fit</span>
+            </div>
+            <div class="caseBtn active" data-case="역량면접">
+              <div>
+                <div class="t">역량면접</div>
+                <div class="d">경험 기반(Behavioral)</div>
+              </div>
+              <span class="caseTag">STAR</span>
+            </div>
+            <div class="caseBtn" data-case="토론면접">
+              <div>
+                <div class="t">토론면접</div>
+                <div class="d">논리·협업·합의</div>
+              </div>
+              <span class="caseTag">Debate</span>
+            </div>
+            <div class="caseBtn" data-case="PT면접">
+              <div>
+                <div class="t">PT면접</div>
+                <div class="d">구조화·전달·자료해석</div>
+              </div>
+              <span class="caseTag">Presentation</span>
+            </div>
+            <div class="caseBtn" data-case="압박면접">
+              <div>
+                <div class="t">압박면접</div>
+                <div class="d">위기대응·일관성</div>
+              </div>
+              <span class="caseTag">Stress</span>
+            </div>
+            <div class="caseBtn" data-case="연봉협상">
+              <div>
+                <div class="t">연봉협상</div>
+                <div class="d">보상 논리·대안·레버리지</div>
+              </div>
+              <span class="caseTag">Negotiation</span>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="notice">
+            생성된 프롬프트를 그대로 생성형 AI에 붙여넣어 사용하세요. <br/>
+            <span class="small">주의: 본 도구는 ‘준비/참고’ 목적입니다. 사실/수치/경험은 본인 기준으로 검증·보완해야 합니다.</span>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="btnbar">
+            <button class="btn green" id="btnGenerate" type="button">프롬프트 생성</button>
+            <div class="btnRight">
+              <button class="btn purple" id="btnGenerateOne" type="button">선택 유형별로 분리 생성</button>
+            </div>
+          </div>
+
+          <div class="sep"></div>
+          <div class="muted">
+            - “프롬프트 생성” : 선택한 유형들을 <b>한 번에</b> 요청하는 프롬프트<br/>
+            - “분리 생성” : 유형별 프롬프트를 <b>각각</b> 만들어서 아래 출력에 연속으로 붙여줍니다.
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Output -->
+      <section class="card">
+        <div class="hd">
+          <h2>출력 (AI에 그대로 복붙)</h2>
+          <div class="rightTop">
+            <button class="btn blue" id="btnCopy" type="button">복사</button>
+            <button class="btn amber" id="btnCopyMini" type="button">미니프롬프트 복사</button>
+          </div>
+        </div>
+        <div class="bd">
+          <textarea id="output" class="out" placeholder="왼쪽 정보를 입력하고 [프롬프트 생성]을 누르세요." spellcheck="false"></textarea>
+          <div class="sep"></div>
+          <div class="muted">
+            - 기출문제는 <b>표(테이블)</b>로 출력하도록 강제되어 있습니다. <br/>
+            - 우선순위는 <b>전공/역량/JD 키워드</b> 매칭을 기준으로 정렬하도록 지시합니다.
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer (요청: 기존 Made by 등 그대로 유지) -->
+    <footer>
+      AI를 활용한 작성은 구조를 잡는 단순 참고과정일 뿐임으로, 기업 및 직무분석을 활용해 맞춤형 자소서를 완성하시기 바랍니다.<br/><br/>
+      Made by 강원준_Linkedin Korea Partner HR Point(2026) ·
+      <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/ceohr</a>
+    </footer>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function escTripleBacktick(text){
+      return (text || "").replace(/```/g, "``\\`");
+    }
+
+    function getSelectedCases(){
+      return [...document.querySelectorAll(".caseBtn.active")].map(el => el.getAttribute("data-case"));
+    }
+
+    function caseSpecificRules(caseName){
+      // 유형별 산출물/전략을 더 구체화
+      if(caseName === "인성면접"){
+        return `- 인성면접 특화:
+  - 핵심 평가: 가치관·태도·협업·갈등·윤리·자기인식·조직 적응
+  - 답변 구조: 결론(1문장) → 근거경험(짧은 STAR) → 학습/재발방지 → 회사/직무 연결
+  - 기출 표에는 "조직문화/핵심가치" 매핑 컬럼을 반드시 포함하라.`;
+      }
+      if(caseName === "역량면접"){
+        return `- 역량면접(Behavioral) 특화:
+  - 핵심 평가: 과거 행동으로 미래 성과 예측(업무역량·문제해결·리더십·커뮤니케이션)
+  - 모든 질문에 대해 STAR(상황/과제/행동/결과) + 본인 기여도 + 지표/근거를 요구하라.
+  - 기출 표의 우선순위는 (JD/직무핵심) > (전공/스킬) > (협업/리더십) 순으로 정렬하라.`;
+      }
+      if(caseName === "토론면접"){
+        return `- 토론면접 특화:
+  - 핵심 평가: 논리(Claim-Reason-Evidence), 경청/합의, 시간관리, 역할분담
+  - 토론 주제 8~12개 + 진행 규칙(발언·반박·정리) + 채점 기준을 제시하라.
+  - 기출 표는 "주제/쟁점/내 역할/한 줄 주장/근거 3개/예상 반박/재반박" 형태로 제공하라.`;
+      }
+      if(caseName === "PT면접"){
+        return `- PT면접 특화:
+  - 핵심 평가: 구조화(문제정의→가설→분석→대안→리스크→결론), 시각화, Q&A 대응
+  - 직무/업종에 맞는 PT 과제 6~10개를 만들고, 각 과제별 5~7장 슬라이드 아웃라인을 제시하라.
+  - 기출 표는 "과제/핵심가정/분석 프레임/필수 데이터/슬라이드 구성/예상 Q&A"로 제공하라.`;
+      }
+      if(caseName === "압박면접"){
+        return `- 압박면접 특화:
+  - 핵심 평가: 일관성, 감정조절, 논리 유지, 취약점 인정/보완, 윤리/책임
+  - 압박 질문 15~25개를 제시하고, '좋은/나쁜 반응 예시'를 같이 제공하라.
+  - 기출 표는 "압박 질문/의도/금지 표현/권장 프레이밍/짧은 모범 답변(2~3문장)"으로 제공하라.`;
+      }
+      if(caseName === "연봉협상"){
+        return `- 연봉협상 특화:
+  - 핵심 평가: 시장가치 근거, 커뮤니케이션, BATNA(대안), 총보상(TC) 이해
+  - 직무/연차/지역(한국) 기준으로 시장 범위를 '추정'하되, 불확실하면 '범위 추정'으로 표기하라.
+  - 기출 표는 "질문/의도/권장 답변(숫자 프레임)/양보안(항목별: 기본급·보너스·RSU·사인온·복지)/레드라인"으로 제공하라.
+  - 협상 스크립트(문장) 8~12개를 한국 비즈니스 톤으로 작성하라.`;
+      }
+      return `- 공통: 질문은 표로, 전략은 체크리스트로 제공하라.`;
+    }
+
+    function buildPromptForCases(cases, {mini=false}){
+      const name = $("name").value.trim();
+      const major = $("major").value.trim();
+      const role = $("role").value.trim();
+      const company = $("company").value.trim();
+      const level = $("level").value;
+      const years = $("years").value.trim();
+      const skills = $("skills").value.trim();
+      const jd = $("jd").value.trim();
+
+      const safeYears = years ? years : (level === "신입" ? "0" : "(미입력)");
+      const casesText = cases.length ? cases.join(", ") : "(선택 없음)";
+
+      const header = mini
+        ? `당신은 한국 채용시장 기준의 면접 코치/리크루터입니다. 아래 정보로 '기업/직무 요약 → 면접 유형별 기출문제(표) → 준비전략'을 간결하게 제공하세요.`
+        : `역할(Role)
+당신은 한국 채용시장 기준으로 면접 합격 가능성을 높이는 전문 코치(현업 리크루터 관점)입니다.
+목표: (1) 기업/직무 특징 간략 요약 (2) 면접 유형별 기출문제 수집/정리(표) (3) 전공/역량 우선 추천 (4) 유형별 면접 전략/답변 구조 제시.
+
+중요 원칙(반드시 준수)
+1) 먼저 기업/직무 특징을 "간략하게" 요약(각 5~8줄)하고, 이어서 바로 기출문제 표를 제공하라.
+2) 기출문제는 가능하면 웹 리서치로 '실제 기출/후기 기반' 형태로 수집하되, 출처 링크를 3~8개 제시하라.
+   - 리서치가 불가하면 '추정'이라고 표기하고, 그래도 표는 반드시 작성하라.
+3) 우선순위 정렬: (전공=${major||"(미입력)"}) + (역량 키워드=${skills||"(없음)"}) + (JD 키워드) 매칭 점수가 높은 질문을 상단에 배치.
+4) 과장 금지: 지원자 경험/성과 수치가 없으면 [수치], [기간], [도구]처럼 플레이스홀더로 남겨라.
+5) 표는 반드시 Markdown 테이블로 제공하라(복붙 가능한 형태).`;
+
+      const input = `지원자 정보
+- 이름: ${name || "(미입력)"}
+- 전공: ${major || "(미입력)"}
+- 희망직무: ${role || "(미입력)"}
+- 희망기업: ${company || "(미입력)"}
+- 신입/경력: ${level}
+- 연차: ${safeYears}
+- 역량/스킬 키워드: ${skills || "(없음)"}
+
+채용공고/JD 또는 회사정보(선택)
+\`\`\`
+${escTripleBacktick(jd) || "(없음)"}
+\`\`\`
+
+면접 유형(선택): ${casesText}`;
+
+      const commonDeliverablesMini = `출력:
+1) 기업/직무 특징 요약(짧게)
+2) 선택 유형별 기출문제 표(각 12~20문항)
+3) 선택 유형별 면접전략(체크리스트)
+4) 최우선 대비 TOP10만 따로 요약`;
+
+      const commonDeliverablesFull = `작업 지시(Deliverables)
+
+[1] 기업/직무 특징 간략 요약(먼저)
+- 기업(${company || "미입력"}) 특징: 사업/제품/최근 이슈/문화(채용 관점) 5~8줄
+- 직무(${role || "미입력"}) 특징: 핵심 역할/필수 역량/성과지표(KPI) 5~8줄
+- (가능하면) 최신 웹 리서치로 보강하고 출처 링크 3~8개를 제시하라(회사 공식/IR/채용공고/신뢰도 높은 매체 우선).
+- 불확실하면 '확인 불가' 또는 '추정'으로 표기.
+
+[2] 면접 유형별 기출문제(표로 정리)
+- 선택한 각 유형마다 12~20문항(가능하면 실제 기출/후기 기반 + 유사문항 포함)
+- 표는 반드시 Markdown 테이블, 컬럼은 아래 고정:
+  | No | 면접유형 | 질문 | 의도(평가포인트) | 우선순위 이유(전공/역량/JD) | 답변 구조(요약) | 예상 꼬리질문(1~2) | 준비 포인트 |
+- 정렬 규칙: 우선순위 높은 질문이 위로 오게.
+
+[3] 면접 유형별 추천 전략(바로 실행 가능하게)
+- 각 유형별로:
+  - 합격 전략 TOP7~10 (체크리스트)
+  - 금지 표현/실수 TOP5
+  - 30초/60초/120초 답변 템플릿(문장 뼈대)
+  - 실전 연습 루틴(3일/7일 플랜)
+
+[4] 최우선 대비 TOP10
+- 전체 유형을 통합해 "가장 중요한 질문 10개"를 뽑고,
+  - 한 줄 모범 방향
+  - 개인화가 필요한 정보(예: [수치], [기간], [도구], [본인기여도%])를 표시
+
+[5] 추가로 사용자에게 물을 질문(최소화)
+- 부족한 개인화 정보를 채우기 위한 질문만 5~8개
+- 각 질문에 답변 템플릿을 붙여라
+
+품질 규칙
+- 질문은 현실적으로(한국 면접 스타일) 구체적으로 작성
+- 전공/역량 키워드가 질문에 반영되도록 우선 구성
+- 불필요한 장문 설명 금지: 표/체크리스트 중심`;
+
+      const caseBlocks = cases.map(c => `\n[유형: ${c}]\n${caseSpecificRules(c)}`).join("\n");
+
+      const close = mini
+        ? commonDeliverablesMini
+        : `${commonDeliverablesFull}\n\n[유형별 추가 지시]\n${caseBlocks}`;
+
+      return [header, "", input, "", close].join("\n").trim();
+    }
+
+    function buildMiniPrompt(){
+      const cases = getSelectedCases();
+      return buildPromptForCases(cases, {mini:true});
+    }
+
+    function buildFullPromptAll(){
+      const cases = getSelectedCases();
+      return buildPromptForCases(cases, {mini:false});
+    }
+
+    function buildFullPromptSplit(){
+      const cases = getSelectedCases();
+      if(!cases.length) return buildFullPromptAll();
+      return cases.map(c => buildPromptForCases([c], {mini:false})).join("\n\n" + "-".repeat(60) + "\n\n");
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    function resetAll(){
+      $("name").value = "";
+      $("major").value = "";
+      $("role").value = "";
+      $("company").value = "";
+      $("level").value = "신입";
+      $("years").value = "";
+      $("skills").value = "";
+      $("jd").value = "";
+      $("output").value = "";
+
+      // default active: 인성+역량
+      document.querySelectorAll(".caseBtn").forEach(el => el.classList.remove("active"));
+      document.querySelector('.caseBtn[data-case="인성면접"]').classList.add("active");
+      document.querySelector('.caseBtn[data-case="역량면접"]').classList.add("active");
+    }
+
+    function loadSample(){
+      $("name").value = "홍길동";
+      $("major").value = "경영학(복수전공: 데이터분석)";
+      $("role").value = "HRBP (채용·조직문화)";
+      $("company").value = "가상의 SaaS 기업 A";
+      $("level").value = "신입";
+      $("years").value = "0";
+      $("skills").value = "채용 운영, 데이터분석(SQL/파이썬), ATS/HRIS, 이해관계자 커뮤니케이션, 프로젝트 관리";
+      $("jd").value =
+`[JD 요약 예시]
+- HRBP: 채용 전략/프로세스 개선, Hiring Manager 파트너링, 조직문화 프로그램 운영
+- 우대: 데이터 기반 의사결정, ATS/HRIS 활용, 커뮤니케이션/조율
+- 핵심가치: Customer Obsession, Ownership, Data-driven`;
+
+      // default cases: 인성+역량
+      document.querySelectorAll(".caseBtn").forEach(el => el.classList.remove("active"));
+      document.querySelector('.caseBtn[data-case="인성면접"]').classList.add("active");
+      document.querySelector('.caseBtn[data-case="역량면접"]').classList.add("active");
+    }
+
+    // UI: toggle cases
+    document.querySelectorAll(".caseBtn").forEach(el=>{
+      el.addEventListener("click", ()=>{
+        el.classList.toggle("active");
+      });
+    });
+
+    $("btnGenerate").addEventListener("click", ()=>{
+      $("output").value = buildFullPromptAll();
+    });
+
+    $("btnGenerateOne").addEventListener("click", ()=>{
+      $("output").value = buildFullPromptSplit();
+    });
+
+    $("btnCopy").addEventListener("click", async ()=>{
+      const text = $("output").value.trim() || buildFullPromptAll();
+      const ok = await copyText(text);
+      $("btnCopy").textContent = ok ? "복사됨" : "복사 실패";
+      setTimeout(()=> $("btnCopy").textContent = "복사", 1200);
+    });
+
+    $("btnCopyMini").addEventListener("click", async ()=>{
+      const text = buildMiniPrompt();
+      const ok = await copyText(text);
+      $("btnCopyMini").textContent = ok ? "복사됨" : "복사 실패";
+      setTimeout(()=> $("btnCopyMini").textContent = "미니프롬프트 복사", 1200);
+    });
+
+    $("btnReset").addEventListener("click", resetAll);
+    $("btnLoadSample").addEventListener("click", loadSample);
+
+    // Ctrl + Enter to generate
+    document.addEventListener("keydown", (e)=>{
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+        e.preventDefault();
+        $("output").value = buildFullPromptAll();
+      }
+    });
+  </script>
+</body>
+</html>
