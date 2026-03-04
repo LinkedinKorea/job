@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>면접 1분 스피치 AI 프롬프트 생성기 (3버전)</title>
+  <meta name="description" content="이름/전공/희망직무/희망기업/어필포인트/자소서 기반으로 1분 스피치 3버전 + 코멘트까지 생성하도록 하는 AI 프롬프트를 만들어줍니다." />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#111827;
+      --line:#1f2937;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --soft:#ffffff12;
+
+      --blue:#2563eb;
+      --blue2:#1d4ed8;
+
+      --amber:#f59e0b;
+      --amber2:#b45309;
+
+      --green:#22c55e;
+      --green2:#15803d;
+
+      --shadow:0 18px 45px #00000055;
+      --radius:18px;
+      --radius2:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Noto Sans KR","Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 700px at 12% 10%, #0b1b33 0%, transparent 60%),
+        radial-gradient(900px 520px at 90% 22%, #140a33 0%, transparent 55%),
+        radial-gradient(800px 520px at 55% 92%, #08301a 0%, transparent 60%),
+        var(--bg);
+    }
+    a{color:#93c5fd;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{
+      width:min(1200px, 94vw);
+      margin:24px auto 80px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    header{
+      background:linear-gradient(180deg, #0b1220 0%, #0b0f14 60%);
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
+      padding:18px 18px 14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .badgeRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .badge{
+      font-size:12px;
+      color:#cbd5e1;
+      border:1px solid #334155;
+      background:#0b1220;
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    h1{
+      font-size:22px;
+      margin:0 0 6px 0;
+      letter-spacing:-0.2px;
+    }
+    .sub{
+      color:var(--muted);
+      line-height:1.55;
+      margin:0;
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap:14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:linear-gradient(180deg, #0c1220 0%, #0b0f14 65%);
+      border:1px solid var(--line);
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .cardHead h2{
+      margin:0;
+      font-size:16px;
+      letter-spacing:-0.2px;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+      margin:0;
+    }
+    .cardBody{padding:14px 16px 16px}
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    @media (max-width: 520px){
+      .row{grid-template-columns:1fr}
+    }
+
+    label{
+      display:block;
+      font-size:12px;
+      color:#cbd5e1;
+      margin:0 0 6px 2px;
+    }
+    input, textarea, select{
+      width:100%;
+      border:1px solid #334155;
+      background:#0b1220;
+      color:var(--text);
+      border-radius:14px;
+      padding:11px 12px;
+      outline:none;
+      font-size:14px;
+    }
+    textarea{
+      min-height:112px;
+      resize:vertical;
+      line-height:1.45;
+    }
+    input:focus, textarea:focus, select:focus{
+      border-color:#60a5fa;
+      box-shadow:0 0 0 3px #60a5fa20;
+    }
+
+    .btnRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+      align-items:center;
+    }
+    button{
+      border:0;
+      cursor:pointer;
+      border-radius:14px;
+      padding:11px 12px;
+      color:white;
+      font-weight:700;
+      font-size:14px;
+      box-shadow:0 10px 24px #00000035;
+      transition: transform .08s ease, filter .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    button:active{transform:translateY(1px)}
+    .btnPrimary{background:linear-gradient(180deg, var(--blue) 0%, var(--blue2) 100%)}
+    .btnAmber{background:linear-gradient(180deg, var(--amber) 0%, var(--amber2) 100%)}
+    .btnGreen{background:linear-gradient(180deg, var(--green) 0%, var(--green2) 100%)}
+    .btnGhost{
+      background:#0b1220;
+      border:1px solid #334155;
+      color:#e5e7eb;
+      box-shadow:none;
+      font-weight:600;
+    }
+    .btnWide{min-width:170px; justify-content:center}
+    .status{
+      margin-left:auto;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .outBox{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .outActions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .outActions .left{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .pill{
+      font-size:12px;
+      color:#cbd5e1;
+      border:1px solid #334155;
+      background:#0b1220;
+      padding:7px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .note{
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid #334155;
+      background:#0b1220;
+      color:#cbd5e1;
+      line-height:1.55;
+      font-size:13px;
+    }
+    .footer{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      line-height:1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>면접 1분 스피치 AI 프롬프트 생성기 (3버전)</h1>
+      <p class="sub">
+        희망기업·희망직무 기반으로 <b>면접 1분 자기소개(3개 버전)</b>을 만들도록 AI에 지시하는 프롬프트를 생성합니다.<br/>
+        자소서(선택)를 넣으면 <b>역량 중심 소재를 추출</b>해 스피치에 반영하고, <b>버전별 코멘트/개선점</b>까지 함께 받도록 구성했습니다.
+      </p>
+      <div class="badgeRow">
+        <div class="badge">✅ GitHub Pages 단일 파일</div>
+        <div class="badge">✅ 3개 버전 스피치</div>
+        <div class="badge">✅ 자소서 기반 역량 추출</div>
+        <div class="badge">✅ 코멘트/개선 포인트</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- INPUT -->
+      <section class="card">
+        <div class="cardHead">
+          <h2>입력</h2>
+          <p class="hint">Ctrl + Enter: 프롬프트 생성</p>
+        </div>
+        <div class="cardBody">
+          <div class="row">
+            <div>
+              <label for="name">이름</label>
+              <input id="name" placeholder="예: 홍길동" />
+            </div>
+            <div>
+              <label for="major">전공</label>
+              <input id="major" placeholder="예: 경영학 / 컴퓨터공학 / 산업공학 등" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="role">희망직무</label>
+              <input id="role" placeholder="예: HR 컨설턴트 / 마케팅 / 데이터분석 / 영업 등" />
+            </div>
+            <div>
+              <label for="company">희망기업</label>
+              <input id="company" placeholder="예: 네이버 / 카카오 / 삼성 / 외국계 ○○ 등" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="position">지원 포지션/공고명 (선택)</label>
+              <input id="position" placeholder="예: Growth Marketer (Korea) / Recruiter (In-house) 등" />
+            </div>
+            <div>
+              <label for="language">출력 언어</label>
+              <select id="language">
+                <option value="ko" selected>한국어(권장)</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="appeal">꼭 어필하고 싶은 내용 (반드시 포함)</label>
+              <textarea id="appeal" placeholder="예: ① 인턴에서 매출 15% 상승 캠페인 리드 ② 고객 인터뷰 30건 기반 개선 ③ 협업/조율 강점 등"></textarea>
+            </div>
+            <div>
+              <label for="memo">내 경험/소재 메모 (권장)</label>
+              <textarea id="memo" placeholder="예: 프로젝트/대외활동/인턴/공모전/학부연구/자격증/툴/성과지표 등을 bullet로 적어주세요"></textarea>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="jd">기업/공고 정보 (선택 / JD 전문 권장)</label>
+              <textarea id="jd" placeholder="Tip: JD 전문을 그대로 넣으면 키워드/역량 매칭 정확도가 올라갑니다."></textarea>
+            </div>
+            <div>
+              <label for="cover">기존 자기소개서 원문 (선택)</label>
+              <textarea id="cover" placeholder="자기소개서 원문을 그대로 붙여넣으세요. (없으면 비워도 됩니다)"></textarea>
+            </div>
+          </div>
+
+          <div class="btnRow">
+            <button class="btnPrimary btnWide" id="btnBuild" title="프롬프트 생성">⚡ 프롬프트 생성</button>
+            <button class="btnAmber" id="btnSample" title="샘플 입력">🧪 샘플 입력</button>
+            <button class="btnGhost" id="btnReset" title="초기화">↺ 초기화</button>
+            <div class="status" id="status">입력 후 생성하면 오른쪽에 프롬프트가 나타납니다.</div>
+          </div>
+
+          <div class="note">
+            <b>주의:</b> 본 도구는 ‘구조 설계/참고’ 목적입니다. 사실/수치/경험은 본인 기준으로 검증·보완해야 합니다.<br/>
+            AI가 외부 정보를 리서치할 경우, <b>출처 확인</b> 및 <b>과장/허위</b>가 없도록 최종 검수하세요.
+          </div>
+        </div>
+      </section>
+
+      <!-- OUTPUT -->
+      <section class="card">
+        <div class="cardHead">
+          <h2>출력 (AI에 그대로 복붙)</h2>
+          <p class="hint">생성된 프롬프트를 그대로 생성형 AI에 붙여넣어 사용하세요.</p>
+        </div>
+        <div class="cardBody">
+          <div class="outBox">
+            <div class="outActions">
+              <div class="left">
+                <span class="pill">📌 3개 버전 스피치</span>
+                <span class="pill">🧩 역량/키워드 추출</span>
+                <span class="pill">🗣 전달 팁 + 코멘트</span>
+              </div>
+              <div class="left">
+                <button class="btnGreen btnWide" id="btnCopy">📋 복사</button>
+                <button class="btnGhost" id="btnCopyMini">🧷 미니프롬프트 복사</button>
+              </div>
+            </div>
+
+            <label for="out">최종 프롬프트</label>
+            <textarea id="out" class="mono" placeholder="여기에 생성됩니다." style="min-height:320px;"></textarea>
+
+            <label for="outMini">미니프롬프트 (빠른 테스트용)</label>
+            <textarea id="outMini" class="mono" placeholder="여기에 생성됩니다." style="min-height:150px;"></textarea>
+
+            <div class="note">
+              - 길게 나오면: <b>① 질문만 먼저 받기 → ② 답변 후 최종본 작성</b> 순서로 진행하세요.<br/>
+              - “미니프롬프트”는 빠른 테스트/반복에 유용합니다.
+            </div>
+          </div>
+
+          <div class="footer">
+            AI를 활용한 작성은 구조를 잡는 단순 참고과정일 뿐임으로, 기업 및 직무분석을 활용해 맞춤형 자소서를 완성하시기 바랍니다.<br/>
+            Made by 강원준_Linkedin Korea Partner HR Point(2026) ·
+            <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function sanitize(v){
+      return (v ?? "").toString().trim();
+    }
+
+    function buildPrompt(){
+      const name = sanitize($("name").value);
+      const major = sanitize($("major").value);
+      const role = sanitize($("role").value);
+      const company = sanitize($("company").value);
+      const position = sanitize($("position").value);
+      const appeal = sanitize($("appeal").value);
+      const memo = sanitize($("memo").value);
+      const jd = sanitize($("jd").value);
+      const cover = sanitize($("cover").value);
+      const lang = $("language").value;
+
+      const missing = [];
+      if(!name) missing.push("이름");
+      if(!major) missing.push("전공");
+      if(!role) missing.push("희망직무");
+      if(!company) missing.push("희망기업");
+      if(!appeal) missing.push("꼭 어필하고 싶은 내용");
+
+      if(missing.length){
+        $("status").textContent = "필수 입력 누락: " + missing.join(", ");
+      } else {
+        $("status").textContent = "프롬프트가 생성되었습니다. 복사해서 AI에 붙여넣으세요.";
+      }
+
+      const isKO = (lang === "ko");
+      const outLangLine = isKO
+        ? "출력 언어: 한국어"
+        : "Output language: English";
+
+      const timeConstraint = isKO
+        ? "분량: '말하기 60초' 기준. 원고 글자수(공백 포함) 350~450자 내외."
+        : "Length: ~60 seconds spoken. Keep it concise (~110–140 words).";
+
+      const styleConstraints = isKO
+        ? [
+          "톤: 과장 없이 담백하지만 임팩트 있게. 숫자/지표/역할을 구체화.",
+          "금지: 근거 없는 합격사례 단정, 허위 성과, 과도한 수식어 남발.",
+          "필수: '꼭 어필하고 싶은 내용'은 어떤 버전에서도 빠지면 안 됨."
+        ].join("\n")
+        : [
+          "Tone: confident, factual, impact-focused. Use specific scope/metrics when available.",
+          "Avoid: unverifiable claims, exaggerated language, fabricated results.",
+          "Must include: the user's 'must-mention' points in every version."
+        ].join("\n");
+
+      const researchInstruction = isKO
+        ? [
+          "기업/직무 분석은 다음 우선순위로 수행:",
+          "1) 사용자가 제공한 JD/공고 정보(있다면)를 최우선 근거로 사용",
+          "2) 없다면, 기업의 공식 채널(홈페이지/IR/보도자료)에서 사업/제품/최근 이슈/핵심 가치 키워드를 짧게 정리",
+          "3) 직무 핵심역량(하드/소프트 스킬, 협업 방식, 성과지표)을 추정하되, '추정'임을 명확히 표기",
+          "※ 웹 리서치가 불가능한 환경이면, '추가로 필요한 정보 질문 3~5개'를 먼저 제시"
+        ].join("\n")
+        : [
+          "Company/role analysis priority:",
+          "1) Use the provided JD first (if any).",
+          "2) If not provided, infer from official sources (website/IR/press) and clearly label assumptions.",
+          "3) If browsing isn't available, ask 3–5 essential questions first."
+        ].join("\n");
+
+      const versionGuide = isKO
+        ? [
+          "버전 구성(총 3개):",
+          "A) 기본형(정석/안정): 직무 적합도 + 핵심역량 2~3개를 깔끔히 연결",
+          "B) 임팩트형(성과/데이터): 문제-행동-결과를 짧게 압축, 지표 중심",
+          "C) 스토리형(동기/가치): 개인 동기→직무로 연결, 마무리는 기업/포지션 적합성으로 수렴"
+        ].join("\n")
+        : [
+          "Create 3 versions:",
+          "A) Standard (safe, structured): fit + 2–3 key competencies",
+          "B) Impact (metrics-driven): problem → action → result, compact",
+          "C) Story (motivation/values): personal hook → role fit → company tie-in"
+        ].join("\n");
+
+      const coachingOutput = isKO
+        ? [
+          "각 버전마다 아래를 함께 제공:",
+          "- (1) 1분 스피치 원고",
+          "- (2) 버전별 코멘트: 강점 2개, 리스크/허점 2개(과장/비약/근거 부족 등), 개선 제안 3개",
+          "- (3) '면접관 관점 한 줄 평가' (채용담당자가 실제로 남길 법한 피드백 톤)",
+          "- (4) 전달 팁: 호흡/속도/강조 포인트(3곳) + 금지 표현(2~3개)",
+          "- (5) 커스터마이즈 질문: 추가 정보가 있으면 더 좋아질 질문 3개"
+        ].join("\n")
+        : [
+          "For each version, also provide:",
+          "(1) script, (2) comments: 2 strengths, 2 risks, 3 improvement tips,",
+          "(3) one-line interviewer-style feedback, (4) delivery tips (3 emphasis points + taboo phrases),",
+          "(5) 3 follow-up questions to improve personalization"
+        ].join("\n");
+
+      const inputBlock = isKO
+        ? [
+          "=== 사용자 입력 ===",
+          `- 이름: ${name || "(미입력)"}`,
+          `- 전공: ${major || "(미입력)"}`,
+          `- 희망직무: ${role || "(미입력)"}`,
+          `- 희망기업: ${company || "(미입력)"}`,
+          `- 지원 포지션/공고명: ${position || "(미입력)"}`,
+          "",
+          "【꼭 어필하고 싶은 내용 (반드시 포함)】",
+          appeal ? appeal : "(미입력)",
+          "",
+          "【내 경험/소재 메모 (권장)】",
+          memo ? memo : "(미입력)",
+          "",
+          "【기업/공고 정보 (선택)】",
+          jd ? jd : "(미입력)",
+          "",
+          "【기존 자기소개서 원문 (선택)】",
+          cover ? cover : "(미입력)",
+          "===================="
+        ].join("\n")
+        : [
+          "=== User Inputs ===",
+          `- Name: ${name || "(missing)"}`,
+          `- Major: ${major || "(missing)"}`,
+          `- Target Role: ${role || "(missing)"}`,
+          `- Target Company: ${company || "(missing)"}`,
+          `- Position/JD Title: ${position || "(optional)"}`,
+          "",
+          "[Must-mention points (must be included)]",
+          appeal ? appeal : "(missing)",
+          "",
+          "[Experience notes (optional)]",
+          memo ? memo : "(optional)",
+          "",
+          "[JD/company info (optional)]",
+          jd ? jd : "(optional)",
+          "",
+          "[Cover letter (optional)]",
+          cover ? cover : "(optional)",
+          "==================="
+        ].join("\n");
+
+      const mainPrompt = [
+`${outLangLine}
+당신은 '면접 코치 + 채용담당자 관점'을 동시에 가진 전문가입니다.
+아래 사용자 입력을 바탕으로, ${company || "지원기업"} / ${role || "지원직무"}에 맞춘 '면접 1분 자기소개 스피치'를 작성하세요.
+
+[핵심 요구사항]
+- ${timeConstraint}
+- 반드시 '자기소개서/경험'에서 역량 중심 소재를 추출해 스피치에 반영할 것 (가능하면 STAR/성과지표/역할을 녹여서)
+- '꼭 어필하고 싶은 내용'은 어떤 버전에서도 빠지면 안 됨
+- 기업/직무 핏을 보여주는 키워드(업무/가치/성과지표)를 자연스럽게 포함
+- 문장만 쓰지 말고, 버전별 코멘트/개선까지 함께 제공
+
+[기업/직무 분석 지침]
+${researchInstruction}
+
+[작성 스타일/제약]
+${styleConstraints}
+
+[3개 버전 구성]
+${versionGuide}
+
+[버전별 추가 산출물]
+${coachingOutput}
+
+[출력 포맷(엄수)]
+1) 기업/직무 핏 요약(5줄 이내): 핵심 키워드 5~8개 + 그 근거(사용자 JD/자소서/메모 기반)
+2) 공통 강점 포인트(3개): 모든 버전에 공통으로 들어갈 '핵심 메시지' 3개
+3) 1분 스피치 3개 버전:
+   - [A 기본형] (원고)
+   - 코멘트/개선/면접관평/전달팁/추가질문
+   - [B 임팩트형] (원고)
+   - 코멘트/개선/면접관평/전달팁/추가질문
+   - [C 스토리형] (원고)
+   - 코멘트/개선/면접관평/전달팁/추가질문
+4) 마지막에 '사용자가 바로 고칠 수 있는 체크리스트 8개' 제공
+
+${inputBlock}
+      `].join("\n");
+
+      const miniPrompt = isKO
+        ? [
+          `아래 입력으로 ${company || "지원기업"} / ${role || "지원직무"} 면접 1분 자기소개 스피치 3버전(A정석/B성과/C스토리)을 만들어줘.`,
+          `조건: 60초 분량(350~450자), '꼭 어필 내용'은 반드시 포함, 자소서/메모에서 역량을 뽑아 STAR/지표로 압축.`,
+          `그리고 각 버전마다 강점/리스크/개선 3개 + 전달팁(강조 3곳)을 코멘트해줘.`,
+          "",
+          `[입력] 이름:${name||"-"} / 전공:${major||"-"} / 직무:${role||"-"} / 기업:${company||"-"} / 포지션:${position||"-"}`,
+          `[꼭 어필] ${appeal||"-"}`,
+          `[메모] ${memo||"-"}`,
+          `[JD] ${jd||"-"}`,
+          `[자소서] ${cover||"-"}`
+        ].join("\n")
+        : [
+          `Create 3 versions of a ~60s interview self-intro for ${company||"the company"} / ${role||"the role"} (A standard, B impact, C story).`,
+          `Must include the must-mention points; extract competencies from notes/cover letter; add comments + delivery tips per version.`,
+          "",
+          `[Inputs] Name:${name||"-"} / Major:${major||"-"} / Role:${role||"-"} / Company:${company||"-"} / Position:${position||"-"}`,
+          `[Must-mention] ${appeal||"-"}`,
+          `[Notes] ${memo||"-"}`,
+          `[JD] ${jd||"-"}`,
+          `[Cover] ${cover||"-"}`
+        ].join("\n");
+
+      $("out").value = mainPrompt.replace(/\n{3,}/g, "\n\n").trim();
+      $("outMini").value = miniPrompt.replace(/\n{3,}/g, "\n\n").trim();
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try{
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          return true;
+        }catch(err){
+          document.body.removeChild(ta);
+          return false;
+        }
+      }
+    }
+
+    function setCopyState(btn, ok){
+      if(!ok){
+        btn.textContent = "복사 실패";
+        btn.style.filter = "grayscale(1)";
+        setTimeout(()=>{
+          btn.textContent = btn.dataset.baseText;
+          btn.style.filter = "";
+        }, 1200);
+        return;
+      }
+      btn.textContent = "복사됨";
+      btn.style.filter = "brightness(1.08)";
+      setTimeout(()=>{
+        btn.textContent = btn.dataset.baseText;
+        btn.style.filter = "";
+      }, 1200);
+    }
+
+    $("btnBuild").addEventListener("click", buildPrompt);
+
+    $("btnSample").addEventListener("click", ()=>{
+      $("name").value = "홍길동";
+      $("major").value = "경영학";
+      $("role").value = "채용/HR(Recruiting)";
+      $("company").value = "LinkedIn";
+      $("position").value = "Recruiting Solutions (Korea) - Client Success / Sales 협업 포지션";
+      $("appeal").value =
+`1) 데이터 기반으로 문제를 구조화하고 실행까지 연결하는 역량
+2) 이해관계자(영업/마케팅/HR) 사이 조율 및 커뮤니케이션 강점
+3) 실제 프로젝트에서 KPI를 설정하고 개선 사이클을 돌린 경험`;
+      $("memo").value =
+`- (인턴) 채용 브랜딩 캠페인 운영: 지원자 전환율 12% 개선(채널/카피 A/B)
+- (프로젝트) 설문/인터뷰 30건 → 니즈 기반 개선안 도출 및 실행
+- (툴) Excel/PowerPoint, GA, Notion, 기본 SQL 학습 중
+- (역할) 기획-운영-리포팅까지 end-to-end 리드 경험`;
+      $("jd").value =
+`(선택) JD 일부/요약:
+- 고객사의 채용/브랜딩 목표를 진단하고 솔루션을 제안
+- KPI 기반 운영 및 리포팅
+- 다양한 이해관계자와의 협업(영업/마케팅/HR)
+- 한국 시장 이해 및 커뮤니케이션 역량`;
+      $("cover").value =
+`(선택) 자소서 일부:
+저는 문제를 정의하고 데이터를 통해 가설을 검증한 뒤 실행으로 연결하는 데 강점이 있습니다... (중략)`;
+      $("language").value = "ko";
+      buildPrompt();
+    });
+
+    $("btnReset").addEventListener("click", ()=>{
+      ["name","major","role","company","position","appeal","memo","jd","cover"].forEach(id=>$(id).value="");
+      $("language").value = "ko";
+      $("out").value = "";
+      $("outMini").value = "";
+      $("status").textContent = "입력 후 생성하면 오른쪽에 프롬프트가 나타납니다.";
+    });
+
+    $("btnCopy").dataset.baseText = $("btnCopy").textContent;
+    $("btnCopyMini").dataset.baseText = $("btnCopyMini").textContent;
+
+    $("btnCopy").addEventListener("click", async ()=>{
+      const text = $("out").value.trim();
+      const ok = text ? await copyText(text) : false;
+      setCopyState($("btnCopy"), ok);
+    });
+
+    $("btnCopyMini").addEventListener("click", async ()=>{
+      const text = $("outMini").value.trim();
+      const ok = text ? await copyText(text) : false;
+      setCopyState($("btnCopyMini"), ok);
+    });
+
+    // Ctrl + Enter to build
+    document.addEventListener("keydown", (e)=>{
+      if(e.ctrlKey && e.key === "Enter"){
+        e.preventDefault();
+        buildPrompt();
+      }
+    });
+  </script>
+</body>
+</html>
