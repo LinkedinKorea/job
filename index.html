@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>취업준비 Tools</title>
+  <title>AI 활용 취업 Tools</title>
   <meta name="description" content="구직자용 AI 도구 포털" />
   <style>
     :root{
@@ -43,7 +43,7 @@
     }
     a{color:inherit;text-decoration:none}
 
-    .wrap{max-width:1220px;margin:0 auto;padding:26px 18px 34px;}
+    .wrap{max-width:1320px;margin:0 auto;padding:26px 18px 34px;}
 
     .hero{
       border:1px solid var(--line);
@@ -109,7 +109,6 @@
     }
     .dot{width:8px;height:8px;border-radius:999px; background:#60a5fa; box-shadow:0 0 0 4px #60a5fa22; flex:0 0 auto;}
 
-    /* section blocks */
     .section{
       margin-top:16px;
       border:1px solid var(--line);
@@ -157,6 +156,9 @@
     @media (min-width:860px){
       .grid{grid-template-columns:1fr 1fr;}
     }
+    @media (min-width:1180px){
+      .grid.infoGrid{grid-template-columns:repeat(3, 1fr);}
+    }
 
     .card{
       background: linear-gradient(180deg, var(--card), var(--card2));
@@ -167,7 +169,7 @@
       display:flex;
       flex-direction:column;
       gap:10px;
-      min-height: 210px;
+      min-height: 220px;
       transition:.16s ease;
       position:relative;
       overflow:hidden;
@@ -305,9 +307,9 @@
     <div class="hero">
       <div class="heroTop">
         <div>
-          <h1>취업준비 Tools</h1>
+          <h1>AI 활용 취업 Tools</h1>
           <div class="sub">
-            구직 준비를 <b>정보(리서치)</b> → <b>서류(이력서/자소서)</b> → <b>면접(스피치/기출)</b> 흐름으로 정리했습니다.
+            구직 준비를 <b>취업정보</b> → <b>서류전략</b> → <b>면접전략</b> 흐름으로 정리했습니다.
             필요한 단계의 도구를 바로 실행하세요.
           </div>
         </div>
@@ -315,49 +317,49 @@
       </div>
 
       <div class="kpiRow" aria-label="quick-info">
-        <div class="kpi"><span class="dot"></span>기업/직무 리서치</div>
-        <div class="kpi"><span class="dot" style="background:#a78bfa;box-shadow:0 0 0 4px #a78bfa22;"></span>서류 구조화</div>
+        <div class="kpi"><span class="dot"></span>취업정보 탐색</div>
+        <div class="kpi"><span class="dot" style="background:#a78bfa;box-shadow:0 0 0 4px #a78bfa22;"></span>서류 전략 설계</div>
         <div class="kpi"><span class="dot" style="background:#34d399;box-shadow:0 0 0 4px #34d39922;"></span>면접 실전 대비</div>
       </div>
     </div>
 
-    <!-- 1) 정보 -->
+    <!-- 1) 취업정보 -->
     <div class="section">
       <div class="sectionHeader">
         <div class="sectionLeft">
-          <div class="sectionTitle">📌 정보 <span class="badge">Research</span></div>
+          <div class="sectionTitle">📌 취업정보 <span class="badge">Research</span></div>
           <span class="badge" style="opacity:.9">기업/직무 이해</span>
         </div>
         <div class="hint">지원 전략의 근거를 만드는 단계</div>
       </div>
 
-      <div class="grid">
-        <a class="card" href="/prompt/" aria-label="기업/역량분석 AI 프롬프트 생성기">
+      <div class="grid infoGrid">
+        <a class="card" href="/prompt/" aria-label="취업전략 통합 Tool">
           <div class="topRow">
             <div class="icon">🧠</div>
             <div>
-              <div class="title">기업/역량분석 AI 프롬프트 생성기</div>
+              <div class="title">취업전략 통합 Tool</div>
               <div class="desc">
-                희망기업·희망직무 입력 → 기업 분석 포인트와 본인 역량 매칭 질문/프롬프트를 자동 설계합니다.
+                희망기업·희망직무 입력을 바탕으로 기업 분석, 직무 이해, 역량 매칭 질문까지 한 번에 정리하는 통합형 도구입니다.
               </div>
               <div class="meta">
                 <span class="tag">기업 분석</span>
-                <span class="tag">역량 매칭</span>
-                <span class="tag">프롬프트</span>
+                <span class="tag">직무 이해</span>
+                <span class="tag">전략 설계</span>
               </div>
             </div>
           </div>
           <div class="divider"></div>
-          <div class="btn btn1">정보 도구 열기 →</div>
+          <div class="btn btn1">취업정보 도구 열기 →</div>
         </a>
 
-        <a class="card" href="/jobpost/" aria-label="채용공고 추천 AI 프롬프트 생성기">
+        <a class="card" href="/jobpost/" aria-label="나에게 맞는 채용공고">
           <div class="topRow">
             <div class="icon">🔎</div>
             <div>
-              <div class="title">채용공고 추천 AI 프롬프트 생성기</div>
+              <div class="title">나에게 맞는 채용공고</div>
               <div class="desc">
-                학력·전공·직무 기반으로 적합 공고를 찾는 분석 프롬프트를 생성합니다. (최근 공고 필터 기준 포함)
+                학력·전공·직무 기반으로 나에게 적합한 공고를 찾는 분석 프롬프트를 생성합니다. 최근 공고 필터 기준도 함께 반영합니다.
               </div>
               <div class="meta">
                 <span class="tag">Top30 +20</span>
@@ -367,16 +369,35 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="btn btn2">정보 도구 열기 →</div>
+          <div class="btn btn2">취업정보 도구 열기 →</div>
+        </a>
+
+        <a class="card" href="https://job.linkedinkorea.com/jobpost-skill-analyzer/" aria-label="유사채용공고 역량분석">
+          <div class="topRow">
+            <div class="icon">📊</div>
+            <div>
+              <div class="title">유사채용공고 역량분석</div>
+              <div class="desc">
+                여러 개의 유사 채용공고를 함께 분석해 공통 요구역량, 우대사항, 준비 전략과 차별화 포인트를 도출하는 도구입니다.
+              </div>
+              <div class="meta">
+                <span class="tag">공통점 분석</span>
+                <span class="tag">역량 도출</span>
+                <span class="tag">전략 코멘트</span>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="btn btn6">취업정보 도구 열기 →</div>
         </a>
       </div>
     </div>
 
-    <!-- 2) 서류 -->
+    <!-- 2) 서류전략 -->
     <div class="section">
       <div class="sectionHeader">
         <div class="sectionLeft">
-          <div class="sectionTitle">🗂️ 서류 <span class="badge">Documents</span></div>
+          <div class="sectionTitle">🗂️ 서류전략 <span class="badge">Documents</span></div>
           <span class="badge" style="opacity:.9">이력서/자소서</span>
         </div>
         <div class="hint">JD 기준으로 “증거”와 “구조”를 맞추는 단계</div>
@@ -399,7 +420,7 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="btn btn3">서류 도구 열기 →</div>
+          <div class="btn btn3">서류전략 도구 열기 →</div>
         </a>
 
         <a class="card" href="/resume-prompt/" aria-label="자기소개서 구조설계 AI 프롬프트">
@@ -418,23 +439,22 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="btn btn4">서류 도구 열기 →</div>
+          <div class="btn btn4">서류전략 도구 열기 →</div>
         </a>
       </div>
     </div>
 
-    <!-- 3) 면접 -->
+    <!-- 3) 면접전략 -->
     <div class="section">
       <div class="sectionHeader">
         <div class="sectionLeft">
-          <div class="sectionTitle">🎤 면접 <span class="badge">Interview</span></div>
+          <div class="sectionTitle">🎤 면접전략 <span class="badge">Interview</span></div>
           <span class="badge" style="opacity:.9">스피치/기출</span>
         </div>
         <div class="hint">실전 답변(1분 스피치 + 기출 대비)을 만드는 단계</div>
       </div>
 
       <div class="grid">
-        <!-- 1분 스피치 -->
         <a class="card" href="/speech/" aria-label="구직자 면접용 1분 스피치 생성기">
           <div class="topRow">
             <div class="icon">🗣️</div>
@@ -451,10 +471,9 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="btn btn5">면접 도구 열기 →</div>
+          <div class="btn btn5">면접전략 도구 열기 →</div>
         </a>
 
-        <!-- Interview(기출/유형별) -->
         <a class="card" href="/interview/" aria-label="면접 기출/유형별 질문 도구">
           <div class="topRow">
             <div class="icon">📚</div>
@@ -471,7 +490,7 @@
             </div>
           </div>
           <div class="divider"></div>
-          <div class="btn btn6">면접 도구 열기 →</div>
+          <div class="btn btn6">면접전략 도구 열기 →</div>
         </a>
       </div>
     </div>
@@ -487,7 +506,7 @@
     </div>
 
     <div class="footer">
-      <div>© <span id="yy"></span> 취업준비 Tools (Made by Linkedin Korea Partner)</div>
+      <div>© <span id="yy"></span> AI 활용 취업 Tools (Made by Linkedin Korea Partner)</div>
       <div style="text-align:right;">
         Made by Kang wonjun (Linkedin Korea Partner)<br/>
         <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener">www.linkedin.com/in/ceohr</a>
