@@ -342,8 +342,6 @@
       font-size: 14px;
     }
 
-    .feature-grid,
-    .deliverable-grid,
     .price-grid,
     .meta-grid,
     .secondary-results {
@@ -351,14 +349,7 @@
       gap: 12px;
     }
 
-    .feature-grid,
-    .deliverable-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin: 12px 0 18px;
-    }
-
-    .feature-card,
-    .deliverable-card,
+    .insight-box,
     .meta-card,
     .price-box,
     .mini-card {
@@ -368,22 +359,28 @@
       padding: 16px;
     }
 
-    .feature-card strong,
-    .deliverable-card strong,
+    .insight-box strong,
     .meta-card strong,
     .price-box strong {
       display: block;
       font-size: 13px;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .feature-card div,
-    .deliverable-card div,
     .meta-card div {
       font-size: 15px;
       font-weight: 800;
       color: var(--text);
+    }
+
+    .insight-box ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .insight-box li + li {
+      margin-top: 8px;
     }
 
     .price-grid {
@@ -508,8 +505,6 @@
       .price-grid,
       .meta-grid,
       .secondary-results,
-      .feature-grid,
-      .deliverable-grid,
       .check-grid {
         grid-template-columns: 1fr;
       }
@@ -603,8 +598,8 @@
                 <label>
                   <input type="checkbox" name="audience" value="mixed">
                   <span>
-                    <div class="c-title">학과 단위 혼합 참여</div>
-                    <div class="c-desc">학과 전체 특강, 다수 학생 대상 운영</div>
+                    <div class="c-title">학과맞춤형</div>
+                    <div class="c-desc">학과 특성 반영, 맞춤형 운영, 다수 학생 대상 구성</div>
                   </span>
                 </label>
               </div>
@@ -724,6 +719,11 @@
           '국내취업과 글로벌 역량을 동시에 강화하기 좋은 대표 프로그램입니다.',
           '대학 제안서, 홍보문구, 운영결과 보고서 작성에 활용하기 쉽습니다.'
         ],
+        differentiation: [
+          '단순 특강 중심이 아니라 실습과 결과물 중심으로 설계됩니다.',
+          'AI와 LinkedIn을 연계해 학생별 취업브랜딩과 실행전략을 함께 잡을 수 있습니다.',
+          '희망기업·희망직무 기준으로 구체적인 지원전략까지 연결됩니다.'
+        ],
         outcomes: [
           '학생별 LinkedIn 프로필 초안 또는 개선안',
           '희망기업 중심 지원전략 시트',
@@ -751,6 +751,11 @@
           '취업 추적관리 코칭과 개별코칭형 심화교육으로 연결하기 좋습니다.',
           '지원현황, 목표기업, 면접준비를 주차별로 관리할 수 있습니다.',
           '성과관리형 운영 보고서 구조와 잘 맞습니다.'
+        ],
+        differentiation: [
+          '일회성 교육이 아니라 사후관리와 실행 점검까지 연결됩니다.',
+          '졸업생 특성에 맞는 재도전형 설계로 운영성과를 관리하기 좋습니다.',
+          '지원 현황과 행동변화를 중심으로 추적관리 구조를 만들 수 있습니다.'
         ],
         outcomes: [
           '졸업생 재도약 로드맵',
@@ -780,6 +785,11 @@
           '학과기반 취업전략과 희망기업 중심 분석을 함께 설계할 수 있습니다.',
           '비교적 낮은 예산에서도 체감도 높은 결과물을 만들기 좋습니다.'
         ],
+        differentiation: [
+          '공통 취업특강이 아니라 학과 특성과 진출직무를 반영해 구성합니다.',
+          '희망기업과 학과 역량을 연결한 맞춤형 취업브랜딩 설계가 가능합니다.',
+          '대규모 운영에서도 학과별 메시지를 분명하게 전달할 수 있습니다.'
+        ],
         outcomes: [
           '학과 맞춤 직무맵',
           '학생용 취업전략 워크북',
@@ -793,12 +803,12 @@
         name: '교수·취업지원 실무자 LinkedIn Advisor Lab',
         summary: '교수와 취업지원 실무자가 학생의 LinkedIn 프로필과 AI 활용 상담을 지도할 수 있도록 돕는 연수형 과정입니다.',
         basePrice: {
-          '1day-short': 160,
-          '1day-full': 330,
-          '2day': 590,
-          '4week': 880,
-          '6day18': 1180,
-          '6week18': 1280
+          '1day-short': 220,
+          '1day-full': 430,
+          '2day': 760,
+          '4week': 1080,
+          '6day18': 1480,
+          '6week18': 1580
         },
         audience: ['faculty'],
         types: ['advisor'],
@@ -807,6 +817,11 @@
           '상담 표준화, 피드백 템플릿화, LinkedIn 지도 포인트 정리에 유리합니다.',
           '짧은 연수형으로 운영하기 적합합니다.',
           '대학 내부 확산용 시범 프로그램으로 활용하기 좋습니다.'
+        ],
+        differentiation: [
+          '학생 대상 특강이 아니라 지도자 역량 내재화를 목표로 합니다.',
+          '실무자가 반복 활용할 수 있는 상담도구와 피드백 틀을 제공합니다.',
+          '내부 운영체계 개선과 지도 품질 표준화에 직접 연결됩니다.'
         ],
         outcomes: [
           '학생 지도 가이드',
@@ -871,11 +886,11 @@
     };
 
     const sizeAdjustments = {
-      small: { accelerator: -60, reboot: -70, departmentCamp: -50, advisor: -20 },
-      mid: { accelerator: -20, reboot: -30, departmentCamp: -20, advisor: 0 },
-      core: { accelerator: 0, reboot: 0, departmentCamp: 0, advisor: 0 },
-      large: { accelerator: 120, reboot: 100, departmentCamp: 80, advisor: 40 },
-      xlarge: { accelerator: 220, reboot: 180, departmentCamp: 150, advisor: 80 }
+      small: { accelerator: -60, reboot: -70, departmentCamp: -50, advisor: 20 },
+      mid: { accelerator: -20, reboot: -30, departmentCamp: -20, advisor: 40 },
+      core: { accelerator: 0, reboot: 0, departmentCamp: 0, advisor: 70 },
+      large: { accelerator: 120, reboot: 100, departmentCamp: 80, advisor: 120 },
+      xlarge: { accelerator: 220, reboot: 180, departmentCamp: 150, advisor: 180 }
     };
 
     const englishAdd = { none: 0, profile: 60, cv: 80, materials: 30 };
@@ -918,7 +933,7 @@
       seniors: '졸업예정자',
       graduates: '미취업 졸업생',
       faculty: '교수 / 취업지원 실무자',
-      mixed: '학과 단위 혼합 참여'
+      mixed: '학과맞춤형'
     };
 
     const form = {
@@ -955,25 +970,27 @@
       return n > 0 ? `글로벌 멘토 ${n}명 (추천형)` : '없음';
     }
 
-    function computeEstimate(program, size, mentorCount, english, duration) {
+    function computeEstimate(program, size, mentorCount, english, duration, audiences = []) {
       const baseByDuration = program.basePrice[duration] || program.basePrice['6day18'];
       const sizeAdj = sizeAdjustments[size]?.[program.id] || 0;
       let base = baseByDuration + sizeAdj;
 
       if (program.id === 'advisor') {
-        base = Math.max(150, base);
+        base = Math.max(220, base);
       }
 
       if (duration === '1day-short') {
-        // 시간당 50만원 강사료 + 운영/결과보고서 포함 현실형
-        // 단순 특강형은 200만원 이하 유지
-        base = Math.min(base, 190);
+        base = Math.min(base, program.id === 'advisor' ? 260 : 190);
       }
 
       const mentorCost = program.id === 'advisor' ? 0 : Number(mentorCount) * 200;
       const englishCost = program.id === 'advisor' ? 0 : (englishAdd[english] || 0);
 
-      const recommended = base + mentorCost;
+      let audiencePremium = 0;
+      if (audiences.includes('mixed')) audiencePremium += 120;
+      if (audiences.includes('faculty')) audiencePremium += 100;
+
+      const recommended = base + mentorCost + audiencePremium;
       const premium = recommended + englishCost;
 
       return {
@@ -981,7 +998,8 @@
         recommended,
         premium,
         mentorCost,
-        englishCost
+        englishCost,
+        audiencePremium
       };
     }
 
@@ -993,7 +1011,7 @@
       const audienceHits = choices.audiences.filter(a => program.audience.includes(a)).length;
       score += audienceHits * 12;
 
-      if (choices.audiences.includes('mixed') && program.id === 'departmentCamp') score += 12;
+      if (choices.audiences.includes('mixed') && program.id === 'departmentCamp') score += 14;
       if (choices.audiences.includes('graduates') && program.id === 'reboot') score += 16;
       if (choices.audiences.includes('faculty') && program.id === 'advisor') score += 25;
       if (choices.duration === '6day18' && program.id === 'accelerator') score += 14;
@@ -1004,7 +1022,7 @@
       if (Number(choices.mentor) > 0 && program.id === 'accelerator') score += 8;
       if (choices.english !== 'none' && (program.id === 'accelerator' || program.id === 'reboot')) score += 6;
 
-      const estimates = computeEstimate(program, choices.size, choices.mentor, choices.english, choices.duration);
+      const estimates = computeEstimate(program, choices.size, choices.mentor, choices.english, choices.duration, choices.audiences);
       const cap = budgetCaps[choices.budget];
 
       if (estimates.recommended <= cap) score += 16;
@@ -1069,15 +1087,9 @@
         pool.push('글로벌 네트워크 구축');
       }
 
-      if (choices.duration === '1day-short') {
-        return pool.slice(0, 5);
-      }
-      if (choices.duration === '1day-full') {
-        return pool.slice(0, 7);
-      }
-      if (choices.duration === '2day') {
-        return pool.slice(0, 8);
-      }
+      if (choices.duration === '1day-short') return pool.slice(0, 5);
+      if (choices.duration === '1day-full') return pool.slice(0, 7);
+      if (choices.duration === '2day') return pool.slice(0, 8);
       return pool.slice(0, 10);
     }
 
@@ -1092,7 +1104,8 @@
       lines.push(`- 권장 금액(VAT 포함 / 결과보고서 및 운영비 포함): 기본형 ${formatMoney(estimates.base)} / 추천형 ${formatMoney(estimates.recommended)} / 확장형 ${formatMoney(estimates.premium)}`);
       lines.push(`- 글로벌 멘토 옵션: ${getMentorLabel(choices.mentor)}`);
       lines.push(`- 영문 지원 옵션: ${englishLabel[choices.english]}`);
-      lines.push(`- 특장점: ${best.strengths.join(' / ')}`);
+      lines.push(`- 교육 특장점: ${best.strengths.join(' / ')}`);
+      lines.push(`- 기존교육과의 차이점: ${best.differentiation.join(' / ')}`);
       lines.push(`- 최종 결과물: ${best.outcomes.join(' / ')}`);
       lines.push(`- 핵심 구성: ${modules.join(', ')}`);
       lines.push(`- 제안 문구: ${best.proposal}`);
@@ -1118,7 +1131,7 @@
         .map(program => ({
           program,
           score: scoreProgram(program, choices),
-          estimates: computeEstimate(program, choices.size, choices.mentor, choices.english, choices.duration)
+          estimates: computeEstimate(program, choices.size, choices.mentor, choices.english, choices.duration, choices.audiences)
         }))
         .sort((a, b) => b.score - a.score || a.estimates.recommended - b.estimates.recommended);
 
@@ -1145,8 +1158,12 @@
         : `${selectedEnglish} 옵션을 확장형에 포함하는 구성이 적합합니다.`;
 
       const durationNote = choices.duration === '1day-short'
-        ? '단순 특강형은 시간당 50만원 강사료 기준을 참고하여 200만원 이하 범위에서 현실적으로 제안했습니다.'
+        ? '단순 특강형은 시간당 50만원 강사료 기준을 참고하여 현실적인 예산 범위로 제안했습니다.'
         : '중장기형 과정은 운영 준비, 결과보고서, 참여자 관리, 교육 운영비용을 포함해 산정했습니다.';
+
+      const premiumNote = estimates.audiencePremium > 0
+        ? `선택 대상 프리미엄 ${formatMoney(estimates.audiencePremium)}이 추천형 이상 금액에 반영되었습니다.`
+        : '선택 대상에 따른 별도 프리미엄은 반영되지 않았습니다.';
 
       resultsEl.innerHTML = `
         <div class="summary-card">
@@ -1164,23 +1181,27 @@
           </div>
 
           <div class="section-title">교육 특장점</div>
-          <div class="feature-grid">
-            ${best.strengths.map(item => `
-              <div class="feature-card">
-                <strong>강점</strong>
-                <div>${item}</div>
-              </div>
-            `).join('')}
+          <div class="insight-box">
+            <strong>핵심 강점 요약</strong>
+            <ul>
+              ${best.strengths.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="section-title">기존교육과의 차이점</div>
+          <div class="insight-box">
+            <strong>차별화 포인트</strong>
+            <ul>
+              ${best.differentiation.map(item => `<li>${item}</li>`).join('')}
+            </ul>
           </div>
 
           <div class="section-title">최종 결과물</div>
-          <div class="deliverable-grid">
-            ${best.outcomes.map(item => `
-              <div class="deliverable-card">
-                <strong>결과물</strong>
-                <div>${item}</div>
-              </div>
-            `).join('')}
+          <div class="insight-box">
+            <strong>제공 결과물</strong>
+            <ul>
+              ${best.outcomes.map(item => `<li>${item}</li>`).join('')}
+            </ul>
           </div>
 
           <div class="price-grid">
@@ -1233,7 +1254,8 @@
             글로벌 멘토 옵션: <strong>${selectedMentor}</strong><br>
             영문 지원 옵션: <strong>${selectedEnglish}</strong><br><br>
             ${durationNote}<br>
-            ${englishNote}
+            ${englishNote}<br>
+            ${premiumNote}
           </div>
 
           ${choices.notes.trim() ? `
