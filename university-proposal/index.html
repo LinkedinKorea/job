@@ -20,6 +20,8 @@
       --gold-soft: #fff5db;
       --red: #b42318;
       --red-soft: #fff1f0;
+      --violet: #6941c6;
+      --violet-soft: #f4f0ff;
       --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
       --radius: 18px;
     }
@@ -140,14 +142,8 @@
 
     .panel-head h2,
     .panel-head h3 {
-      margin: 0 0 4px;
-      font-size: 20px;
-    }
-
-    .panel-head p {
       margin: 0;
-      color: var(--muted);
-      font-size: 14px;
+      font-size: 20px;
     }
 
     .panel-body {
@@ -212,10 +208,34 @@
       font-size: 12px;
     }
 
+    .subsection {
+      margin-top: 8px;
+      padding-top: 4px;
+    }
+
+    .subsection-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 900;
+      margin: 2px 0 10px;
+    }
+
+    .subsection-title small {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
     .check-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
+    }
+
+    .check-grid.problem-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .check-card {
@@ -303,6 +323,22 @@
       box-shadow: 0 10px 20px rgba(17, 120, 100, 0.18);
     }
 
+    .placeholder-box {
+      border: 1px dashed #bfd1e3;
+      background: linear-gradient(180deg, #fbfdff 0%, #f4f8fc 100%);
+      border-radius: 18px;
+      padding: 34px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .placeholder-box strong {
+      display: block;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
     .summary-card {
       border: 1px solid var(--line);
       background: #fbfdff;
@@ -368,7 +404,8 @@
     .price-grid,
     .meta-grid,
     .secondary-results,
-    .insight-grid {
+    .insight-grid,
+    .priority-grid {
       display: grid;
       gap: 12px;
     }
@@ -378,10 +415,16 @@
       margin: 12px 0 18px;
     }
 
+    .priority-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 12px 0 18px;
+    }
+
     .insight-box,
     .meta-card,
     .price-box,
-    .mini-card {
+    .mini-card,
+    .priority-card {
       border: 1px solid var(--line);
       border-radius: 18px;
       background: #fff;
@@ -390,7 +433,8 @@
 
     .insight-box strong,
     .meta-card strong,
-    .price-box strong {
+    .price-box strong,
+    .priority-card strong {
       display: block;
       font-size: 13px;
       color: var(--muted);
@@ -401,6 +445,33 @@
       font-size: 15px;
       font-weight: 800;
       color: var(--text);
+    }
+
+    .priority-rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #fff;
+      background: var(--violet);
+      margin-bottom: 10px;
+    }
+
+    .priority-name {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .priority-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
     }
 
     .insight-box ul {
@@ -445,13 +516,9 @@
       font-weight: 900;
     }
 
-    ul.clean {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    ul.clean li + li {
-      margin-top: 8px;
+    .section-title.small {
+      font-size: 15px;
+      margin-top: 16px;
     }
 
     .module-grid {
@@ -501,13 +568,19 @@
       font-size: 14px;
     }
 
+    .notice-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
     .notice-box {
       border: 2px solid #f4b8b2;
       background: linear-gradient(180deg, #fff7f6 0%, var(--red-soft) 100%);
       color: #7a271a;
       border-radius: 18px;
       padding: 16px 18px;
-      margin-top: 20px;
     }
 
     .notice-box strong {
@@ -517,13 +590,15 @@
       color: var(--red);
     }
 
-    .career-banner {
-      margin-top: 18px;
+    .career-box-inline {
       border: 2px solid #cfe5ff;
       background: linear-gradient(180deg, #f5fbff 0%, #eaf4ff 100%);
       color: var(--brand);
       border-radius: 18px;
       padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       font-size: 18px;
       font-weight: 900;
@@ -532,19 +607,25 @@
 
     .mini-card h4 {
       margin: 0 0 6px;
-      font-size: 17px;
+      font-size: 16px;
+      line-height: 1.35;
     }
 
     .mini-card p {
-      margin: 0 0 10px;
-      font-size: 14px;
+      margin: 0 0 8px;
+      font-size: 13px;
       color: var(--muted);
+      line-height: 1.5;
     }
 
     .mini-price {
       font-weight: 900;
-      font-size: 24px;
+      font-size: 20px;
       letter-spacing: -0.03em;
+    }
+
+    .secondary-results {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .footer {
@@ -582,14 +663,17 @@
       .top-form-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .check-grid {
+      .check-grid,
+      .check-grid.problem-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .meta-grid,
       .insight-grid,
+      .priority-grid,
       .price-grid,
       .secondary-results,
-      .hero-grid {
+      .hero-grid,
+      .notice-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -597,7 +681,9 @@
     @media (max-width: 760px) {
       .top-form-grid,
       .module-grid,
-      .check-grid {
+      .check-grid,
+      .check-grid.problem-grid,
+      .secondary-results {
         grid-template-columns: 1fr;
       }
       .field.wide-2 {
@@ -625,17 +711,19 @@
       .summary-box,
       .module-grid,
       .notice-box,
-      .career-banner,
-      .brand-intro {
+      .career-box-inline,
+      .brand-intro,
+      .priority-card {
         box-shadow: none !important;
-        break-inside: avoid;
+        break-inside: auto;
         page-break-inside: avoid;
       }
 
       .top-form-panel,
       .footer .screen-only,
       .btn-row,
-      .copy-toast {
+      .copy-toast,
+      .screen-only {
         display: none !important;
       }
 
@@ -659,9 +747,22 @@
         text-decoration: none;
       }
 
+      .summary-card > * {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .price-grid,
+      .meta-grid,
+      .insight-grid,
+      .priority-grid,
+      .notice-grid {
+        gap: 10px;
+      }
+
       @page {
         size: A4;
-        margin: 12mm;
+        margin: 10mm;
       }
     }
   </style>
@@ -671,7 +772,7 @@
     <section class="hero">
       <div class="eyebrow">✅ With Linkedin Korea Partner</div>
       <h1>취업전략 교육 제안</h1>
-      <p class="sub">희망하는 교육형태, 대상, 인원, 예산, 운영기간을 선택하면 대학에 제안하기 좋은 취업역량강화 교육과 권장 금액을 자동으로 추천합니다.</p>
+      <p class="sub">희망하는 교육형태, 대상, 인원, 예산, 운영기간을 선택하고 현재 필요한 교육과 문제점을 함께 체크하면 대학에 제안하기 좋은 취업역량강화 교육과 권장 금액을 자동으로 추천합니다.</p>
 
       <div class="hero-grid">
         <div class="hero-box">
@@ -694,7 +795,6 @@
     <section class="panel top-form-panel screen-only">
       <div class="panel-head">
         <h2>희망 조건 선택</h2>
-        <p>상단에서 조건을 선택하면 하단에서 결과를 넓게 확인할 수 있습니다.</p>
       </div>
 
       <div class="panel-body">
@@ -824,6 +924,128 @@
             </div>
             <div class="hint">최소 1개 이상 선택해야 합니다.</div>
           </div>
+
+          <div class="field wide-4 subsection">
+            <div class="subsection-title">현재 가장 필요한 교육 <small>복수선택 가능</small></div>
+            <div class="check-grid problem-grid" id="needsWrap">
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="need" value="jobStrategy">
+                  <span>
+                    <div class="c-title">취업전략 전체 설계</div>
+                    <div class="c-desc">학생들이 어디서부터 준비해야 할지 방향이 부족한 경우</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="need" value="branding">
+                  <span>
+                    <div class="c-title">프로필·브랜딩 강화</div>
+                    <div class="c-desc">LinkedIn, 자기표현, 강점 정리, 대외적 이미지 보완</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="need" value="documents">
+                  <span>
+                    <div class="c-title">서류 완성도 향상</div>
+                    <div class="c-desc">자기소개서, 포트폴리오, CV, 지원문서 보완</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="need" value="interview">
+                  <span>
+                    <div class="c-title">면접 대응력 강화</div>
+                    <div class="c-desc">인성·역량·직무면접 답변 구조와 실전 연습 필요</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="need" value="global">
+                  <span>
+                    <div class="c-title">글로벌 취업역량 강화</div>
+                    <div class="c-desc">영문 프로필, 해외취업 관점, 글로벌 멘토 연계 필요</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="need" value="tracking">
+                  <span>
+                    <div class="c-title">사후관리·추적관리</div>
+                    <div class="c-desc">교육 이후 행동변화와 지원현황 관리가 필요한 경우</div>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="hint">선택한 필요교육 항목은 추천 프로그램과 핵심구성 우선순위에 반영됩니다.</div>
+          </div>
+
+          <div class="field wide-4 subsection">
+            <div class="subsection-title">교육의 가장 큰 문제점 <small>복수선택 가능</small></div>
+            <div class="check-grid problem-grid" id="painWrap">
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="pain" value="tooGeneral">
+                  <span>
+                    <div class="c-title">기존 교육이 너무 일반적임</div>
+                    <div class="c-desc">학생이 바로 활용하기 어려운 내용 위주인 경우</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="pain" value="lowExecution">
+                  <span>
+                    <div class="c-title">실행전환이 잘 안 됨</div>
+                    <div class="c-desc">교육 후 실제 지원, 프로필 수정, 행동 변화로 이어지지 않음</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="pain" value="noResults">
+                  <span>
+                    <div class="c-title">가시적 결과물이 부족함</div>
+                    <div class="c-desc">교육 종료 후 남는 산출물과 보고 포인트가 약함</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="pain" value="poorFit">
+                  <span>
+                    <div class="c-title">학과·대상 맞춤성이 부족함</div>
+                    <div class="c-desc">대상별 수준차를 반영하지 못해 체감도가 낮은 경우</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="pain" value="weakGlobal">
+                  <span>
+                    <div class="c-title">글로벌 요소가 약함</div>
+                    <div class="c-desc">영문 프로필, 글로벌 시각, 외국계 대응이 부족함</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="pain" value="reporting">
+                  <span>
+                    <div class="c-title">성과정리·보고가 어려움</div>
+                    <div class="c-desc">대학 내부 보고용 논리와 결과보고서 구성이 약한 경우</div>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="hint">선택한 문제점은 차별화 포인트와 추천 결과물에 반영됩니다.</div>
+          </div>
         </div>
 
         <div class="btn-row">
@@ -838,14 +1060,21 @@
     <section class="panel" id="resultPanel">
       <div class="panel-head">
         <h3>추천 결과</h3>
-        <p>선택 조건에 가장 잘 맞는 프로그램과 금액, 특장점, 차이점, 결과물을 넓게 보여줍니다.</p>
       </div>
-      <div class="panel-body" id="results"></div>
+      <div class="panel-body" id="results">
+        <div class="placeholder-box">
+          <strong>아직 추천 결과가 생성되지 않았습니다.</strong>
+          상단에서 조건을 선택한 뒤 <b>추천 교육 보기</b> 버튼을 눌러 결과를 확인하세요.
+        </div>
+      </div>
     </section>
 
     <footer class="footer">
       <div>교육을 위해 작성된 추천 결과이니 대학 상황에 맞게 조정하여 활용하시기 바랍니다.</div>
-      <div style="margin-top:8px;">강원준 · <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noreferrer">LinkedIn 프로필 바로가기</a></div>
+      <div style="margin-top:8px;">
+        Made by Linkedin Korea Partner /
+        <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noreferrer">강원준 Linkedin 프로필</a>
+      </div>
     </footer>
   </main>
 
@@ -1090,6 +1319,47 @@
       mixed: '학과맞춤형'
     };
 
+    const needLabels = {
+      jobStrategy: '취업전략 전체 설계',
+      branding: '프로필·브랜딩 강화',
+      documents: '서류 완성도 향상',
+      interview: '면접 대응력 강화',
+      global: '글로벌 취업역량 강화',
+      tracking: '사후관리·추적관리'
+    };
+
+    const painLabels = {
+      tooGeneral: '기존 교육이 너무 일반적임',
+      lowExecution: '실행전환이 잘 안 됨',
+      noResults: '가시적 결과물이 부족함',
+      poorFit: '학과·대상 맞춤성이 부족함',
+      weakGlobal: '글로벌 요소가 약함',
+      reporting: '성과정리·보고가 어려움'
+    };
+
+    const moduleDescriptions = {
+      '취업전략': '취업준비 전체 흐름과 우선순위를 구조화합니다.',
+      '채용트렌드 분석': '학생이 현재 채용시장 흐름을 이해하도록 돕습니다.',
+      '자기소개서 작성법': '지원서 문장력과 구조 완성도를 높입니다.',
+      'LinkedIn 프로필 최적화': '온라인 브랜딩과 프로필 경쟁력을 강화합니다.',
+      '기업분석': '희망기업과 산업을 구체적으로 분석합니다.',
+      '경력관리': '경험 정리와 경력 방향성 설계를 돕습니다.',
+      '포트폴리오 작성전략': '보이는 결과물 중심 준비를 강화합니다.',
+      '글로벌 네트워크 구축': '글로벌 관점과 해외 연결 가능성을 넓힙니다.',
+      '면접전략': '실전 답변 구조와 면접 대응력을 높입니다.',
+      '유형별 면접 전략': '직무·인성·역량별 면접 방식에 맞춰 준비합니다.',
+      '희망기업 중심 취업전략 분석': '희망기업과 직무 기준 지원전략을 설계합니다.',
+      '개별코칭 선택을 통한 맞춤형 심화교육': '심화 대상자 중심 개별 피드백을 연결합니다.',
+      '취업 추적관리 코칭': '교육 이후 행동과 지원현황을 관리합니다.',
+      '학과기반 취업전략': '학과 특성에 맞는 진출 방향을 구체화합니다.',
+      '학생 지도용 기업분석': '실무자가 학생 지도에 활용할 수 있는 기업분석 구조입니다.',
+      '경력관리 지도법': '학생 경험을 정리하고 지도하는 방법을 학습합니다.',
+      '면접전략 지도법': '면접 피드백과 지도 포인트를 표준화합니다.',
+      '학과기반 취업전략 지도': '학과별 취업지도 접근법을 정리합니다.',
+      '희망기업 중심 취업전략 분석 지도': '희망기업 맞춤 상담 프레임을 제공합니다.',
+      '개별코칭 선택을 통한 맞춤형 심화교육 설계': '후속 코칭형 교육 설계 기준을 제시합니다.'
+    };
+
     const form = {
       programType: document.getElementById('programType'),
       size: document.getElementById('size'),
@@ -1109,6 +1379,14 @@
 
     function getSelectedAudiences() {
       return [...document.querySelectorAll('input[name="audience"]:checked')].map(el => el.value);
+    }
+
+    function getSelectedNeeds() {
+      return [...document.querySelectorAll('input[name="need"]:checked')].map(el => el.value);
+    }
+
+    function getSelectedPains() {
+      return [...document.querySelectorAll('input[name="pain"]:checked')].map(el => el.value);
     }
 
     function ensureAudienceSelected() {
@@ -1188,6 +1466,20 @@
       if (choices.size === 'large' && program.id === 'accelerator') score += 6;
       if (program.id === 'advisor' && choices.size !== 'xlarge' && choices.size !== 'large') score += 2;
 
+      if (choices.needs.includes('tracking') && program.id === 'reboot') score += 18;
+      if (choices.needs.includes('global') && program.id === 'accelerator') score += 12;
+      if (choices.needs.includes('branding') && program.id === 'accelerator') score += 10;
+      if (choices.needs.includes('documents') && (program.id === 'accelerator' || program.id === 'departmentCamp')) score += 8;
+      if (choices.needs.includes('interview') && (program.id === 'accelerator' || program.id === 'reboot')) score += 8;
+      if (choices.needs.includes('jobStrategy') && program.id !== 'advisor') score += 6;
+
+      if (choices.pains.includes('tooGeneral') && program.id === 'departmentCamp') score += 8;
+      if (choices.pains.includes('lowExecution') && (program.id === 'accelerator' || program.id === 'reboot')) score += 12;
+      if (choices.pains.includes('noResults') && (program.id === 'accelerator' || program.id === 'reboot')) score += 10;
+      if (choices.pains.includes('poorFit') && program.id === 'departmentCamp') score += 12;
+      if (choices.pains.includes('weakGlobal') && program.id === 'accelerator') score += 10;
+      if (choices.pains.includes('reporting') && (program.id === 'reboot' || program.id === 'accelerator')) score += 8;
+
       return Math.max(0, Math.min(99, score));
     }
 
@@ -1228,7 +1520,11 @@
       return audiences.map(a => audienceLabels[a]).join(', ');
     }
 
-    function getDynamicModules(programId, choices) {
+    function getTagText(values, labelMap, fallback = '선택 없음') {
+      return values.length ? values.map(v => labelMap[v]).join(', ') : fallback;
+    }
+
+    function prioritizeModules(programId, choices) {
       let pool = [...(modulePool[programId] || [])];
 
       if (choices.audiences.includes('graduates') && !pool.includes('취업 추적관리 코칭')) {
@@ -1237,17 +1533,79 @@
       if (choices.audiences.includes('mixed') && !pool.includes('학과기반 취업전략')) {
         pool.push('학과기반 취업전략');
       }
-      if (choices.english !== 'none' && !pool.includes('글로벌 네트워크 구축')) {
+      if ((choices.english !== 'none' || choices.needs.includes('global') || choices.pains.includes('weakGlobal')) && !pool.includes('글로벌 네트워크 구축')) {
         pool.push('글로벌 네트워크 구축');
       }
 
-      if (choices.duration === '1day-short') return pool.slice(0, 6);
-      if (choices.duration === '1day-full') return pool.slice(0, 8);
-      if (choices.duration === '2day') return pool.slice(0, 10);
-      return pool.slice(0, 12);
+      const scores = pool.map((module, index) => {
+        let s = 10 + (pool.length - index);
+
+        if (choices.needs.includes('jobStrategy') && ['취업전략', '학과기반 취업전략', '희망기업 중심 취업전략 분석'].includes(module)) s += 20;
+        if (choices.needs.includes('branding') && ['LinkedIn 프로필 최적화', '경력관리'].includes(module)) s += 20;
+        if (choices.needs.includes('documents') && ['자기소개서 작성법', '포트폴리오 작성전략'].includes(module)) s += 20;
+        if (choices.needs.includes('interview') && ['면접전략', '유형별 면접 전략'].includes(module)) s += 20;
+        if (choices.needs.includes('global') && ['글로벌 네트워크 구축', 'LinkedIn 프로필 최적화'].includes(module)) s += 18;
+        if (choices.needs.includes('tracking') && ['취업 추적관리 코칭', '개별코칭 선택을 통한 맞춤형 심화교육', '개별코칭 선택을 통한 맞춤형 심화교육 설계'].includes(module)) s += 22;
+
+        if (choices.pains.includes('tooGeneral') && ['학과기반 취업전략', '희망기업 중심 취업전략 분석', '기업분석'].includes(module)) s += 14;
+        if (choices.pains.includes('lowExecution') && ['취업전략', '취업 추적관리 코칭', '개별코칭 선택을 통한 맞춤형 심화교육', '희망기업 중심 취업전략 분석'].includes(module)) s += 16;
+        if (choices.pains.includes('noResults') && ['LinkedIn 프로필 최적화', '자기소개서 작성법', '포트폴리오 작성전략', '기업분석'].includes(module)) s += 14;
+        if (choices.pains.includes('poorFit') && ['학과기반 취업전략', '학생 지도용 기업분석', '희망기업 중심 취업전략 분석 지도'].includes(module)) s += 16;
+        if (choices.pains.includes('weakGlobal') && ['글로벌 네트워크 구축', 'LinkedIn 프로필 최적화'].includes(module)) s += 16;
+        if (choices.pains.includes('reporting') && ['취업 추적관리 코칭', '기업분석', '희망기업 중심 취업전략 분석'].includes(module)) s += 12;
+
+        return { module, score: s };
+      });
+
+      const sorted = scores.sort((a, b) => b.score - a.score);
+      const top3 = sorted.slice(0, 3);
+      let displayCount = 12;
+      if (choices.duration === '1day-short') displayCount = 6;
+      else if (choices.duration === '1day-full') displayCount = 8;
+      else if (choices.duration === '2day') displayCount = 10;
+
+      const orderedModules = sorted.slice(0, displayCount).map(item => item.module);
+
+      return {
+        top3,
+        orderedModules
+      };
     }
 
-    function buildCopyText(best, choices, estimates, modules) {
+    function getDynamicOutcomes(best, choices) {
+      const base = [...best.outcomes];
+
+      if (choices.needs.includes('branding') && !base.includes('학생별 LinkedIn 프로필 초안 또는 개선안')) {
+        base.push('학생별 LinkedIn 프로필 초안 또는 개선안');
+      }
+      if (choices.needs.includes('documents') && !base.includes('자기소개서/포트폴리오 방향성 초안')) {
+        base.push('자기소개서/포트폴리오 방향성 초안');
+      }
+      if (choices.needs.includes('interview') && !base.includes('면접 답변 구조 및 취업 실행계획표')) {
+        base.push('면접 답변 구조 및 취업 실행계획표');
+      }
+      if (choices.needs.includes('tracking') && !base.includes('취업 추적관리표 및 지원현황표')) {
+        base.push('취업 추적관리표 및 지원현황표');
+      }
+      if (choices.pains.includes('reporting') && !base.includes('운영 결과보고서용 핵심 성과정리표')) {
+        base.push('운영 결과보고서용 핵심 성과정리표');
+      }
+      if (choices.pains.includes('tooGeneral') && !base.includes('대상 맞춤형 교육운영안 및 학과 맞춤 메시지')) {
+        base.push('대상 맞춤형 교육운영안 및 학과 맞춤 메시지');
+      }
+
+      return [...new Set(base)].slice(0, 5);
+    }
+
+    function buildIssueSummary(choices) {
+      const lines = [];
+      if (choices.needs.length) lines.push(`현재 가장 필요한 교육: ${getTagText(choices.needs, needLabels)}`);
+      if (choices.pains.length) lines.push(`교육의 가장 큰 문제점: ${getTagText(choices.pains, painLabels)}`);
+      if (!lines.length) return '선택된 필요교육 및 문제점 항목은 없습니다.';
+      return lines.join('<br>');
+    }
+
+    function buildCopyText(best, choices, estimates, modules, top3, dynamicOutcomes) {
       const lines = [];
       lines.push(`[추천 프로그램] ${getRecommendationLabel(best, choices)}`);
       lines.push(`- 적합도: ${scoreProgram(best, choices)}점`);
@@ -1255,13 +1613,16 @@
       lines.push(`- 주요 대상: ${getAudienceText(choices.audiences)}`);
       lines.push(`- 예상 인원: ${form.size.options[form.size.selectedIndex].text}`);
       lines.push(`- 운영 구조: ${getStructure(best, choices)}`);
+      lines.push(`- 현재 가장 필요한 교육: ${getTagText(choices.needs, needLabels)}`);
+      lines.push(`- 교육의 가장 큰 문제점: ${getTagText(choices.pains, painLabels)}`);
       lines.push(`- 권장 금액(VAT 포함 / 결과보고서 및 운영비 포함): 기본형 ${formatMoney(estimates.base)} / 추천형 ${formatMoney(estimates.recommended)} / 확장형 ${formatMoney(estimates.premium)}`);
       lines.push(`- 글로벌 멘토 옵션: ${getMentorLabel(choices.mentor)}`);
       lines.push(`- 영문 지원 옵션: ${englishLabel[choices.english]}`);
       lines.push(`- 교육 특장점: ${best.strengths.join(' / ')}`);
       lines.push(`- 기존교육과의 차이점: ${best.differentiation.join(' / ')}`);
-      lines.push(`- 최종 결과물: ${best.outcomes.join(' / ')}`);
-      lines.push(`- 핵심 구성: ${modules.join(', ')}`);
+      lines.push(`- 최종 결과물: ${dynamicOutcomes.join(' / ')}`);
+      lines.push(`- 핵심구성 우선순위: ${top3.map((item, idx) => `${idx + 1}. ${item.module}`).join(' / ')}`);
+      lines.push(`- 전체 핵심 구성: ${modules.join(', ')}`);
       lines.push(`- 프로그램 요약: ${best.proposal}`);
       if (choices.notes.trim()) lines.push(`- 추가 메모 반영 포인트: ${choices.notes.trim()}`);
       lines.push(`- 강사전원 취업/채용 교육경력 20년 이상`);
@@ -1279,7 +1640,9 @@
         budget: form.budget.value,
         mentor: form.mentor.value,
         english: form.english.value,
-        notes: form.notes.value
+        notes: form.notes.value,
+        needs: getSelectedNeeds(),
+        pains: getSelectedPains()
       };
 
       const ranked = programs
@@ -1296,15 +1659,18 @@
       const budgetFit = getBudgetFitMessage(estimates, choices.budget);
       const selectedMentor = getMentorLabel(choices.mentor);
       const selectedEnglish = englishLabel[choices.english];
-      const modules = getDynamicModules(best.id, choices);
-      const copyText = buildCopyText(best, choices, estimates, modules);
+      const priorityData = prioritizeModules(best.id, choices);
+      const modules = priorityData.orderedModules;
+      const top3 = priorityData.top3;
+      const dynamicOutcomes = getDynamicOutcomes(best, choices);
+      const copyText = buildCopyText(best, choices, estimates, modules, top3, dynamicOutcomes);
 
       const alternativeCards = ranked.slice(1, 3).map(item => `
         <article class="mini-card">
           <h4>${getRecommendationLabel(item.program, choices)}</h4>
           <p>${item.program.summary}</p>
           <div class="mini-price">${formatMoney(item.estimates.recommended)}</div>
-          <div style="margin-top:8px;font-size:13px;color:#486581;">적합도 ${item.score}점 · ${getStructure(item.program, choices)}</div>
+          <div style="margin-top:6px;font-size:12px;color:#486581;">적합도 ${item.score}점 · ${getStructure(item.program, choices)}</div>
         </article>
       `).join('');
 
@@ -1320,6 +1686,8 @@
         ? `선택 대상 프리미엄 ${formatMoney(estimates.audiencePremium)}이 추천형 이상 금액에 반영되었습니다.`
         : '선택 대상에 따른 별도 프리미엄은 반영되지 않았습니다.';
 
+      const issueSummary = buildIssueSummary(choices);
+
       resultsEl.innerHTML = `
         <div class="summary-card" id="printArea">
           <div class="brand-intro">
@@ -1333,6 +1701,39 @@
               <div class="summary-top-copy">${best.summary}</div>
             </div>
             <div class="score-badge">적합도 ${ranked[0].score}점</div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>권장 운영 구조</strong>
+              <div>${getStructure(best, choices)}</div>
+            </div>
+            <div class="meta-card">
+              <strong>주요 대상</strong>
+              <div>${getAudienceText(choices.audiences)}</div>
+            </div>
+            <div class="meta-card">
+              <strong>선택한 예산 구간</strong>
+              <div>${budgetLabels[choices.budget]}</div>
+            </div>
+            <div class="meta-card">
+              <strong>예산 적합도 코멘트</strong>
+              <div>${budgetFit}</div>
+            </div>
+          </div>
+
+          <div class="section-title">현재 진단 요약</div>
+          <div class="summary-box">${issueSummary}</div>
+
+          <div class="section-title">핵심구성 우선순위</div>
+          <div class="priority-grid">
+            ${top3.map((item, idx) => `
+              <div class="priority-card">
+                <div class="priority-rank">${idx + 1}</div>
+                <div class="priority-name">${item.module}</div>
+                <div class="priority-desc">${moduleDescriptions[item.module] || '핵심 구성요소입니다.'}</div>
+              </div>
+            `).join('')}
           </div>
 
           <div class="insight-grid">
@@ -1351,9 +1752,9 @@
             </div>
 
             <div class="insight-box">
-              <strong>최종 결과물</strong>
+              <strong>추천 결과물</strong>
               <ul>
-                ${best.outcomes.map(item => `<li>${item}</li>`).join('')}
+                ${dynamicOutcomes.map(item => `<li>${item}</li>`).join('')}
               </ul>
             </div>
           </div>
@@ -1376,26 +1777,7 @@
             </div>
           </div>
 
-          <div class="meta-grid">
-            <div class="meta-card">
-              <strong>권장 운영 구조</strong>
-              <div>${getStructure(best, choices)}</div>
-            </div>
-            <div class="meta-card">
-              <strong>주요 대상</strong>
-              <div>${getAudienceText(choices.audiences)}</div>
-            </div>
-            <div class="meta-card">
-              <strong>선택한 예산 구간</strong>
-              <div>${budgetLabels[choices.budget]}</div>
-            </div>
-            <div class="meta-card">
-              <strong>예산 적합도 코멘트</strong>
-              <div>${budgetFit}</div>
-            </div>
-          </div>
-
-          <div class="section-title">핵심 구성</div>
+          <div class="section-title">교육 핵심구성요소</div>
           <div class="module-grid">
             ${modules.map(item => `<div class="module-item">${item}</div>`).join('')}
           </div>
@@ -1417,12 +1799,13 @@
             <div class="summary-box">${choices.notes.trim()}</div>
           ` : ''}
 
-          <div class="notice-box">
-            <strong>공지사항</strong>
-            교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
+          <div class="notice-grid">
+            <div class="notice-box">
+              <strong>공지사항</strong>
+              교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
+            </div>
+            <div class="career-box-inline">강사전원 취업/채용 교육경력 20년 이상</div>
           </div>
-
-          <div class="career-banner">강사전원 취업/채용 교육경력 20년 이상</div>
 
           <div class="btn-row screen-only">
             <button class="btn-primary" id="copyBtn" type="button">추천 결과 복사</button>
@@ -1431,7 +1814,7 @@
         </div>
 
         <div class="screen-only">
-          <div class="section-title">다른 추천안</div>
+          <div class="section-title small">추가 교육추천</div>
           <div class="secondary-results">${alternativeCards}</div>
         </div>
       `;
@@ -1462,9 +1845,23 @@
       });
     }
 
+    function setNeeds(values) {
+      document.querySelectorAll('input[name="need"]').forEach(el => {
+        el.checked = values.includes(el.value);
+      });
+    }
+
+    function setPains(values) {
+      document.querySelectorAll('input[name="pain"]').forEach(el => {
+        el.checked = values.includes(el.value);
+      });
+    }
+
     function loadSample() {
       form.programType.value = 'turnkey';
       setAudience(['students', 'seniors']);
+      setNeeds(['jobStrategy', 'branding', 'interview']);
+      setPains(['lowExecution', 'noResults']);
       form.size.value = 'core';
       form.duration.value = '6day18';
       form.budget.value = '1501to2000';
@@ -1477,13 +1874,20 @@
     function resetForm() {
       form.programType.value = 'turnkey';
       setAudience(['students']);
+      setNeeds([]);
+      setPains([]);
       form.size.value = 'core';
       form.duration.value = '6day18';
       form.budget.value = '1501to2000';
       form.mentor.value = '0';
       form.english.value = 'none';
       form.notes.value = '';
-      renderResults();
+      resultsEl.innerHTML = `
+        <div class="placeholder-box">
+          <strong>아직 추천 결과가 생성되지 않았습니다.</strong>
+          상단에서 조건을 선택한 뒤 <b>추천 교육 보기</b> 버튼을 눌러 결과를 확인하세요.
+        </div>
+      `;
     }
 
     function printToPdf() {
@@ -1494,21 +1898,6 @@
     document.getElementById('sampleBtn').addEventListener('click', loadSample);
     document.getElementById('resetBtn').addEventListener('click', resetForm);
     document.getElementById('pdfBtn').addEventListener('click', printToPdf);
-
-    Object.values(form).forEach(el => {
-      if (el && (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA')) {
-        el.addEventListener('change', renderResults);
-      }
-    });
-
-    document.querySelectorAll('input[name="audience"]').forEach(el => {
-      el.addEventListener('change', () => {
-        ensureAudienceSelected();
-        renderResults();
-      });
-    });
-
-    renderResults();
   </script>
 </body>
 </html>
