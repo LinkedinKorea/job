@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>대학교육 제안서 추천기</title>
-  <meta name="description" content="대학 교육 형태, 대상, 규모, 예산을 선택하면 AI·LinkedIn 기반 추천 프로그램과 권장 금액을 제안합니다." />
+  <title>취업전략 교육 제안</title>
+  <meta name="description" content="대학 교육 형태, 대상, 규모, 예산을 선택하면 AI·LinkedIn 기반 취업전략 교육과 권장 금액을 제안합니다." />
   <style>
     :root {
       --bg: #f4f7fb;
@@ -18,6 +18,8 @@
       --green-soft: #eafaf1;
       --gold: #8f5b00;
       --gold-soft: #fff5db;
+      --red: #b42318;
+      --red-soft: #fff1f0;
       --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
       --radius: 18px;
     }
@@ -35,7 +37,7 @@
     a:hover { text-decoration: underline; }
 
     .wrap {
-      max-width: 1160px;
+      max-width: 1180px;
       margin: 0 auto;
       padding: 28px 20px 56px;
     }
@@ -54,7 +56,7 @@
       gap: 8px;
       align-items: center;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--brand);
       background: var(--brand-soft);
       border: 1px solid #cfe5ff;
@@ -123,7 +125,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+      grid-template-columns: minmax(360px, 450px) minmax(0, 1fr);
       gap: 22px;
       align-items: start;
     }
@@ -162,7 +164,7 @@
       margin-top: 16px;
     }
 
-    label {
+    label.block-label {
       display: block;
       font-size: 14px;
       font-weight: 800;
@@ -195,6 +197,55 @@
       margin-top: 6px;
       color: var(--muted);
       font-size: 12px;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .check-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 0;
+      overflow: hidden;
+      transition: border-color .15s ease, box-shadow .15s ease, transform .08s ease;
+    }
+
+    .check-card:hover {
+      border-color: #b8d5f2;
+    }
+
+    .check-card label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 14px;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .check-card input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .check-card .c-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .check-card .c-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
     }
 
     .btn-row {
@@ -242,14 +293,20 @@
       justify-content: space-between;
       gap: 16px;
       align-items: flex-start;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
     .summary-head h3 {
       margin: 0;
-      font-size: 24px;
+      font-size: 26px;
       line-height: 1.25;
+    }
+
+    .summary-top-copy {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
     }
 
     .score-badge {
@@ -265,25 +322,73 @@
       white-space: nowrap;
     }
 
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 16px 0;
+    .brand-intro {
+      border: 1px solid #cfe5ff;
+      background: linear-gradient(180deg, #f6fbff 0%, #edf6ff 100%);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
     }
 
-    .price-box {
-      border-radius: 18px;
+    .brand-intro strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+      color: var(--brand);
+    }
+
+    .brand-intro div {
+      color: #24517a;
+      font-size: 14px;
+    }
+
+    .feature-grid,
+    .deliverable-grid,
+    .price-grid,
+    .meta-grid,
+    .secondary-results {
+      display: grid;
+      gap: 12px;
+    }
+
+    .feature-grid,
+    .deliverable-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 12px 0 18px;
+    }
+
+    .feature-card,
+    .deliverable-card,
+    .meta-card,
+    .price-box,
+    .mini-card {
       border: 1px solid var(--line);
+      border-radius: 18px;
       background: #fff;
       padding: 16px;
     }
 
+    .feature-card strong,
+    .deliverable-card strong,
+    .meta-card strong,
     .price-box strong {
       display: block;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       margin-bottom: 6px;
+    }
+
+    .feature-card div,
+    .deliverable-card div,
+    .meta-card div {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .price-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 16px 0;
     }
 
     .price-box .price {
@@ -297,32 +402,12 @@
       margin-top: 6px;
       color: var(--muted);
       font-size: 12px;
+      line-height: 1.45;
     }
 
     .meta-grid {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
       margin: 16px 0;
-    }
-
-    .meta-card {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-      background: #fff;
-    }
-
-    .meta-card strong {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .meta-card div {
-      font-size: 15px;
-      font-weight: 800;
     }
 
     .section-title {
@@ -353,18 +438,20 @@
       font-size: 14px;
     }
 
-    .secondary-results {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 18px;
+    .notice-box {
+      border: 2px solid #f4b8b2;
+      background: linear-gradient(180deg, #fff7f6 0%, var(--red-soft) 100%);
+      color: #7a271a;
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-top: 20px;
     }
 
-    .mini-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      background: #fff;
+    .notice-box strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: var(--red);
     }
 
     .mini-card h4 {
@@ -420,7 +507,10 @@
       .grid,
       .price-grid,
       .meta-grid,
-      .secondary-results {
+      .secondary-results,
+      .feature-grid,
+      .deliverable-grid,
+      .check-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -430,22 +520,23 @@
   <main class="wrap">
     <section class="hero">
       <div class="eyebrow">✅ Made by Linkedin Korea Partner</div>
-      <h1>대학교육 제안서 추천기</h1>
-      <p class="sub">희망하는 교육형태, 대상, 인원, 예산, 운영기간을 선택하면 대학에 제안하기 좋은 프로그램과 권장 금액을 자동으로 추천합니다.</p>
+      <h1>취업전략 교육 제안</h1>
+      <p class="sub">희망하는 교육형태, 대상, 인원, 예산, 운영기간을 선택하면 대학에 제안하기 좋은 취업역량강화 교육과 권장 금액을 자동으로 추천합니다.</p>
+
       <div class="hero-grid">
         <div class="hero-box">
-          <h2>어떻게 활용하면 좋나요?</h2>
-          <p>대학일자리플러스센터, 취창업처, 학과, 국제처 등과 논의할 때 프로그램 방향과 예산안을 빠르게 잡는 용도로 설계했습니다. 결과는 그대로 제안서 초안 문구로 활용할 수 있습니다.</p>
+          <h2>Linkedin Korea Partner와 함께하는 취업역량강화 교육</h2>
+          <p>대학일자리플러스센터, 취창업처, 학과, 국제처 등과 논의할 때 프로그램 방향과 예산안을 빠르게 잡을 수 있도록 설계했습니다. 결과는 제안서 초안, 안내문, 예산 협의자료로 바로 활용할 수 있습니다.</p>
           <div class="chips">
             <span class="chip">AI·LinkedIn 기반</span>
-            <span class="chip">대학용 교육 추천</span>
-            <span class="chip">예산 시뮬레이션</span>
-            <span class="chip">글로벌 멘토 옵션</span>
+            <span class="chip">취업전략 교육 추천</span>
+            <span class="chip">부가세 포함 예산 시뮬레이션</span>
+            <span class="chip">글로벌 멘토 확장 가능</span>
           </div>
         </div>
         <div class="hero-box">
-          <h2>추천 대상 프로그램</h2>
-          <p>AI·LinkedIn 커리어 액셀러레이터, 졸업생 리부트 프로그램, 학과 맞춤 취업브랜딩 캠프, 교수·취업지원 실무자 LinkedIn Advisor Lab 중에서 가장 적합한 안을 보여줍니다.</p>
+          <h2>교육 방향</h2>
+          <p>글로벌 역량 및 국내취업역량을 채용담당자의 관점에서 볼 수 있는 교육입니다. 단순 특강형부터 6일 18시간 집중형, 졸업생 추적관리형까지 대학 상황에 맞춘 구조를 추천합니다.</p>
         </div>
       </div>
     </section>
@@ -456,9 +547,10 @@
           <h2>희망 조건 선택</h2>
           <p>선택값을 바꾸면 대학에 제안하기 좋은 구성과 예산이 달라집니다.</p>
         </div>
+
         <div class="panel-body">
           <div class="field">
-            <label for="programType">교육 형태</label>
+            <label class="block-label" for="programType">교육 형태</label>
             <select id="programType">
               <option value="turnkey">프로젝트형 / 턴키형</option>
               <option value="bootcamp">실습형 부트캠프</option>
@@ -469,18 +561,59 @@
           </div>
 
           <div class="field">
-            <label for="audience">주요 대상</label>
-            <select id="audience">
-              <option value="students">재학생(3~4학년 중심)</option>
-              <option value="seniors">졸업예정자</option>
-              <option value="graduates">미취업 졸업생</option>
-              <option value="faculty">교수 / 취업지원 실무자</option>
-              <option value="mixed">학과 단위 혼합 참여</option>
-            </select>
+            <label class="block-label">주요 대상 (복수선택 가능)</label>
+            <div class="check-grid" id="audienceWrap">
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="audience" value="students" checked>
+                  <span>
+                    <div class="c-title">재학생(3~4학년 중심)</div>
+                    <div class="c-desc">학과별 취업준비, 프로필 정비, 직무탐색</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="audience" value="seniors">
+                  <span>
+                    <div class="c-title">졸업예정자</div>
+                    <div class="c-desc">지원 직전 실행전략, 면접, 서류완성</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="audience" value="graduates">
+                  <span>
+                    <div class="c-title">미취업 졸업생</div>
+                    <div class="c-desc">후속관리, 루틴 재설계, 재도전 집중관리</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="audience" value="faculty">
+                  <span>
+                    <div class="c-title">교수 / 취업지원 실무자</div>
+                    <div class="c-desc">학생 지도법, AI 활용 상담, LinkedIn 지도</div>
+                  </span>
+                </label>
+              </div>
+              <div class="check-card">
+                <label>
+                  <input type="checkbox" name="audience" value="mixed">
+                  <span>
+                    <div class="c-title">학과 단위 혼합 참여</div>
+                    <div class="c-desc">학과 전체 특강, 다수 학생 대상 운영</div>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="hint">최소 1개 이상 선택해야 합니다.</div>
           </div>
 
           <div class="field">
-            <label for="size">예상 인원</label>
+            <label class="block-label" for="size">예상 인원</label>
             <select id="size">
               <option value="small">15명 이하</option>
               <option value="mid">16~25명</option>
@@ -491,7 +624,7 @@
           </div>
 
           <div class="field">
-            <label for="duration">운영 기간 / 규모</label>
+            <label class="block-label" for="duration">운영 기간 / 규모</label>
             <select id="duration">
               <option value="1day-short">1일 / 3~4시간</option>
               <option value="1day-full">1일 / 6시간</option>
@@ -503,44 +636,47 @@
           </div>
 
           <div class="field">
-            <label for="budget">예상 예산</label>
+            <label class="block-label" for="budget">예상 예산</label>
             <select id="budget">
-              <option value="under700">700만원 이하</option>
+              <option value="under300">300만원 이하</option>
+              <option value="301to700">301만~700만원</option>
               <option value="701to1000">701만~1,000만원</option>
               <option value="1001to1500">1,001만~1,500만원</option>
               <option value="1501to2000" selected>1,501만~2,000만원</option>
               <option value="over2000">2,000만원 이상</option>
             </select>
-            <div class="hint">권장 금액은 부가세 포함 총계약액 기준 예시로 계산합니다.</div>
+            <div class="hint">권장 금액은 부가세 포함 총계약액 기준이며, 결과보고서 및 운영비용 포함 예시입니다.</div>
           </div>
 
           <div class="field">
-            <label for="mentor">글로벌 멘토 옵션</label>
+            <label class="block-label" for="mentor">글로벌 멘토 옵션 (추천형)</label>
             <select id="mentor">
-              <option value="none">없음</option>
-              <option value="online">온라인 특강 1회</option>
-              <option value="clinic">온라인 소그룹 클리닉</option>
+              <option value="0">없음</option>
+              <option value="1">글로벌 멘토 1명</option>
+              <option value="2">글로벌 멘토 2명</option>
+              <option value="3">글로벌 멘토 3명</option>
             </select>
+            <div class="hint">글로벌 멘토는 1명당 200만원씩 추가 반영됩니다.</div>
           </div>
 
           <div class="field">
-            <label for="english">영문 지원 옵션</label>
+            <label class="block-label" for="english">영문 지원 옵션 (확장형)</label>
             <select id="english">
               <option value="none" selected>없음</option>
               <option value="profile">영문 LinkedIn 프로필 소그룹 코칭</option>
               <option value="cv">영문 CV / 프로필 리뷰</option>
               <option value="materials">국·영문 자료 이중화</option>
             </select>
-            <div class="hint">영문 옵션은 기본과정에 필수로 넣지 않고, 필요할 때만 추가하는 구조입니다.</div>
+            <div class="hint">영문 옵션은 기본과정 필수항목이 아니라 확장형 add-on 구조입니다.</div>
           </div>
 
           <div class="field">
-            <label for="notes">추가 메모 (선택)</label>
-            <textarea id="notes" rows="4" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망"></textarea>
+            <label class="block-label" for="notes">추가 메모 (선택)</label>
+            <textarea id="notes" rows="4" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망 / 희망기업 중심 분석 포함"></textarea>
           </div>
 
           <div class="btn-row">
-            <button class="btn-primary" id="runBtn">추천 교육 보기</button>
+            <button class="btn-primary" id="runBtn" type="button">추천 교육 보기</button>
             <button class="btn-secondary" id="sampleBtn" type="button">샘플 입력</button>
             <button class="btn-secondary" id="resetBtn" type="button">초기화</button>
           </div>
@@ -550,7 +686,7 @@
       <div class="panel">
         <div class="panel-head">
           <h3>추천 결과</h3>
-          <p>선택 조건에 가장 잘 맞는 프로그램과 금액, 제안 포인트를 보여줍니다.</p>
+          <p>선택 조건에 가장 잘 맞는 프로그램과 금액, 특장점, 최종 결과물을 보여줍니다.</p>
         </div>
         <div class="panel-body" id="results"></div>
       </div>
@@ -558,7 +694,7 @@
 
     <footer class="footer">
       <div>교육을 위해 작성된 추천 결과이니 대학 상황에 맞게 조정하여 활용하시기 바랍니다.</div>
-      <div style="margin-top:8px;"><strong>© 대학교육 제안서 추천기</strong> (Made by Linkedin Korea Partner)</div>
+      <div style="margin-top:8px;"><strong>© 취업전략 교육 제안</strong> (Made by Linkedin Korea Partner)</div>
       <div style="margin-top:8px;">Made by 강원준_Linkedin Korea Partner HR Point(2026) · <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noreferrer">LinkedIn</a></div>
       <div style="margin-top:4px;">Made by Kang wonjun (Linkedin Korea Partner)</div>
     </footer>
@@ -571,86 +707,188 @@
       {
         id: 'accelerator',
         name: 'AI·LinkedIn 커리어 액셀러레이터',
-        summary: '재학생·졸업예정자를 대상으로 자기표현, 직무탐색, LinkedIn 프로필, 지원 실행을 연결하는 대표 프로그램입니다.',
-        basePrice: 1720,
+        summary: '재학생·졸업예정자를 대상으로 자기표현, 직무탐색, 기업분석, LinkedIn 프로필, 지원 실행을 연결하는 대표 실습형 프로그램입니다.',
+        basePrice: {
+          '1day-short': 180,
+          '1day-full': 420,
+          '2day': 780,
+          '4week': 1280,
+          '6day18': 1760,
+          '6week18': 1860
+        },
         audience: ['students', 'seniors', 'mixed'],
         types: ['turnkey', 'bootcamp', 'camp'],
-        durations: ['4week', '6day18'],
-        sponsor: ['대학일자리플러스센터', '취창업처', '학과', '단과대학'],
-        baseStructure: '6일 / 총 18시간 또는 4주 운영',
-        outputs: ['개인 LinkedIn 프로필 초안', '타깃 직무·기업 시트', '네트워킹 문안 3종', '지원 실행계획표', '운영 결과보고서'],
-        modules: ['자기강점 정리', 'JD 분석', 'LinkedIn 프로필 구조화', 'AI 활용 자기표현', '네트워킹 메시지 설계', '지원전략 발표'],
-        proposal: '본 프로그램은 AI와 LinkedIn을 활용해 학생의 취업브랜딩, 직무탐색, 지원실행을 연결하는 실습형 취업역량 강화 과정입니다.'
+        strengths: [
+          '채용담당자 관점에서 학생의 경쟁력을 구조화할 수 있습니다.',
+          'LinkedIn 프로필, 자기소개서, 기업분석, 면접전략을 한 흐름으로 연결할 수 있습니다.',
+          '국내취업과 글로벌 역량을 동시에 강화하기 좋은 대표 프로그램입니다.',
+          '대학 제안서, 홍보문구, 운영결과 보고서 작성에 활용하기 쉽습니다.'
+        ],
+        outcomes: [
+          '학생별 LinkedIn 프로필 초안 또는 개선안',
+          '희망기업 중심 지원전략 시트',
+          '직무·기업 분석 결과물',
+          '면접 답변 구조 및 취업 실행계획표'
+        ],
+        proposal: '본 프로그램은 AI와 LinkedIn을 활용해 학생의 취업브랜딩, 직무탐색, 기업분석, 지원실행을 연결하는 실습형 취업역량 강화 과정입니다.'
       },
       {
         id: 'reboot',
         name: '졸업생 리부트 프로그램',
-        summary: '미취업 졸업생의 재도전 전략, 구직 루틴, 프로필 개선, 지원 실행을 주간 단위로 관리하는 프로그램입니다.',
-        basePrice: 1880,
+        summary: '미취업 졸업생의 재도전 전략, 구직 루틴, 프로필 개선, 지원 실행을 추적관리 방식으로 운영하는 프로그램입니다.',
+        basePrice: {
+          '1day-short': 190,
+          '1day-full': 450,
+          '2day': 820,
+          '4week': 1380,
+          '6day18': 1880,
+          '6week18': 1980
+        },
         audience: ['graduates', 'seniors'],
         types: ['turnkey', 'reboot'],
-        durations: ['6week18', '6day18'],
-        sponsor: ['대학일자리플러스센터', '졸업생 특화 담당', '취업지원부서'],
-        baseStructure: '6주 / 총 18시간 운영',
-        outputs: ['재도약 로드맵', '지원관리표', '프로필 개선안', '주간 과제 점검표', '최종 결과보고서'],
-        modules: ['구직 루틴 재설계', 'LinkedIn 재정비', 'JD 분석', 'AI 활용 자기소개 구조화', '면접 스토리라인 설계', '주간 실행 점검'],
+        strengths: [
+          '구직이 멈춘 졸업생의 실행 루틴을 다시 만드는 데 적합합니다.',
+          '취업 추적관리 코칭과 개별코칭형 심화교육으로 연결하기 좋습니다.',
+          '지원현황, 목표기업, 면접준비를 주차별로 관리할 수 있습니다.',
+          '성과관리형 운영 보고서 구조와 잘 맞습니다.'
+        ],
+        outcomes: [
+          '졸업생 재도약 로드맵',
+          '취업 추적관리표 및 지원현황표',
+          '개인별 프로필 개선안',
+          '면접 및 서류 후속 피드백 기록'
+        ],
         proposal: '본 프로그램은 미취업 졸업생의 구직 재도전을 지원하기 위해 AI·LinkedIn 기반 브랜딩과 실행 루틴을 결합한 후속관리형 과정입니다.'
       },
       {
         id: 'departmentCamp',
         name: '학과 맞춤 취업브랜딩 캠프',
-        summary: '학과 단위 또는 다수 학생을 대상으로 짧고 밀도 있게 직무 이해, 강점 표현, 프로필 초안을 잡는 집중 캠프입니다.',
-        basePrice: 880,
+        summary: '학과 단위 또는 다수 학생을 대상으로 짧고 밀도 있게 직무 이해, 강점 표현, 학과기반 취업전략, 프로필 초안을 잡는 집중 캠프입니다.',
+        basePrice: {
+          '1day-short': 170,
+          '1day-full': 390,
+          '2day': 720,
+          '4week': 980,
+          '6day18': 1480,
+          '6week18': 1580
+        },
         audience: ['students', 'mixed', 'seniors'],
-        types: ['camp', 'bootcamp'],
-        durations: ['1day-full', '2day', '1day-short'],
-        sponsor: ['학과', '단과대학', '취창업처'],
-        baseStructure: '2일 / 6~8시간 또는 1일 집중형',
-        outputs: ['학과 맞춤 워크북', '직무맵', '프로필 초안', '실습 결과 요약'],
-        modules: ['학과 기반 직무맵', '강점 언어화', 'LinkedIn 프로필 작성', '지원서 구조화'],
-        proposal: '본 프로그램은 학과 특성과 학생 수준에 맞춰 직무탐색과 취업브랜딩을 단기간에 집중 지원하는 맞춤형 캠프입니다.'
+        types: ['camp', 'bootcamp', 'turnkey'],
+        strengths: [
+          '단기간 예산으로도 학과 맞춤형 취업전략 교육을 구성하기 쉽습니다.',
+          '1일 특강, 2일 집중형, 다수 학생 대상 운영에 적합합니다.',
+          '학과기반 취업전략과 희망기업 중심 분석을 함께 설계할 수 있습니다.',
+          '비교적 낮은 예산에서도 체감도 높은 결과물을 만들기 좋습니다.'
+        ],
+        outcomes: [
+          '학과 맞춤 직무맵',
+          '학생용 취업전략 워크북',
+          '희망기업 분석 프레임',
+          '자기소개서/포트폴리오 방향성 초안'
+        ],
+        proposal: '본 프로그램은 학과 특성과 학생 수준에 맞춰 직무탐색과 취업브랜딩을 단기간에 집중 지원하는 맞춤형 취업역량 강화 캠프입니다.'
       },
       {
         id: 'advisor',
         name: '교수·취업지원 실무자 LinkedIn Advisor Lab',
         summary: '교수와 취업지원 실무자가 학생의 LinkedIn 프로필과 AI 활용 상담을 지도할 수 있도록 돕는 연수형 과정입니다.',
-        basePrice: 620,
+        basePrice: {
+          '1day-short': 160,
+          '1day-full': 330,
+          '2day': 590,
+          '4week': 880,
+          '6day18': 1180,
+          '6week18': 1280
+        },
         audience: ['faculty'],
         types: ['advisor'],
-        durations: ['1day-full', '1day-short'],
-        sponsor: ['취창업처', '교무처', '학생처'],
-        baseStructure: '1일 / 3~6시간 연수형 운영',
-        outputs: ['학생 지도 가이드', '상담 체크리스트', '학생 피드백 템플릿'],
-        modules: ['학생 프로필 지도법', 'AI 활용 상담 프롬프트', '학생 강점 언어화', 'LinkedIn 지도 포인트'],
+        strengths: [
+          '교수와 실무자가 학생 지도에 바로 활용할 수 있는 구조입니다.',
+          '상담 표준화, 피드백 템플릿화, LinkedIn 지도 포인트 정리에 유리합니다.',
+          '짧은 연수형으로 운영하기 적합합니다.',
+          '대학 내부 확산용 시범 프로그램으로 활용하기 좋습니다.'
+        ],
+        outcomes: [
+          '학생 지도 가이드',
+          '상담 체크리스트',
+          '학생 피드백 템플릿',
+          'AI 활용 상담 프롬프트 세트'
+        ],
         proposal: '본 프로그램은 교수 및 취업지원 실무자의 학생 지도 역량을 높이기 위해 LinkedIn과 AI 활용법을 실무 중심으로 정리한 연수형 워크숍입니다.'
       }
     ];
 
+    const modulePool = {
+      accelerator: [
+        '취업전략',
+        '채용트렌드 분석',
+        '자기소개서 작성법',
+        'LinkedIn 프로필 최적화',
+        '기업분석',
+        '경력관리',
+        '포트폴리오 작성전략',
+        '글로벌 네트워크 구축',
+        '면접전략',
+        '유형별 면접 전략',
+        '희망기업 중심 취업전략 분석',
+        '개별코칭 선택을 통한 맞춤형 심화교육'
+      ],
+      reboot: [
+        '취업전략',
+        '채용트렌드 분석',
+        '자기소개서 작성법',
+        'LinkedIn 프로필 최적화',
+        '기업분석',
+        '경력관리',
+        '면접전략',
+        '유형별 면접 전략',
+        '희망기업 중심 취업전략 분석',
+        '취업 추적관리 코칭',
+        '개별코칭 선택을 통한 맞춤형 심화교육'
+      ],
+      departmentCamp: [
+        '학과기반 취업전략',
+        '채용트렌드 분석',
+        '자기소개서 작성법',
+        'LinkedIn 프로필 최적화',
+        '기업분석',
+        '포트폴리오 작성전략',
+        '면접전략',
+        '유형별 면접 전략',
+        '희망기업 중심 취업전략 분석',
+        '글로벌 네트워크 구축'
+      ],
+      advisor: [
+        '채용트렌드 분석',
+        'LinkedIn 프로필 최적화',
+        '학생 지도용 기업분석',
+        '경력관리 지도법',
+        '면접전략 지도법',
+        '학과기반 취업전략 지도',
+        '희망기업 중심 취업전략 분석 지도',
+        '개별코칭 선택을 통한 맞춤형 심화교육 설계'
+      ]
+    };
+
     const sizeAdjustments = {
-      small: { accelerator: -80, reboot: -100, departmentCamp: -100, advisor: -70 },
-      mid: { accelerator: -30, reboot: -50, departmentCamp: -50, advisor: -20 },
+      small: { accelerator: -60, reboot: -70, departmentCamp: -50, advisor: -20 },
+      mid: { accelerator: -20, reboot: -30, departmentCamp: -20, advisor: 0 },
       core: { accelerator: 0, reboot: 0, departmentCamp: 0, advisor: 0 },
-      large: { accelerator: 120, reboot: 100, departmentCamp: 100, advisor: 40 },
-      xlarge: { accelerator: 220, reboot: 180, departmentCamp: 180, advisor: 80 }
+      large: { accelerator: 120, reboot: 100, departmentCamp: 80, advisor: 40 },
+      xlarge: { accelerator: 220, reboot: 180, departmentCamp: 150, advisor: 80 }
     };
 
-    const mentorAdd = { none: 0, online: 250, clinic: 400 };
-    const mentorLabel = {
-      none: '없음',
-      online: '글로벌 멘토 온라인 특강 1회',
-      clinic: '글로벌 멘토 온라인 소그룹 클리닉'
-    };
-
-    const englishAdd = { none: 0, profile: 450, cv: 500, materials: 120 };
+    const englishAdd = { none: 0, profile: 60, cv: 80, materials: 30 };
     const englishLabel = {
       none: '없음',
-      profile: '영문 LinkedIn 프로필 소그룹 코칭',
-      cv: '영문 CV / 프로필 리뷰',
-      materials: '국·영문 자료 이중화'
+      profile: '영문 LinkedIn 프로필 소그룹 코칭 (확장형)',
+      cv: '영문 CV / 프로필 리뷰 (확장형)',
+      materials: '국·영문 자료 이중화 (확장형)'
     };
 
     const budgetCaps = {
-      under700: 700,
+      under300: 300,
+      '301to700': 700,
       '701to1000': 1000,
       '1001to1500': 1500,
       '1501to2000': 2000,
@@ -658,16 +896,33 @@
     };
 
     const budgetLabels = {
-      under700: '700만원 이하',
+      under300: '300만원 이하',
+      '301to700': '301만~700만원',
       '701to1000': '701만~1,000만원',
       '1001to1500': '1,001만~1,500만원',
       '1501to2000': '1,501만~2,000만원',
       over2000: '2,000만원 이상'
     };
 
+    const durationLabels = {
+      '1day-short': '1일 / 3~4시간',
+      '1day-full': '1일 / 6시간',
+      '2day': '2일 / 6~8시간',
+      '4week': '4주 / 8~12시간',
+      '6day18': '6일 / 총 18시간',
+      '6week18': '6주 / 총 18시간'
+    };
+
+    const audienceLabels = {
+      students: '재학생(3~4학년 중심)',
+      seniors: '졸업예정자',
+      graduates: '미취업 졸업생',
+      faculty: '교수 / 취업지원 실무자',
+      mixed: '학과 단위 혼합 참여'
+    };
+
     const form = {
       programType: document.getElementById('programType'),
-      audience: document.getElementById('audience'),
       size: document.getElementById('size'),
       duration: document.getElementById('duration'),
       budget: document.getElementById('budget'),
@@ -680,42 +935,81 @@
     const copyToast = document.getElementById('copyToast');
 
     function formatMoney(v) {
-      return `${v.toLocaleString('ko-KR')}만원`;
+      return `${Number(v).toLocaleString('ko-KR')}만원`;
     }
 
-    function computeEstimate(program, size, mentor, english) {
-      const adjusted = program.basePrice + (sizeAdjustments[size]?.[program.id] || 0);
-      const mentorCost = (program.id === 'advisor') ? 0 : mentorAdd[mentor];
-      const englishCost = (program.id === 'advisor') ? 0 : englishAdd[english];
-      const base = adjusted;
-      const recommended = adjusted + mentorCost;
-      const premium = adjusted + mentorCost + englishCost;
-      return { base, recommended, premium, mentorCost, englishCost };
+    function getSelectedAudiences() {
+      return [...document.querySelectorAll('input[name="audience"]:checked')].map(el => el.value);
+    }
+
+    function ensureAudienceSelected() {
+      const checked = getSelectedAudiences();
+      if (checked.length === 0) {
+        const first = document.querySelector('input[name="audience"][value="students"]');
+        if (first) first.checked = true;
+      }
+    }
+
+    function getMentorLabel(count) {
+      const n = Number(count);
+      return n > 0 ? `글로벌 멘토 ${n}명 (추천형)` : '없음';
+    }
+
+    function computeEstimate(program, size, mentorCount, english, duration) {
+      const baseByDuration = program.basePrice[duration] || program.basePrice['6day18'];
+      const sizeAdj = sizeAdjustments[size]?.[program.id] || 0;
+      let base = baseByDuration + sizeAdj;
+
+      if (program.id === 'advisor') {
+        base = Math.max(150, base);
+      }
+
+      if (duration === '1day-short') {
+        // 시간당 50만원 강사료 + 운영/결과보고서 포함 현실형
+        // 단순 특강형은 200만원 이하 유지
+        base = Math.min(base, 190);
+      }
+
+      const mentorCost = program.id === 'advisor' ? 0 : Number(mentorCount) * 200;
+      const englishCost = program.id === 'advisor' ? 0 : (englishAdd[english] || 0);
+
+      const recommended = base + mentorCost;
+      const premium = recommended + englishCost;
+
+      return {
+        base,
+        recommended,
+        premium,
+        mentorCost,
+        englishCost
+      };
     }
 
     function scoreProgram(program, choices) {
-      let score = 45;
+      let score = 42;
 
       if (program.types.includes(choices.programType)) score += 22;
-      if (program.audience.includes(choices.audience)) score += 28;
-      if (program.durations.includes(choices.duration)) score += 18;
 
-      if (choices.audience === 'mixed' && program.id === 'departmentCamp') score += 10;
-      if (choices.audience === 'graduates' && program.id === 'reboot') score += 18;
-      if (choices.audience === 'faculty' && program.id === 'advisor') score += 25;
+      const audienceHits = choices.audiences.filter(a => program.audience.includes(a)).length;
+      score += audienceHits * 12;
+
+      if (choices.audiences.includes('mixed') && program.id === 'departmentCamp') score += 12;
+      if (choices.audiences.includes('graduates') && program.id === 'reboot') score += 16;
+      if (choices.audiences.includes('faculty') && program.id === 'advisor') score += 25;
       if (choices.duration === '6day18' && program.id === 'accelerator') score += 14;
       if (choices.duration === '6week18' && program.id === 'reboot') score += 14;
-      if ((choices.duration === '1day-full' || choices.duration === '2day') && program.id === 'departmentCamp') score += 10;
+      if ((choices.duration === '1day-short' || choices.duration === '1day-full' || choices.duration === '2day') && program.id === 'departmentCamp') score += 10;
+      if (choices.duration === '1day-short' && program.id === 'advisor') score += 8;
 
-      if (choices.mentor !== 'none' && program.id === 'accelerator') score += 8;
+      if (Number(choices.mentor) > 0 && program.id === 'accelerator') score += 8;
       if (choices.english !== 'none' && (program.id === 'accelerator' || program.id === 'reboot')) score += 6;
 
-      const estimates = computeEstimate(program, choices.size, choices.mentor, choices.english);
+      const estimates = computeEstimate(program, choices.size, choices.mentor, choices.english, choices.duration);
       const cap = budgetCaps[choices.budget];
 
       if (estimates.recommended <= cap) score += 16;
       else if (estimates.base <= cap) score += 8;
-      else score -= Math.min(20, Math.round((estimates.base - cap) / 70));
+      else score -= Math.min(20, Math.round((estimates.base - cap) / 60));
 
       if (choices.size === 'xlarge' && program.id === 'departmentCamp') score += 10;
       if ((choices.size === 'small' || choices.size === 'mid') && program.id === 'reboot') score += 6;
@@ -726,7 +1020,7 @@
     }
 
     function getRecommendationLabel(program, choices) {
-      if (program.id === 'accelerator' && choices.mentor !== 'none') {
+      if (program.id === 'accelerator' && Number(choices.mentor) > 0) {
         return 'AI·LinkedIn 커리어 액셀러레이터 Plus';
       }
       return program.name;
@@ -736,46 +1030,82 @@
       if (program.id === 'accelerator' && choices.duration === '6day18') {
         return '6일 / 총 18시간 운영 · 실습형 메인 프로그램';
       }
-      if (program.id === 'reboot') {
+      if (program.id === 'reboot' && choices.duration === '6week18') {
         return '6주 / 총 18시간 운영 · 주간 실행점검 포함';
       }
       if (program.id === 'departmentCamp' && choices.duration === '1day-short') {
         return '1일 / 3~4시간 집중 특강형 운영';
       }
-      if (program.id === 'departmentCamp') {
+      if (program.id === 'departmentCamp' && choices.duration === '2day') {
         return '2일 / 6~8시간 집중 캠프형 운영';
       }
-      return program.baseStructure;
+      if (program.id === 'advisor' && choices.duration === '1day-short') {
+        return '1일 / 3~4시간 연수형 운영';
+      }
+      return `${durationLabels[choices.duration]} 운영`;
     }
 
     function getBudgetFitMessage(estimates, budgetKey) {
       const cap = budgetCaps[budgetKey];
       if (estimates.recommended <= cap) return '선택한 예산 안에서 추천형 패키지까지 구성 가능합니다.';
       if (estimates.base <= cap) return '선택한 예산에서는 기본형 중심 제안이 적합합니다.';
-      return '선택한 예산보다 상회할 수 있어 범위 조정 또는 축약 운영이 필요합니다.';
+      return '선택한 예산보다 상회할 수 있어 운영시간, 인원, 옵션 범위 조정이 필요합니다.';
     }
 
-    function buildCopyText(best, choices, estimates) {
+    function getAudienceText(audiences) {
+      return audiences.map(a => audienceLabels[a]).join(', ');
+    }
+
+    function getDynamicModules(programId, choices) {
+      let pool = [...(modulePool[programId] || [])];
+
+      if (choices.audiences.includes('graduates') && !pool.includes('취업 추적관리 코칭')) {
+        pool.push('취업 추적관리 코칭');
+      }
+      if (choices.audiences.includes('mixed') && !pool.includes('학과기반 취업전략')) {
+        pool.push('학과기반 취업전략');
+      }
+      if (choices.english !== 'none' && !pool.includes('글로벌 네트워크 구축')) {
+        pool.push('글로벌 네트워크 구축');
+      }
+
+      if (choices.duration === '1day-short') {
+        return pool.slice(0, 5);
+      }
+      if (choices.duration === '1day-full') {
+        return pool.slice(0, 7);
+      }
+      if (choices.duration === '2day') {
+        return pool.slice(0, 8);
+      }
+      return pool.slice(0, 10);
+    }
+
+    function buildCopyText(best, choices, estimates, modules) {
       const lines = [];
       lines.push(`[추천 프로그램] ${getRecommendationLabel(best, choices)}`);
       lines.push(`- 적합도: ${scoreProgram(best, choices)}점`);
-      lines.push(`- 운영 형태: ${getStructure(best, choices)}`);
-      lines.push(`- 주요 대상: ${form.audience.options[form.audience.selectedIndex].text}`);
+      lines.push(`- 교육 형태: ${form.programType.options[form.programType.selectedIndex].text}`);
+      lines.push(`- 주요 대상: ${getAudienceText(choices.audiences)}`);
       lines.push(`- 예상 인원: ${form.size.options[form.size.selectedIndex].text}`);
-      lines.push(`- 권장 예산: 기본형 ${formatMoney(estimates.base)} / 추천형 ${formatMoney(estimates.recommended)} / 확장형 ${formatMoney(estimates.premium)}`);
-      lines.push(`- 글로벌 멘토 옵션: ${mentorLabel[choices.mentor]}`);
+      lines.push(`- 운영 구조: ${getStructure(best, choices)}`);
+      lines.push(`- 권장 금액(VAT 포함 / 결과보고서 및 운영비 포함): 기본형 ${formatMoney(estimates.base)} / 추천형 ${formatMoney(estimates.recommended)} / 확장형 ${formatMoney(estimates.premium)}`);
+      lines.push(`- 글로벌 멘토 옵션: ${getMentorLabel(choices.mentor)}`);
       lines.push(`- 영문 지원 옵션: ${englishLabel[choices.english]}`);
+      lines.push(`- 특장점: ${best.strengths.join(' / ')}`);
+      lines.push(`- 최종 결과물: ${best.outcomes.join(' / ')}`);
+      lines.push(`- 핵심 구성: ${modules.join(', ')}`);
       lines.push(`- 제안 문구: ${best.proposal}`);
-      lines.push(`- 핵심 모듈: ${best.modules.join(', ')}`);
-      lines.push(`- 산출물: ${best.outputs.join(', ')}`);
       if (choices.notes.trim()) lines.push(`- 추가 메모 반영 포인트: ${choices.notes.trim()}`);
       return lines.join('\n');
     }
 
     function renderResults() {
+      ensureAudienceSelected();
+
       const choices = {
         programType: form.programType.value,
-        audience: form.audience.value,
+        audiences: getSelectedAudiences(),
         size: form.size.value,
         duration: form.duration.value,
         budget: form.budget.value,
@@ -788,7 +1118,7 @@
         .map(program => ({
           program,
           score: scoreProgram(program, choices),
-          estimates: computeEstimate(program, choices.size, choices.mentor, choices.english)
+          estimates: computeEstimate(program, choices.size, choices.mentor, choices.english, choices.duration)
         }))
         .sort((a, b) => b.score - a.score || a.estimates.recommended - b.estimates.recommended);
 
@@ -796,7 +1126,10 @@
       const estimates = ranked[0].estimates;
       const recommendationName = getRecommendationLabel(best, choices);
       const budgetFit = getBudgetFitMessage(estimates, choices.budget);
-      const copyText = buildCopyText(best, choices, estimates);
+      const selectedMentor = getMentorLabel(choices.mentor);
+      const selectedEnglish = englishLabel[choices.english];
+      const modules = getDynamicModules(best.id, choices);
+      const copyText = buildCopyText(best, choices, estimates, modules);
 
       const alternativeCards = ranked.slice(1, 3).map(item => `
         <article class="mini-card">
@@ -807,37 +1140,64 @@
         </article>
       `).join('');
 
-      const selectedMentor = mentorLabel[choices.mentor];
-      const selectedEnglish = englishLabel[choices.english];
       const englishNote = selectedEnglish === '없음'
-        ? '영문 지원 옵션은 기본형에 필수로 넣지 않고, 필요 시에만 별도 add-on으로 제안하는 구성이 적합합니다.'
-        : `${selectedEnglish} 옵션을 확장형에만 포함하는 구성이 적합합니다.`;
+        ? '영문 지원은 기본형 필수 항목이 아니라 확장형 선택사항으로 두는 구성이 적합합니다.'
+        : `${selectedEnglish} 옵션을 확장형에 포함하는 구성이 적합합니다.`;
+
+      const durationNote = choices.duration === '1day-short'
+        ? '단순 특강형은 시간당 50만원 강사료 기준을 참고하여 200만원 이하 범위에서 현실적으로 제안했습니다.'
+        : '중장기형 과정은 운영 준비, 결과보고서, 참여자 관리, 교육 운영비용을 포함해 산정했습니다.';
 
       resultsEl.innerHTML = `
         <div class="summary-card">
+          <div class="brand-intro">
+            <strong>Linkedin Korea Partner와 함께하는 취업역량강화 교육</strong>
+            <div>글로벌 역량 및 국내취업역량을 채용담당자의 관점에서 볼 수 있는 교육입니다.</div>
+          </div>
+
           <div class="summary-head">
             <div>
               <h3>${recommendationName}</h3>
-              <div style="margin-top:8px;color:#486581;">${best.summary}</div>
+              <div class="summary-top-copy">${best.summary}</div>
             </div>
             <div class="score-badge">적합도 ${ranked[0].score}점</div>
+          </div>
+
+          <div class="section-title">교육 특장점</div>
+          <div class="feature-grid">
+            ${best.strengths.map(item => `
+              <div class="feature-card">
+                <strong>강점</strong>
+                <div>${item}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="section-title">최종 결과물</div>
+          <div class="deliverable-grid">
+            ${best.outcomes.map(item => `
+              <div class="deliverable-card">
+                <strong>결과물</strong>
+                <div>${item}</div>
+              </div>
+            `).join('')}
           </div>
 
           <div class="price-grid">
             <div class="price-box">
               <strong>기본형</strong>
               <div class="price">${formatMoney(estimates.base)}</div>
-              <small>대표님 메인 운영 기준</small>
+              <small>부가세 포함 · 결과보고서 및 운영비용 포함<br>${choices.duration === '1day-short' ? '단순 특강형 현실 예산 기준' : '기본 운영 패키지 기준'}</small>
             </div>
             <div class="price-box">
               <strong>추천형</strong>
               <div class="price">${formatMoney(estimates.recommended)}</div>
-              <small>${selectedMentor === '없음' ? '운영형 패키지 기준' : selectedMentor + ' 포함'}</small>
+              <small>부가세 포함 · 결과보고서 및 운영비용 포함<br>${selectedMentor === '없음' ? '기본 운영 심화형 기준' : `${selectedMentor} 포함`}</small>
             </div>
             <div class="price-box">
               <strong>확장형</strong>
               <div class="price">${formatMoney(estimates.premium)}</div>
-              <small>${selectedEnglish === '없음' ? '후속 피드백 확장 가능' : selectedEnglish + ' 포함'}</small>
+              <small>부가세 포함 · 결과보고서 및 운영비용 포함<br>${selectedEnglish === '없음' ? '후속 피드백 및 추가지원 확장 가능' : `${selectedEnglish} 포함`}</small>
             </div>
           </div>
 
@@ -847,8 +1207,8 @@
               <div>${getStructure(best, choices)}</div>
             </div>
             <div class="meta-card">
-              <strong>추천 집행 부서</strong>
-              <div>${best.sponsor.join(' · ')}</div>
+              <strong>주요 대상</strong>
+              <div>${getAudienceText(choices.audiences)}</div>
             </div>
             <div class="meta-card">
               <strong>선택한 예산 구간</strong>
@@ -862,12 +1222,7 @@
 
           <div class="section-title">핵심 구성</div>
           <ul class="clean">
-            ${best.modules.map(item => `<li>${item}</li>`).join('')}
-          </ul>
-
-          <div class="section-title">예상 산출물</div>
-          <ul class="clean">
-            ${best.outputs.map(item => `<li>${item}</li>`).join('')}
+            ${modules.map(item => `<li>${item}</li>`).join('')}
           </ul>
 
           <div class="section-title">제안서용 한 문장</div>
@@ -875,8 +1230,9 @@
 
           <div class="note">
             <strong>옵션 설계</strong><br>
-            글로벌 멘토: <strong>${selectedMentor}</strong><br>
-            영문 지원: <strong>${selectedEnglish}</strong><br>
+            글로벌 멘토 옵션: <strong>${selectedMentor}</strong><br>
+            영문 지원 옵션: <strong>${selectedEnglish}</strong><br><br>
+            ${durationNote}<br>
             ${englishNote}
           </div>
 
@@ -884,6 +1240,11 @@
             <div class="section-title">추가 메모 반영 포인트</div>
             <div style="border:1px solid #d9e2ec;border-radius:16px;padding:14px;background:#fff;">${choices.notes.trim()}</div>
           ` : ''}
+
+          <div class="notice-box">
+            <strong>공지사항</strong>
+            교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
+          </div>
 
           <div class="btn-row">
             <button class="btn-primary" id="copyBtn" type="button">추천 결과 복사</button>
@@ -910,25 +1271,31 @@
       }
     }
 
+    function setAudience(values) {
+      document.querySelectorAll('input[name="audience"]').forEach(el => {
+        el.checked = values.includes(el.value);
+      });
+    }
+
     function loadSample() {
       form.programType.value = 'turnkey';
-      form.audience.value = 'students';
+      setAudience(['students', 'seniors']);
       form.size.value = 'core';
       form.duration.value = '6day18';
       form.budget.value = '1501to2000';
-      form.mentor.value = 'online';
+      form.mentor.value = '1';
       form.english.value = 'none';
-      form.notes.value = '국제처 또는 취창업처와 연계 가능한 글로벌 멘토 1회 포함 희망';
+      form.notes.value = '국제처 또는 취창업처와 연계 가능한 글로벌 멘토 1명 포함 희망 / 희망기업 중심 분석 포함';
       renderResults();
     }
 
     function resetForm() {
       form.programType.value = 'turnkey';
-      form.audience.value = 'students';
+      setAudience(['students']);
       form.size.value = 'core';
       form.duration.value = '6day18';
       form.budget.value = '1501to2000';
-      form.mentor.value = 'none';
+      form.mentor.value = '0';
       form.english.value = 'none';
       form.notes.value = '';
       renderResults();
@@ -942,6 +1309,13 @@
       if (el && (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA')) {
         el.addEventListener('change', renderResults);
       }
+    });
+
+    document.querySelectorAll('input[name="audience"]').forEach(el => {
+      el.addEventListener('change', () => {
+        ensureAudienceSelected();
+        renderResults();
+      });
     });
 
     renderResults();
