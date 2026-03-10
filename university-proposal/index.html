@@ -27,17 +27,18 @@
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Segoe UI", sans-serif;
       background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
       color: var(--text);
       line-height: 1.6;
+      word-break: keep-all;
     }
 
     a { color: var(--brand); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     .wrap {
-      max-width: 1180px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 28px 20px 56px;
     }
@@ -80,7 +81,7 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 18px;
       align-items: stretch;
     }
@@ -123,13 +124,6 @@
       border: 1px solid #cfe5ff;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(360px, 450px) minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
-    }
-
     .panel {
       background: var(--card);
       border: 1px solid var(--line);
@@ -160,8 +154,27 @@
       padding: 20px;
     }
 
-    .field + .field {
-      margin-top: 16px;
+    .top-form-panel {
+      margin-bottom: 22px;
+    }
+
+    .top-form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .field.wide-2 {
+      grid-column: span 2;
+    }
+
+    .field.wide-4 {
+      grid-column: 1 / -1;
     }
 
     label.block-label {
@@ -201,7 +214,7 @@
 
     .check-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -213,6 +226,7 @@
       padding: 0;
       overflow: hidden;
       transition: border-color .15s ease, box-shadow .15s ease, transform .08s ease;
+      min-height: 100%;
     }
 
     .check-card:hover {
@@ -226,6 +240,7 @@
       padding: 14px;
       cursor: pointer;
       margin: 0;
+      height: 100%;
     }
 
     .check-card input[type="checkbox"] {
@@ -240,12 +255,14 @@
       font-size: 14px;
       font-weight: 800;
       color: var(--text);
+      line-height: 1.35;
     }
 
     .check-card .c-desc {
       font-size: 12px;
       color: var(--muted);
       margin-top: 3px;
+      line-height: 1.45;
     }
 
     .btn-row {
@@ -280,11 +297,17 @@
       border: 1px solid var(--line);
     }
 
+    .btn-print {
+      background: #117864;
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(17, 120, 100, 0.18);
+    }
+
     .summary-card {
       border: 1px solid var(--line);
       background: #fbfdff;
       border-radius: 18px;
-      padding: 18px;
+      padding: 20px;
       margin-bottom: 16px;
     }
 
@@ -299,7 +322,7 @@
 
     .summary-head h3 {
       margin: 0;
-      font-size: 26px;
+      font-size: 28px;
       line-height: 1.25;
     }
 
@@ -344,9 +367,15 @@
 
     .price-grid,
     .meta-grid,
-    .secondary-results {
+    .secondary-results,
+    .insight-grid {
       display: grid;
       gap: 12px;
+    }
+
+    .insight-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 12px 0 18px;
     }
 
     .insight-box,
@@ -403,7 +432,7 @@
     }
 
     .meta-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       margin: 16px 0;
     }
 
@@ -411,7 +440,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin: 16px 0 10px;
+      margin: 18px 0 10px;
       font-size: 16px;
       font-weight: 900;
     }
@@ -423,6 +452,43 @@
 
     ul.clean li + li {
       margin-top: 8px;
+    }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .module-item {
+      position: relative;
+      padding-left: 16px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .module-item::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--brand);
+      font-weight: 900;
+    }
+
+    .summary-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
     }
 
     .note {
@@ -449,6 +515,19 @@
       font-size: 16px;
       margin-bottom: 6px;
       color: var(--red);
+    }
+
+    .career-banner {
+      margin-top: 18px;
+      border: 2px solid #cfe5ff;
+      background: linear-gradient(180deg, #f5fbff 0%, #eaf4ff 100%);
+      color: var(--brand);
+      border-radius: 18px;
+      padding: 16px 18px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
     }
 
     .mini-card h4 {
@@ -491,7 +570,7 @@
       transform: translateY(8px);
       pointer-events: none;
       transition: all .2s ease;
-      z-index: 10;
+      z-index: 20;
     }
 
     .copy-toast.show {
@@ -499,14 +578,90 @@
       transform: translateY(0);
     }
 
-    @media (max-width: 980px) {
-      .hero-grid,
-      .grid,
-      .price-grid,
+    @media (max-width: 1180px) {
+      .top-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .check-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
       .meta-grid,
+      .insight-grid,
+      .price-grid,
       .secondary-results,
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .top-form-grid,
+      .module-grid,
       .check-grid {
         grid-template-columns: 1fr;
+      }
+      .field.wide-2 {
+        grid-column: span 1;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .wrap {
+        max-width: none;
+        padding: 0;
+      }
+
+      .hero,
+      .panel,
+      .summary-card,
+      .mini-card,
+      .insight-box,
+      .meta-card,
+      .price-box,
+      .summary-box,
+      .module-grid,
+      .notice-box,
+      .career-banner,
+      .brand-intro {
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .top-form-panel,
+      .footer .screen-only,
+      .btn-row,
+      .copy-toast {
+        display: none !important;
+      }
+
+      .panel {
+        border: 0;
+      }
+
+      .panel-head {
+        border: 0;
+        padding-left: 0;
+        padding-right: 0;
+        background: #fff;
+      }
+
+      .panel-body {
+        padding: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      @page {
+        size: A4;
+        margin: 12mm;
       }
     }
   </style>
@@ -514,7 +669,7 @@
 <body>
   <main class="wrap">
     <section class="hero">
-      <div class="eyebrow">✅ Made by Linkedin Korea Partner</div>
+      <div class="eyebrow">✅ With Linkedin Korea Partner</div>
       <h1>취업전략 교육 제안</h1>
       <p class="sub">희망하는 교육형태, 대상, 인원, 예산, 운영기간을 선택하면 대학에 제안하기 좋은 취업역량강화 교육과 권장 금액을 자동으로 추천합니다.</p>
 
@@ -536,14 +691,14 @@
       </div>
     </section>
 
-    <section class="grid">
-      <div class="panel">
-        <div class="panel-head">
-          <h2>희망 조건 선택</h2>
-          <p>선택값을 바꾸면 대학에 제안하기 좋은 구성과 예산이 달라집니다.</p>
-        </div>
+    <section class="panel top-form-panel screen-only">
+      <div class="panel-head">
+        <h2>희망 조건 선택</h2>
+        <p>상단에서 조건을 선택하면 하단에서 결과를 넓게 확인할 수 있습니다.</p>
+      </div>
 
-        <div class="panel-body">
+      <div class="panel-body">
+        <div class="top-form-grid">
           <div class="field">
             <label class="block-label" for="programType">교육 형태</label>
             <select id="programType">
@@ -556,6 +711,69 @@
           </div>
 
           <div class="field">
+            <label class="block-label" for="size">예상 인원</label>
+            <select id="size">
+              <option value="small">15명 이하</option>
+              <option value="mid">16~25명</option>
+              <option value="core" selected>26~40명</option>
+              <option value="large">41~60명</option>
+              <option value="xlarge">61명 이상</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="block-label" for="duration">운영 기간 / 규모</label>
+            <select id="duration">
+              <option value="1day-short">1일 / 3~4시간</option>
+              <option value="1day-full">1일 / 6시간</option>
+              <option value="2day">2일 / 6~8시간</option>
+              <option value="4week">4주 / 8~12시간</option>
+              <option value="6day18" selected>6일 / 총 18시간</option>
+              <option value="6week18">6주 / 총 18시간</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="block-label" for="budget">예상 예산</label>
+            <select id="budget">
+              <option value="under300">300만원 이하</option>
+              <option value="301to700">301만~700만원</option>
+              <option value="701to1000">701만~1,000만원</option>
+              <option value="1001to1500">1,001만~1,500만원</option>
+              <option value="1501to2000" selected>1,501만~2,000만원</option>
+              <option value="over2000">2,000만원 이상</option>
+            </select>
+            <div class="hint">권장 금액은 부가세 포함 총계약액 기준이며, 결과보고서 및 운영비용 포함 예시입니다.</div>
+          </div>
+
+          <div class="field">
+            <label class="block-label" for="mentor">글로벌 멘토 옵션</label>
+            <select id="mentor">
+              <option value="0">없음</option>
+              <option value="1">글로벌 멘토 1명</option>
+              <option value="2">글로벌 멘토 2명</option>
+              <option value="3">글로벌 멘토 3명</option>
+            </select>
+            <div class="hint">글로벌 멘토는 1명당 200만원씩 추가 반영됩니다.</div>
+          </div>
+
+          <div class="field">
+            <label class="block-label" for="english">영문 지원 옵션</label>
+            <select id="english">
+              <option value="none" selected>없음</option>
+              <option value="profile">영문 LinkedIn 프로필 소그룹 코칭</option>
+              <option value="cv">영문 CV / 프로필 리뷰</option>
+              <option value="materials">국·영문 자료 이중화</option>
+            </select>
+            <div class="hint">영문 옵션은 확장형 add-on 구조입니다.</div>
+          </div>
+
+          <div class="field wide-2">
+            <label class="block-label" for="notes">추가 메모 (선택)</label>
+            <textarea id="notes" rows="2" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망 / 희망기업 중심 분석 포함"></textarea>
+          </div>
+
+          <div class="field wide-4">
             <label class="block-label">주요 대상 (복수선택 가능)</label>
             <div class="check-grid" id="audienceWrap">
               <div class="check-card">
@@ -606,92 +824,28 @@
             </div>
             <div class="hint">최소 1개 이상 선택해야 합니다.</div>
           </div>
+        </div>
 
-          <div class="field">
-            <label class="block-label" for="size">예상 인원</label>
-            <select id="size">
-              <option value="small">15명 이하</option>
-              <option value="mid">16~25명</option>
-              <option value="core" selected>26~40명</option>
-              <option value="large">41~60명</option>
-              <option value="xlarge">61명 이상</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label class="block-label" for="duration">운영 기간 / 규모</label>
-            <select id="duration">
-              <option value="1day-short">1일 / 3~4시간</option>
-              <option value="1day-full">1일 / 6시간</option>
-              <option value="2day">2일 / 6~8시간</option>
-              <option value="4week">4주 / 8~12시간</option>
-              <option value="6day18" selected>6일 / 총 18시간</option>
-              <option value="6week18">6주 / 총 18시간</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label class="block-label" for="budget">예상 예산</label>
-            <select id="budget">
-              <option value="under300">300만원 이하</option>
-              <option value="301to700">301만~700만원</option>
-              <option value="701to1000">701만~1,000만원</option>
-              <option value="1001to1500">1,001만~1,500만원</option>
-              <option value="1501to2000" selected>1,501만~2,000만원</option>
-              <option value="over2000">2,000만원 이상</option>
-            </select>
-            <div class="hint">권장 금액은 부가세 포함 총계약액 기준이며, 결과보고서 및 운영비용 포함 예시입니다.</div>
-          </div>
-
-          <div class="field">
-            <label class="block-label" for="mentor">글로벌 멘토 옵션 (추천형)</label>
-            <select id="mentor">
-              <option value="0">없음</option>
-              <option value="1">글로벌 멘토 1명</option>
-              <option value="2">글로벌 멘토 2명</option>
-              <option value="3">글로벌 멘토 3명</option>
-            </select>
-            <div class="hint">글로벌 멘토는 1명당 200만원씩 추가 반영됩니다.</div>
-          </div>
-
-          <div class="field">
-            <label class="block-label" for="english">영문 지원 옵션 (확장형)</label>
-            <select id="english">
-              <option value="none" selected>없음</option>
-              <option value="profile">영문 LinkedIn 프로필 소그룹 코칭</option>
-              <option value="cv">영문 CV / 프로필 리뷰</option>
-              <option value="materials">국·영문 자료 이중화</option>
-            </select>
-            <div class="hint">영문 옵션은 기본과정 필수항목이 아니라 확장형 add-on 구조입니다.</div>
-          </div>
-
-          <div class="field">
-            <label class="block-label" for="notes">추가 메모 (선택)</label>
-            <textarea id="notes" rows="4" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망 / 희망기업 중심 분석 포함"></textarea>
-          </div>
-
-          <div class="btn-row">
-            <button class="btn-primary" id="runBtn" type="button">추천 교육 보기</button>
-            <button class="btn-secondary" id="sampleBtn" type="button">샘플 입력</button>
-            <button class="btn-secondary" id="resetBtn" type="button">초기화</button>
-          </div>
+        <div class="btn-row">
+          <button class="btn-primary" id="runBtn" type="button">추천 교육 보기</button>
+          <button class="btn-secondary" id="sampleBtn" type="button">샘플 입력</button>
+          <button class="btn-secondary" id="resetBtn" type="button">초기화</button>
+          <button class="btn-print" id="pdfBtn" type="button">PDF로 저장</button>
         </div>
       </div>
+    </section>
 
-      <div class="panel">
-        <div class="panel-head">
-          <h3>추천 결과</h3>
-          <p>선택 조건에 가장 잘 맞는 프로그램과 금액, 특장점, 최종 결과물을 보여줍니다.</p>
-        </div>
-        <div class="panel-body" id="results"></div>
+    <section class="panel" id="resultPanel">
+      <div class="panel-head">
+        <h3>추천 결과</h3>
+        <p>선택 조건에 가장 잘 맞는 프로그램과 금액, 특장점, 차이점, 결과물을 넓게 보여줍니다.</p>
       </div>
+      <div class="panel-body" id="results"></div>
     </section>
 
     <footer class="footer">
       <div>교육을 위해 작성된 추천 결과이니 대학 상황에 맞게 조정하여 활용하시기 바랍니다.</div>
-      <div style="margin-top:8px;"><strong>© 취업전략 교육 제안</strong> (Made by Linkedin Korea Partner)</div>
-      <div style="margin-top:8px;">Made by 강원준_Linkedin Korea Partner HR Point(2026) · <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noreferrer">LinkedIn</a></div>
-      <div style="margin-top:4px;">Made by Kang wonjun (Linkedin Korea Partner)</div>
+      <div style="margin-top:8px;">강원준 · <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noreferrer">LinkedIn 프로필 바로가기</a></div>
     </footer>
   </main>
 
@@ -1087,10 +1241,10 @@
         pool.push('글로벌 네트워크 구축');
       }
 
-      if (choices.duration === '1day-short') return pool.slice(0, 5);
-      if (choices.duration === '1day-full') return pool.slice(0, 7);
-      if (choices.duration === '2day') return pool.slice(0, 8);
-      return pool.slice(0, 10);
+      if (choices.duration === '1day-short') return pool.slice(0, 6);
+      if (choices.duration === '1day-full') return pool.slice(0, 8);
+      if (choices.duration === '2day') return pool.slice(0, 10);
+      return pool.slice(0, 12);
     }
 
     function buildCopyText(best, choices, estimates, modules) {
@@ -1108,8 +1262,9 @@
       lines.push(`- 기존교육과의 차이점: ${best.differentiation.join(' / ')}`);
       lines.push(`- 최종 결과물: ${best.outcomes.join(' / ')}`);
       lines.push(`- 핵심 구성: ${modules.join(', ')}`);
-      lines.push(`- 제안 문구: ${best.proposal}`);
+      lines.push(`- 프로그램 요약: ${best.proposal}`);
       if (choices.notes.trim()) lines.push(`- 추가 메모 반영 포인트: ${choices.notes.trim()}`);
+      lines.push(`- 강사전원 취업/채용 교육경력 20년 이상`);
       return lines.join('\n');
     }
 
@@ -1166,7 +1321,7 @@
         : '선택 대상에 따른 별도 프리미엄은 반영되지 않았습니다.';
 
       resultsEl.innerHTML = `
-        <div class="summary-card">
+        <div class="summary-card" id="printArea">
           <div class="brand-intro">
             <strong>Linkedin Korea Partner와 함께하는 취업역량강화 교육</strong>
             <div>글로벌 역량 및 국내취업역량을 채용담당자의 관점에서 볼 수 있는 교육입니다.</div>
@@ -1180,28 +1335,27 @@
             <div class="score-badge">적합도 ${ranked[0].score}점</div>
           </div>
 
-          <div class="section-title">교육 특장점</div>
-          <div class="insight-box">
-            <strong>핵심 강점 요약</strong>
-            <ul>
-              ${best.strengths.map(item => `<li>${item}</li>`).join('')}
-            </ul>
-          </div>
+          <div class="insight-grid">
+            <div class="insight-box">
+              <strong>교육 특장점</strong>
+              <ul>
+                ${best.strengths.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
 
-          <div class="section-title">기존교육과의 차이점</div>
-          <div class="insight-box">
-            <strong>차별화 포인트</strong>
-            <ul>
-              ${best.differentiation.map(item => `<li>${item}</li>`).join('')}
-            </ul>
-          </div>
+            <div class="insight-box">
+              <strong>기존교육과의 차이점</strong>
+              <ul>
+                ${best.differentiation.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
 
-          <div class="section-title">최종 결과물</div>
-          <div class="insight-box">
-            <strong>제공 결과물</strong>
-            <ul>
-              ${best.outcomes.map(item => `<li>${item}</li>`).join('')}
-            </ul>
+            <div class="insight-box">
+              <strong>최종 결과물</strong>
+              <ul>
+                ${best.outcomes.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
           </div>
 
           <div class="price-grid">
@@ -1242,12 +1396,12 @@
           </div>
 
           <div class="section-title">핵심 구성</div>
-          <ul class="clean">
-            ${modules.map(item => `<li>${item}</li>`).join('')}
-          </ul>
+          <div class="module-grid">
+            ${modules.map(item => `<div class="module-item">${item}</div>`).join('')}
+          </div>
 
-          <div class="section-title">제안서용 한 문장</div>
-          <div style="border:1px solid #d9e2ec;border-radius:16px;padding:14px;background:#fff;">${best.proposal}</div>
+          <div class="section-title">프로그램 요약</div>
+          <div class="summary-box">${best.proposal}</div>
 
           <div class="note">
             <strong>옵션 설계</strong><br>
@@ -1260,7 +1414,7 @@
 
           ${choices.notes.trim() ? `
             <div class="section-title">추가 메모 반영 포인트</div>
-            <div style="border:1px solid #d9e2ec;border-radius:16px;padding:14px;background:#fff;">${choices.notes.trim()}</div>
+            <div class="summary-box">${choices.notes.trim()}</div>
           ` : ''}
 
           <div class="notice-box">
@@ -1268,18 +1422,23 @@
             교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
           </div>
 
-          <div class="btn-row">
+          <div class="career-banner">강사전원 취업/채용 교육경력 20년 이상</div>
+
+          <div class="btn-row screen-only">
             <button class="btn-primary" id="copyBtn" type="button">추천 결과 복사</button>
+            <button class="btn-print" id="innerPdfBtn" type="button">PDF로 저장</button>
           </div>
         </div>
 
-        <div>
+        <div class="screen-only">
           <div class="section-title">다른 추천안</div>
           <div class="secondary-results">${alternativeCards}</div>
         </div>
       `;
 
       const copyBtn = document.getElementById('copyBtn');
+      const innerPdfBtn = document.getElementById('innerPdfBtn');
+
       if (copyBtn) {
         copyBtn.addEventListener('click', async () => {
           try {
@@ -1290,6 +1449,10 @@
             window.prompt('아래 내용을 복사하세요.', copyText);
           }
         });
+      }
+
+      if (innerPdfBtn) {
+        innerPdfBtn.addEventListener('click', printToPdf);
       }
     }
 
@@ -1323,9 +1486,14 @@
       renderResults();
     }
 
+    function printToPdf() {
+      window.print();
+    }
+
     document.getElementById('runBtn').addEventListener('click', renderResults);
     document.getElementById('sampleBtn').addEventListener('click', loadSample);
     document.getElementById('resetBtn').addEventListener('click', resetForm);
+    document.getElementById('pdfBtn').addEventListener('click', printToPdf);
 
     Object.values(form).forEach(el => {
       if (el && (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA')) {
