@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>채용공고 공통역량 분석 AI 프롬프트 생성기</title>
+  <meta name="description" content="이름, 희망직무, 희망업종, 희망기업, 채용공고 URL을 입력하면 공통 요구역량과 취업전략을 분석할 수 있는 AI 프롬프트를 생성합니다." />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --bg2:#0f172a;
+      --card:#111827;
+      --card2:#0f1a2e;
+      --line:#1f2937;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --soft:#ffffff10;
+      --blue:#2563eb;
+      --blue2:#1d4ed8;
+      --green:#16a34a;
+      --green2:#15803d;
+      --amber:#f59e0b;
+      --amber2:#b45309;
+      --red:#ef4444;
+      --shadow:0 18px 45px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 15% 10%, #0b1b33 0%, transparent 60%),
+        radial-gradient(900px 520px at 85% 20%, #1a1038 0%, transparent 55%),
+        linear-gradient(180deg, #070b12 0%, #0b0f14 45%, #0b0f14 100%);
+      min-height:100vh;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .wrap{
+      width:min(1120px, calc(100% - 24px));
+      margin:0 auto;
+      padding:28px 0 40px;
+    }
+
+    .hero{
+      border:1px solid #243244;
+      background:linear-gradient(180deg, rgba(17,24,39,.95), rgba(10,14,23,.96));
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:28px 24px 22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:auto -80px -80px auto;
+      width:220px;height:220px;
+      border-radius:999px;
+      background:radial-gradient(circle, rgba(37,99,235,.22), rgba(37,99,235,0));
+      pointer-events:none;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.04em;
+      color:#bfdbfe;
+      background:#172554;
+      border:1px solid #1e3a8a;
+      padding:7px 10px;
+      border-radius:999px;
+      margin-bottom:14px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(28px, 4vw, 40px);
+      line-height:1.15;
+      letter-spacing:-0.02em;
+    }
+    .hero p{
+      margin:0;
+      color:#cbd5e1;
+      font-size:15.5px;
+      line-height:1.7;
+      max-width:920px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      margin-top:18px;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(17,24,39,.96), rgba(12,18,30,.96));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+
+    .card h2{
+      margin:0 0 6px;
+      font-size:22px;
+      letter-spacing:-0.02em;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.65;
+      margin-bottom:18px;
+    }
+
+    .section-title{
+      font-size:13px;
+      font-weight:800;
+      color:#cbd5e1;
+      margin:18px 0 10px;
+      letter-spacing:.02em;
+    }
+
+    .fields{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 640px){
+      .fields{grid-template-columns:1fr}
+    }
+
+    label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      color:#dbe5f1;
+      margin:0 0 8px;
+    }
+    .full{grid-column:1 / -1}
+
+    input[type="text"], textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid #263244;
+      background:#0b1220;
+      color:var(--text);
+      padding:14px 14px;
+      outline:none;
+      font-size:14px;
+      line-height:1.5;
+      transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    input[type="text"]:focus, textarea:focus{
+      border-color:#3b82f6;
+      box-shadow:0 0 0 4px rgba(59,130,246,.12);
+    }
+    input::placeholder, textarea::placeholder{color:#6b7280}
+
+    .url-guide{
+      margin-bottom:12px;
+      padding:14px 15px;
+      border-radius:14px;
+      border:1px solid #2a3a52;
+      background:linear-gradient(180deg, rgba(37,99,235,.10), rgba(15,23,42,.55));
+      color:#dbeafe;
+      font-size:13px;
+      line-height:1.75;
+    }
+    .url-guide strong{
+      color:#ffffff;
+    }
+
+    .url-area{
+      display:grid;
+      gap:10px;
+    }
+    .url-row{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:center;
+    }
+    .url-row .remove-btn{
+      height:46px;
+      min-width:86px;
+      border-radius:12px;
+      border:1px solid #3b1f25;
+      background:#221318;
+      color:#fecaca;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .url-row .remove-btn:hover{
+      background:#2b161d;
+    }
+
+    .helper{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.6;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    button{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      border-radius:14px;
+      padding:13px 16px;
+      font-size:14px;
+      font-weight:800;
+      color:white;
+      transition:transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+      box-shadow:0 10px 24px rgba(0,0,0,.22);
+    }
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(0)}
+    .btn-blue{background:linear-gradient(180deg, var(--blue), var(--blue2))}
+    .btn-green{background:linear-gradient(180deg, var(--green), var(--green2))}
+    .btn-amber{background:linear-gradient(180deg, var(--amber), var(--amber2)); color:#111827}
+    .btn-ghost{
+      background:#172033;
+      color:#dbeafe;
+      border:1px solid #243244;
+      box-shadow:none;
+    }
+
+    .mini-stats{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    @media (max-width: 640px){
+      .mini-stats{grid-template-columns:1fr}
+    }
+    .mini{
+      border:1px solid #243244;
+      background:linear-gradient(180deg, #0f172a, #0b1220);
+      border-radius:16px;
+      padding:14px;
+    }
+    .mini .k{
+      font-size:12px;
+      color:#93c5fd;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+    .mini .v{
+      font-size:14px;
+      color:#e5e7eb;
+      line-height:1.6;
+      font-weight:700;
+    }
+
+    .result-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:#122033;
+      border:1px solid #243244;
+      color:#cbd5e1;
+    }
+
+    .output{
+      min-height:480px;
+      resize:vertical;
+      white-space:pre-wrap;
+    }
+
+    .note{
+      margin-top:14px;
+      padding:14px 15px;
+      border-radius:14px;
+      border:1px solid #3b2f12;
+      background:linear-gradient(180deg, rgba(245,158,11,.12), rgba(120,53,15,.10));
+      color:#fde68a;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .guide-list{
+      display:grid;
+      gap:10px;
+      margin-top:14px;
+    }
+    .guide-item{
+      border:1px solid #243244;
+      background:linear-gradient(180deg, #0e1627, #0a1220);
+      border-radius:16px;
+      padding:14px 15px;
+    }
+    .guide-item strong{
+      display:block;
+      margin-bottom:6px;
+      color:#eaf2ff;
+      font-size:14px;
+    }
+    .guide-item span{
+      color:#aeb8c7;
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .footer{
+      margin-top:18px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(17,24,39,.96), rgba(10,14,23,.96));
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.8;
+    }
+    .footer strong{color:#e5e7eb}
+    .footer a{
+      color:#bfdbfe;
+      text-decoration:none;
+      word-break:break-all;
+    }
+
+    .top-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:14px;
+      padding:11px 14px;
+      border-radius:12px;
+      background:#172033;
+      border:1px solid #243244;
+      color:#dbeafe;
+      font-weight:700;
+    }
+
+    .error{
+      color:#fecaca;
+      font-size:13px;
+      margin-top:10px;
+      display:none;
+    }
+    .success-copy{
+      color:#86efac;
+      font-size:13px;
+      margin-top:10px;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">For Job Seekers · AI Prompt Tool</div>
+      <h1>채용공고 공통역량 분석 AI 프롬프트 생성기</h1>
+      <p>
+        여러 채용공고 URL을 한 번에 넣고, 해당 공고들이 공통적으로 요구하는 역량을 우선순위별로 정리한 뒤
+        희망업종의 채용특징과 희망기업 지원 시 필요한 전략까지 함께 분석할 수 있는 프롬프트를 자동 생성합니다.
+      </p>
+      <a class="top-link" href="https://job.linkedinkorea.com/" target="_blank" rel="noopener">← 취업준비 Tools 메인으로 이동</a>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>입력 정보</h2>
+        <div class="sub">
+          최소 5개 이상의 채용공고 URL을 넣으면, AI가 공통 요구역량과 취업전략을 정리할 수 있도록 프롬프트를 생성합니다.
+        </div>
+
+        <div class="fields">
+          <div>
+            <label for="name">이름</label>
+            <input id="name" type="text" placeholder="예: 홍길동" />
+          </div>
+          <div>
+            <label for="job">희망직무</label>
+            <input id="job" type="text" placeholder="예: 마케팅, 해외영업, 인사, 데이터분석" />
+          </div>
+          <div>
+            <label for="industry">희망업종</label>
+            <input id="industry" type="text" placeholder="예: IT/SaaS, 제조, 유통, 제약바이오, 금융, 교육" />
+          </div>
+          <div>
+            <label for="company">희망기업</label>
+            <input id="company" type="text" placeholder="예: 네이버, 쿠팡, 삼성전자, 현대자동차" />
+          </div>
+        </div>
+
+        <div class="section-title">채용공고 URL 입력</div>
+
+        <div class="url-guide">
+          <strong>입력 안내</strong><br />
+          이 도구는 <strong>유사한 업종 및 직무의 채용공고를 함께 비교해 공통점을 분석</strong>하는 용도입니다.<br />
+          가능하면 <strong>희망기업과 직접 유사한 경쟁사</strong>, 또는 <strong>같은 업종·같은 직무</strong>의 채용공고 URL을 찾아 입력해 주세요.<br />
+          예: 희망기업이 A사라면, A사와 유사한 B사·C사 공고를 함께 넣어 비교하면 더 전략적인 분석이 가능합니다.
+        </div>
+
+        <div id="urlArea" class="url-area"></div>
+
+        <div class="helper">
+          기본 5개가 제공되며, <strong>최대 20개</strong>까지 추가할 수 있습니다.
+          같은 직무군·유사 업종의 공고를 넣을수록 공통 역량 도출 정확도가 높아집니다.
+        </div>
+
+        <div class="mini-stats">
+          <div class="mini">
+            <div class="k">최소 입력</div>
+            <div class="v">채용공고 URL 5개 이상</div>
+          </div>
+          <div class="mini">
+            <div class="k">권장 범위</div>
+            <div class="v">동일/유사 직무 8~15개</div>
+          </div>
+          <div class="mini">
+            <div class="k">최대 입력</div>
+            <div class="v">채용공고 URL 20개</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="addUrlBtn" type="button" class="btn-ghost">+ URL 추가</button>
+          <button id="sampleBtn" type="button" class="btn-amber">샘플 입력</button>
+          <button id="generateBtn" type="button" class="btn-blue">프롬프트 생성</button>
+          <button id="resetBtn" type="button" class="btn-ghost">초기화</button>
+        </div>
+
+        <div id="errorMsg" class="error"></div>
+      </div>
+
+      <div class="card">
+        <div class="result-head">
+          <div>
+            <h2 style="margin:0 0 6px;">생성 결과</h2>
+            <div class="sub" style="margin:0;">
+              아래 프롬프트를 복사해 AI에 넣으면 채용공고들을 비교 분석해 공통 요구역량과 희망기업 지원전략을 정리할 수 있습니다.
+            </div>
+          </div>
+          <div class="badge">출력 형식: 공통역량 + 업종특징 + 기업지원전략</div>
+        </div>
+
+        <label for="output">AI에 넣을 최종 프롬프트</label>
+        <textarea id="output" class="output" placeholder="프롬프트 생성 버튼을 누르면 여기에 결과가 표시됩니다."></textarea>
+
+        <div class="actions">
+          <button id="copyBtn" type="button" class="btn-green">프롬프트 복사</button>
+        </div>
+
+        <div id="copyMsg" class="success-copy">복사되었습니다.</div>
+
+        <div class="note">
+          이 도구는 브라우저에서 채용공고 본문을 직접 읽어오는 방식이 아니라,
+          <strong>입력한 URL을 바탕으로 AI가 웹 기반으로 공고를 읽고 분석하도록 지시하는 프롬프트 생성기</strong>입니다.
+          실제 공고가 수정·마감되었을 수 있으므로 결과는 참고용으로 활용하세요.
+        </div>
+
+        <div class="guide-list">
+          <div class="guide-item">
+            <strong>AI가 분석하도록 요청하는 핵심 항목</strong>
+            <span>공통 요구역량, 반복 출현 키워드, 우대사항 패턴, 툴/스킬, 희망업종의 채용특징, 희망기업 지원 시 경쟁사 대비 전략</span>
+          </div>
+          <div class="guide-item">
+            <strong>추천 활용 방식</strong>
+            <span>희망기업과 경쟁사 공고를 함께 넣으면, 자기소개서와 면접에서 어떤 포인트를 차별화해야 하는지 더 선명하게 정리할 수 있습니다.</span>
+          </div>
+          <div class="guide-item">
+            <strong>활용 예시</strong>
+            <span>“희망기업 1곳 + 경쟁사 5~10곳의 유사 직무 공고를 비교해 공통역량과 차별화 포인트를 분석”하는 방식으로 활용하면 좋습니다.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div><strong>취업준비 Tools (Made by Linkedin Korea Partner)</strong></div>
+      <div>구직자를 위한 AI 프롬프트/리서치 도구입니다. 분석 결과는 참고용으로 활용하시기 바랍니다.</div>
+      <div>교육과 연계해 배포하는 자료이니 무단배포는 금합니다.</div>
+      <div>© 취업준비 Tools (Made by Linkedin Korea Partner)</div>
+      <div><strong>Made by Kang wonjun (Linkedin Korea Partner)</strong></div>
+      <div><a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noopener">www.linkedin.com/in/ceohr</a></div>
+    </footer>
+  </div>
+
+  <script>
+    const MAX_URLS = 20;
+    const MIN_URLS = 5;
+    const urlArea = document.getElementById('urlArea');
+    const addUrlBtn = document.getElementById('addUrlBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const generateBtn = document.getElementById('generateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const output = document.getElementById('output');
+    const errorMsg = document.getElementById('errorMsg');
+    const copyMsg = document.getElementById('copyMsg');
+
+    function createUrlRow(value = '') {
+      const count = urlArea.querySelectorAll('.url-row').length + 1;
+
+      const row = document.createElement('div');
+      row.className = 'url-row';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = `채용공고 URL ${count} 입력`;
+      input.value = value;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-btn';
+      removeBtn.textContent = '삭제';
+
+      removeBtn.addEventListener('click', () => {
+        row.remove();
+        refreshUrlPlaceholders();
+        refreshAddButtonState();
+      });
+
+      row.appendChild(input);
+      row.appendChild(removeBtn);
+      urlArea.appendChild(row);
+
+      refreshUrlPlaceholders();
+      refreshAddButtonState();
+    }
+
+    function refreshUrlPlaceholders() {
+      const inputs = urlArea.querySelectorAll('input[type="text"]');
+      inputs.forEach((input, idx) => {
+        input.placeholder = `채용공고 URL ${idx + 1} 입력`;
+      });
+    }
+
+    function refreshAddButtonState() {
+      const rows = urlArea.querySelectorAll('.url-row').length;
+      addUrlBtn.disabled = rows >= MAX_URLS;
+      addUrlBtn.style.opacity = rows >= MAX_URLS ? '.55' : '1';
+      addUrlBtn.style.cursor = rows >= MAX_URLS ? 'not-allowed' : 'pointer';
+
+      const removeButtons = urlArea.querySelectorAll('.remove-btn');
+      removeButtons.forEach(btn => {
+        btn.disabled = rows <= MIN_URLS;
+        btn.style.opacity = rows <= MIN_URLS ? '.45' : '1';
+        btn.style.cursor = rows <= MIN_URLS ? 'not-allowed' : 'pointer';
+      });
+    }
+
+    function getUrlValues() {
+      return [...urlArea.querySelectorAll('input[type="text"]')]
+        .map(el => el.value.trim())
+        .filter(Boolean);
+    }
+
+    function showError(msg) {
+      errorMsg.style.display = 'block';
+      errorMsg.textContent = msg;
+    }
+
+    function hideError() {
+      errorMsg.style.display = 'none';
+      errorMsg.textContent = '';
+    }
+
+    function showCopy() {
+      copyMsg.style.display = 'block';
+      setTimeout(() => copyMsg.style.display = 'none', 1600);
+    }
+
+    function buildPrompt(name, job, industry, company, urls) {
+      const urlList = urls.map((url, i) => `${i + 1}. ${url}`).join('\n');
+
+      return `아래 채용공고 URL들을 모두 읽고 비교 분석해줘.
+
+[지원자 기본정보]
+- 이름: ${name || '미입력'}
+- 희망직무: ${job || '미입력'}
+- 희망업종: ${industry || '미입력'}
+- 희망기업: ${company || '미입력'}
+
+[분석 대상 채용공고 URL]
+${urlList}
+
+[분석 전제]
+- 위 URL들은 희망직무와 유사한 직무, 그리고 희망업종 또는 희망기업의 경쟁사/유사기업 채용공고를 모아놓은 것이다.
+- 따라서 각 공고의 개별 요약보다, 여러 공고를 비교했을 때 드러나는 공통 역량과 패턴을 우선 분석해줘.
+- 특히 희망기업 "${company || '미입력'}" 에 지원한다고 가정하고, 유사 경쟁사 채용공고를 함께 분석했을 때 어떤 준비전략이 필요한지 코멘트해줘.
+
+[분석 지시사항]
+1. 위 URL의 채용공고를 각각 확인하고, 공통적으로 반복되는 요구사항을 추출해줘.
+2. 특히 아래 항목을 중심으로 채용공고 간 공통점을 분석해줘.
+   - 필수 역량
+   - 우대 역량
+   - 직무 수행능력
+   - 커뮤니케이션/협업 역량
+   - 데이터/문서작성/분석 역량
+   - 사용 툴 및 기술스택
+   - 산업 이해도
+   - 경험 수준(신입/인턴/경력 선호 패턴)
+3. 공통으로 요구하는 역량을 "우선순위" 기준으로 정렬해서 보여줘.
+4. 각 역량별로 왜 중요하다고 판단했는지, 어떤 공고에서 반복적으로 나타났는지 근거를 간단히 설명해줘.
+5. 채용공고별 완전한 개별 요약보다, 여러 공고를 비교했을 때의 "공통 패턴"을 우선적으로 정리해줘.
+6. 희망업종 "${industry || '미입력'}" 의 채용특징을 정리해줘.
+   - 이 업종에서 자주 요구되는 역량
+   - 자주 등장하는 우대사항
+   - 이 업종에서 특히 중요하게 보는 경험/자질
+7. 희망기업 "${company || '미입력'}" 에 지원한다고 가정했을 때,
+   유사 경쟁사 채용공고를 함께 분석한 결과를 바탕으로 어떤 전략이 필요한지 코멘트해줘.
+   - 경쟁사 공고 대비 공통적으로 갖춰야 하는 역량
+   - 희망기업 지원 시 더 강조하면 좋은 차별화 포인트
+   - 자기소개서 및 면접에서 특히 강조해야 할 메시지
+8. 희망직무 "${job || '미입력'}", 희망업종 "${industry || '미입력'}", 희망기업 "${company || '미입력'}" 관점에서
+   지원자가 취업전략을 어떻게 세워야 하는지 간단명료하게 코멘트해줘.
+9. 아래 형식으로 보기 좋게 정리해줘.
+
+[원하는 출력 형식]
+1. 한줄 요약
+2. 공통 요구역량 TOP 10
+   - 순위
+   - 역량명
+   - 중요 이유
+   - 대표 키워드
+3. 채용공고 전반의 공통 패턴
+   - 자주 등장하는 경험
+   - 자주 등장하는 우대사항
+   - 자주 요구하는 툴/기술
+4. 희망업종의 채용특징
+   - 업종 특성상 중요하게 보는 역량
+   - 업종 내 채용공고의 공통 키워드
+5. 희망기업 지원 전략 코멘트
+   - 경쟁사 공고와 비교했을 때 기본적으로 갖춰야 할 것
+   - 희망기업 지원 시 강조할 차별화 포인트
+   - 자기소개서에서 강조할 내용
+   - 면접에서 어필할 내용
+6. 지원자 취업전략 코멘트
+   - 지금 가장 먼저 준비할 것 3가지
+   - 자기소개서에 강조할 포인트
+   - 면접에서 어필할 포인트
+7. 부족할 수 있는 부분이 있다면 보완 방향 제안
+8. 마지막에 "실행 우선순위 체크리스트" 5개로 정리
+
+[중요 조건]
+- 실제 채용공고 본문을 바탕으로 분석하되, 공고가 일부 열리지 않거나 내용이 제한되면 확인 가능한 정보 기준으로 판단해줘.
+- 채용공고별 차이점보다 "공통적으로 요구되는 핵심역량" 도출을 우선해줘.
+- 희망기업의 공식 채용공고가 없더라도, 유사 경쟁사/동종업계 공고를 바탕으로 전략적으로 추론해줘.
+- 답변은 한국어로 해줘.
+- 표와 불릿을 적절히 활용해 가독성 있게 작성해줘.
+- 과장 없이 현실적인 취업전략 중심으로 작성해줘.`;
+    }
+
+    function initBaseRows() {
+      urlArea.innerHTML = '';
+      for (let i = 0; i < MIN_URLS; i++) createUrlRow('');
+      refreshAddButtonState();
+    }
+
+    addUrlBtn.addEventListener('click', () => {
+      const count = urlArea.querySelectorAll('.url-row').length;
+      if (count < MAX_URLS) createUrlRow('');
+    });
+
+    sampleBtn.addEventListener('click', () => {
+      document.getElementById('name').value = '홍길동';
+      document.getElementById('job').value = '마케팅';
+      document.getElementById('industry').value = 'IT/SaaS';
+      document.getElementById('company').value = '네이버';
+
+      const samples = [
+        'https://example.com/job-post-1',
+        'https://example.com/job-post-2',
+        'https://example.com/job-post-3',
+        'https://example.com/job-post-4',
+        'https://example.com/job-post-5',
+        'https://example.com/job-post-6',
+        'https://example.com/job-post-7'
+      ];
+
+      initBaseRows();
+      const rows = urlArea.querySelectorAll('.url-row input');
+
+      rows.forEach((input, idx) => {
+        input.value = samples[idx] || '';
+      });
+
+      for (let i = rows.length; i < samples.length; i++) {
+        createUrlRow(samples[i]);
+      }
+
+      hideError();
+    });
+
+    generateBtn.addEventListener('click', () => {
+      hideError();
+
+      const name = document.getElementById('name').value.trim();
+      const job = document.getElementById('job').value.trim();
+      const industry = document.getElementById('industry').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const urls = getUrlValues();
+
+      if (!job) {
+        showError('희망직무를 입력해 주세요.');
+        return;
+      }
+      if (!industry) {
+        showError('희망업종을 입력해 주세요.');
+        return;
+      }
+      if (!company) {
+        showError('희망기업을 입력해 주세요.');
+        return;
+      }
+      if (urls.length < MIN_URLS) {
+        showError(`채용공고 URL은 최소 ${MIN_URLS}개 이상 입력해야 합니다.`);
+        return;
+      }
+
+      output.value = buildPrompt(name, job, industry, company, urls);
+      output.focus();
+      output.setSelectionRange(0, 0);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      document.getElementById('name').value = '';
+      document.getElementById('job').value = '';
+      document.getElementById('industry').value = '';
+      document.getElementById('company').value = '';
+      output.value = '';
+      hideError();
+      copyMsg.style.display = 'none';
+      initBaseRows();
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const text = output.value.trim();
+      if (!text) {
+        showError('먼저 프롬프트를 생성해 주세요.');
+        return;
+      }
+      hideError();
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showCopy();
+      } catch (e) {
+        output.select();
+        document.execCommand('copy');
+        showCopy();
+      }
+    });
+
+    initBaseRows();
+  </script>
+</body>
+</html>
