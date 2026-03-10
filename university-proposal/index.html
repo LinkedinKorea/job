@@ -22,6 +22,8 @@
       --red-soft: #fff1f0;
       --violet: #6941c6;
       --violet-soft: #f4f0ff;
+      --navy-soft: #eef4ff;
+      --teal-soft: #ecfffa;
       --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
       --radius: 18px;
     }
@@ -104,6 +106,17 @@
       margin: 0;
       color: var(--muted);
       font-size: 15px;
+    }
+
+    .hero-bullets {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-bullets li + li {
+      margin-top: 8px;
     }
 
     .chips {
@@ -245,7 +258,7 @@
       background: #fff;
       padding: 0;
       overflow: hidden;
-      transition: border-color .15s ease, box-shadow .15s ease, transform .08s ease;
+      transition: border-color .15s ease, box-shadow .15s ease;
       min-height: 100%;
     }
 
@@ -392,20 +405,23 @@
     .brand-intro strong {
       display: block;
       font-size: 16px;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       color: var(--brand);
     }
 
-    .brand-intro div {
+    .brand-intro p {
+      margin: 0;
       color: #24517a;
       font-size: 14px;
+      line-height: 1.7;
     }
 
-    .price-grid,
     .meta-grid,
     .secondary-results,
     .insight-grid,
-    .priority-grid {
+    .priority-grid,
+    .hook-grid,
+    .process-grid {
       display: grid;
       gap: 12px;
     }
@@ -420,11 +436,23 @@
       margin: 12px 0 18px;
     }
 
+    .hook-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 12px 0 18px;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 12px 0 18px;
+    }
+
     .insight-box,
     .meta-card,
-    .price-box,
     .mini-card,
-    .priority-card {
+    .priority-card,
+    .hook-card,
+    .process-card,
+    .price-box {
       border: 1px solid var(--line);
       border-radius: 18px;
       background: #fff;
@@ -433,8 +461,10 @@
 
     .insight-box strong,
     .meta-card strong,
-    .price-box strong,
-    .priority-card strong {
+    .priority-card strong,
+    .hook-card strong,
+    .process-card strong,
+    .price-box strong {
       display: block;
       font-size: 13px;
       color: var(--muted);
@@ -474,6 +504,37 @@
       line-height: 1.55;
     }
 
+    .hook-title {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.45;
+      color: var(--brand);
+      margin: 0;
+    }
+
+    .hook-sub {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .process-card h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .process-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .process-card li + li {
+      margin-top: 7px;
+    }
+
     .insight-box ul {
       margin: 0;
       padding-left: 18px;
@@ -484,22 +545,44 @@
     }
 
     .price-grid {
+      display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
       margin: 16px 0;
     }
 
+    .price-box {
+      border-width: 2px;
+    }
+
+    .price-box.basic {
+      background: linear-gradient(180deg, #f8fbff 0%, var(--navy-soft) 100%);
+      border-color: #cfe0ff;
+    }
+
+    .price-box.recommend {
+      background: linear-gradient(180deg, #f5fff9 0%, var(--teal-soft) 100%);
+      border-color: #bde8db;
+    }
+
+    .price-box.expand {
+      background: linear-gradient(180deg, #fffaf2 0%, var(--gold-soft) 100%);
+      border-color: #f2ddb0;
+    }
+
     .price-box .price {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 900;
       letter-spacing: -0.03em;
+      line-height: 1.15;
     }
 
     .price-box small {
       display: block;
-      margin-top: 6px;
+      margin-top: 8px;
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .meta-grid {
@@ -555,7 +638,45 @@
       background: #fff;
       font-size: 15px;
       color: var(--text);
-      line-height: 1.7;
+      line-height: 1.8;
+    }
+
+    .proposal-box {
+      border: 1px solid #cfe5ff;
+      border-radius: 16px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fbfeff 0%, #f0f8ff 100%);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .curriculum-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .curriculum-table th,
+    .curriculum-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .curriculum-table th {
+      background: #f7fbff;
+      color: var(--text);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .curriculum-table tr:last-child td {
+      border-bottom: 0;
     }
 
     .note {
@@ -565,6 +686,16 @@
       border-radius: 16px;
       padding: 14px 16px;
       margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .custom-note {
+      border: 1px solid #cfe5ff;
+      background: linear-gradient(180deg, #f7fbff 0%, #edf5ff 100%);
+      color: #24517a;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-top: 14px;
       font-size: 14px;
     }
 
@@ -670,6 +801,8 @@
       .meta-grid,
       .insight-grid,
       .priority-grid,
+      .hook-grid,
+      .process-grid,
       .price-grid,
       .secondary-results,
       .hero-grid,
@@ -683,23 +816,22 @@
       .module-grid,
       .check-grid,
       .check-grid.problem-grid,
-      .secondary-results {
+      .secondary-results,
+      .hook-grid,
+      .process-grid {
         grid-template-columns: 1fr;
       }
       .field.wide-2 {
         grid-column: span 1;
       }
+      .curriculum-table {
+        font-size: 13px;
+      }
     }
 
     @media print {
-      body {
-        background: #fff;
-      }
-
-      .wrap {
-        max-width: none;
-        padding: 0;
-      }
+      body { background: #fff; }
+      .wrap { max-width: none; padding: 0; }
 
       .hero,
       .panel,
@@ -707,15 +839,18 @@
       .mini-card,
       .insight-box,
       .meta-card,
-      .price-box,
       .summary-box,
       .module-grid,
       .notice-box,
       .career-box-inline,
       .brand-intro,
-      .priority-card {
+      .priority-card,
+      .hook-card,
+      .process-card,
+      .proposal-box,
+      .price-box {
         box-shadow: none !important;
-        break-inside: auto;
+        break-inside: avoid;
         page-break-inside: avoid;
       }
 
@@ -727,10 +862,7 @@
         display: none !important;
       }
 
-      .panel {
-        border: 0;
-      }
-
+      .panel { border: 0; }
       .panel-head {
         border: 0;
         padding-left: 0;
@@ -738,9 +870,7 @@
         background: #fff;
       }
 
-      .panel-body {
-        padding: 0;
-      }
+      .panel-body { padding: 0; }
 
       a {
         color: inherit;
@@ -750,14 +880,6 @@
       .summary-card > * {
         break-inside: avoid;
         page-break-inside: avoid;
-      }
-
-      .price-grid,
-      .meta-grid,
-      .insight-grid,
-      .priority-grid,
-      .notice-grid {
-        gap: 10px;
       }
 
       @page {
@@ -787,7 +909,12 @@
         </div>
         <div class="hero-box">
           <h2>교육 방향</h2>
-          <p>글로벌 역량 및 국내취업역량을 채용담당자의 관점에서 볼 수 있는 교육입니다. 단순 특강형부터 6일 18시간 집중형, 졸업생 추적관리형까지 대학 상황에 맞춘 구조를 추천합니다.</p>
+          <ul class="hero-bullets">
+            <li>학생의 취업 준비를 단순 특강이 아닌 <strong>실행 중심 과정</strong>으로 전환</li>
+            <li>AI와 LinkedIn을 활용해 <strong>브랜딩, 서류, 면접, 지원전략</strong>을 한 흐름으로 연결</li>
+            <li>학과·대상·예산에 맞춰 <strong>대학 맞춤형 구조</strong>로 제안 가능</li>
+            <li>운영 후에도 보고 및 활용이 가능하도록 <strong>결과물 중심</strong>으로 설계</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -1407,13 +1534,8 @@
       const sizeAdj = sizeAdjustments[size]?.[program.id] || 0;
       let base = baseByDuration + sizeAdj;
 
-      if (program.id === 'advisor') {
-        base = Math.max(220, base);
-      }
-
-      if (duration === '1day-short') {
-        base = Math.min(base, program.id === 'advisor' ? 260 : 190);
-      }
+      if (program.id === 'advisor') base = Math.max(220, base);
+      if (duration === '1day-short') base = Math.min(base, program.id === 'advisor' ? 260 : 190);
 
       const mentorCost = program.id === 'advisor' ? 0 : Number(mentorCount) * 200;
       const englishCost = program.id === 'advisor' ? 0 : (englishAdd[english] || 0);
@@ -1425,21 +1547,13 @@
       const recommended = base + mentorCost + audiencePremium;
       const premium = recommended + englishCost;
 
-      return {
-        base,
-        recommended,
-        premium,
-        mentorCost,
-        englishCost,
-        audiencePremium
-      };
+      return { base, recommended, premium, mentorCost, englishCost, audiencePremium };
     }
 
     function scoreProgram(program, choices) {
       let score = 42;
 
       if (program.types.includes(choices.programType)) score += 22;
-
       const audienceHits = choices.audiences.filter(a => program.audience.includes(a)).length;
       score += audienceHits * 12;
 
@@ -1450,7 +1564,6 @@
       if (choices.duration === '6week18' && program.id === 'reboot') score += 14;
       if ((choices.duration === '1day-short' || choices.duration === '1day-full' || choices.duration === '2day') && program.id === 'departmentCamp') score += 10;
       if (choices.duration === '1day-short' && program.id === 'advisor') score += 8;
-
       if (Number(choices.mentor) > 0 && program.id === 'accelerator') score += 8;
       if (choices.english !== 'none' && (program.id === 'accelerator' || program.id === 'reboot')) score += 6;
 
@@ -1527,12 +1640,8 @@
     function prioritizeModules(programId, choices) {
       let pool = [...(modulePool[programId] || [])];
 
-      if (choices.audiences.includes('graduates') && !pool.includes('취업 추적관리 코칭')) {
-        pool.push('취업 추적관리 코칭');
-      }
-      if (choices.audiences.includes('mixed') && !pool.includes('학과기반 취업전략')) {
-        pool.push('학과기반 취업전략');
-      }
+      if (choices.audiences.includes('graduates') && !pool.includes('취업 추적관리 코칭')) pool.push('취업 추적관리 코칭');
+      if (choices.audiences.includes('mixed') && !pool.includes('학과기반 취업전략')) pool.push('학과기반 취업전략');
       if ((choices.english !== 'none' || choices.needs.includes('global') || choices.pains.includes('weakGlobal')) && !pool.includes('글로벌 네트워크 구축')) {
         pool.push('글로벌 네트워크 구축');
       }
@@ -1565,35 +1674,17 @@
       else if (choices.duration === '2day') displayCount = 10;
 
       const orderedModules = sorted.slice(0, displayCount).map(item => item.module);
-
-      return {
-        top3,
-        orderedModules
-      };
+      return { top3, orderedModules };
     }
 
     function getDynamicOutcomes(best, choices) {
       const base = [...best.outcomes];
-
-      if (choices.needs.includes('branding') && !base.includes('학생별 LinkedIn 프로필 초안 또는 개선안')) {
-        base.push('학생별 LinkedIn 프로필 초안 또는 개선안');
-      }
-      if (choices.needs.includes('documents') && !base.includes('자기소개서/포트폴리오 방향성 초안')) {
-        base.push('자기소개서/포트폴리오 방향성 초안');
-      }
-      if (choices.needs.includes('interview') && !base.includes('면접 답변 구조 및 취업 실행계획표')) {
-        base.push('면접 답변 구조 및 취업 실행계획표');
-      }
-      if (choices.needs.includes('tracking') && !base.includes('취업 추적관리표 및 지원현황표')) {
-        base.push('취업 추적관리표 및 지원현황표');
-      }
-      if (choices.pains.includes('reporting') && !base.includes('운영 결과보고서용 핵심 성과정리표')) {
-        base.push('운영 결과보고서용 핵심 성과정리표');
-      }
-      if (choices.pains.includes('tooGeneral') && !base.includes('대상 맞춤형 교육운영안 및 학과 맞춤 메시지')) {
-        base.push('대상 맞춤형 교육운영안 및 학과 맞춤 메시지');
-      }
-
+      if (choices.needs.includes('branding') && !base.includes('학생별 LinkedIn 프로필 초안 또는 개선안')) base.push('학생별 LinkedIn 프로필 초안 또는 개선안');
+      if (choices.needs.includes('documents') && !base.includes('자기소개서/포트폴리오 방향성 초안')) base.push('자기소개서/포트폴리오 방향성 초안');
+      if (choices.needs.includes('interview') && !base.includes('면접 답변 구조 및 취업 실행계획표')) base.push('면접 답변 구조 및 취업 실행계획표');
+      if (choices.needs.includes('tracking') && !base.includes('취업 추적관리표 및 지원현황표')) base.push('취업 추적관리표 및 지원현황표');
+      if (choices.pains.includes('reporting') && !base.includes('운영 결과보고서용 핵심 성과정리표')) base.push('운영 결과보고서용 핵심 성과정리표');
+      if (choices.pains.includes('tooGeneral') && !base.includes('대상 맞춤형 교육운영안 및 학과 맞춤 메시지')) base.push('대상 맞춤형 교육운영안 및 학과 맞춤 메시지');
       return [...new Set(base)].slice(0, 5);
     }
 
@@ -1605,7 +1696,237 @@
       return lines.join('<br>');
     }
 
-    function buildCopyText(best, choices, estimates, modules, top3, dynamicOutcomes) {
+    function getConsultingProposal(best, choices) {
+      const audience = getAudienceText(choices.audiences);
+      const needText = getTagText(choices.needs, needLabels, '기본 취업역량 강화');
+      const painText = getTagText(choices.pains, painLabels, '일반적인 교육 고도화 필요');
+
+      return `
+        제안드리는 <strong>${getRecommendationLabel(best, choices)}</strong> 과정은 <strong>${audience}</strong>을 대상으로, 현재 대학이 필요로 하는
+        <strong>${needText}</strong> 과제를 중심으로 설계된 취업역량 강화 프로그램입니다.<br><br>
+        특히 기존 교육에서 나타나는 <strong>${painText}</strong> 문제를 보완하기 위해,
+        단순 정보전달형 교육이 아니라 <strong>학생이 직접 결과물을 만들고 실행전략까지 연결하는 실습형 구조</strong>로 제안드립니다.<br><br>
+        대학 입장에서는 프로그램 운영 후에도 결과보고, 내부 공유, 차년도 기획에 활용할 수 있는 산출물이 남고,
+        학생 입장에서는 LinkedIn 프로필, 지원서류, 기업분석, 면접전략 등 실제 취업 준비에 바로 적용 가능한 결과를 확보할 수 있다는 점이 핵심입니다.
+      `;
+    }
+
+    function getPromotionHooks(best, choices) {
+      const baseName = getRecommendationLabel(best, choices);
+      const hooks = [];
+
+      if (best.id === 'accelerator') {
+        hooks.push(
+          ['합격을 부르는 취업브랜딩 실전캠프', '학생 모집 홍보에 활용하기 좋은 실행형 제목'],
+          ['AI와 LinkedIn으로 완성하는 취업전략 집중과정', '최신 도구 활용 이미지를 강조하는 제목'],
+          ['희망기업 합격전략을 만드는 커리어 액셀러레이터', '희망기업 중심 실행전략을 부각하는 제목'],
+          ['내 강점을 합격 가능성으로 바꾸는 취업 부트캠프', '학생들의 관심을 끌기 좋은 메시지형 제목']
+        );
+      } else if (best.id === 'reboot') {
+        hooks.push(
+          ['다시 시작하는 취업리부트 집중과정', '미취업 졸업생 재도전 메시지 강조'],
+          ['멈춘 취업준비를 다시 움직이게 하는 실행캠프', '행동 변화와 루틴 회복 포인트 강조'],
+          ['졸업생 맞춤 재도약 취업전략 프로그램', '대상 특화형 운영에 적합한 제목'],
+          ['지원부터 면접까지 다시 잡는 리스타트 클래스', '실행과정 재정비를 강조하는 제목']
+        );
+      } else if (best.id === 'departmentCamp') {
+        hooks.push(
+          ['우리 학과 맞춤 취업전략 캠프', '학과 특화 메시지가 분명한 제목'],
+          ['전공을 강점으로 바꾸는 취업브랜딩 클래스', '학과 특성과 취업 연결성을 강조'],
+          ['희망기업 중심 실전 취업준비 집중과정', '직무·기업 중심형 홍보에 적합'],
+          ['짧고 강하게 끝내는 학과별 취업점프업 캠프', '단기 집중형 운영에 어울리는 제목']
+        );
+      } else {
+        hooks.push(
+          ['학생지도를 바꾸는 LinkedIn Advisor Lab', '교수·실무자 연수의 변화 포인트 강조'],
+          ['AI와 LinkedIn 기반 취업지도 실무과정', '실무형 연수 이미지 강조'],
+          ['학생상담의 기준을 높이는 취업지도 워크숍', '내부 역량강화 목적에 적합'],
+          ['취업지원 실무자를 위한 학생지도 업그레이드 과정', '운영부서 대상 전달력이 좋은 제목']
+        );
+      }
+
+      if (choices.needs.includes('global')) {
+        hooks.unshift(['글로벌 취업감각까지 연결하는 실전 취업전략 과정', '글로벌 역량 강조형 제목']);
+      }
+
+      return hooks.slice(0, 4);
+    }
+
+    function getProcessExamples(best, choices) {
+      if (best.id === 'reboot') {
+        return [
+          {
+            title: '1단계. 현재 상태 진단 및 재도전 설계',
+            items: [
+              '지원 이력, 미취업 원인, 목표 직무 진단',
+              '개인 강점과 취업 루틴 재설계',
+              '재도전용 핵심 목표 설정'
+            ]
+          },
+          {
+            title: '2단계. 프로필·서류·면접 실행 보완',
+            items: [
+              'LinkedIn 프로필 및 지원서류 보완',
+              '희망기업 기준 기업분석 및 면접전략 설계',
+              '개별 피드백 및 수정 포인트 정리'
+            ]
+          },
+          {
+            title: '3단계. 행동 실행 및 추적관리',
+            items: [
+              '주차별 지원목표 설정',
+              '실행현황 체크 및 후속 코칭',
+              '성과정리표 및 후속 관리 방향 제안'
+            ]
+          },
+          {
+            title: '4단계. 결과물 정리 및 보고',
+            items: [
+              '개인별 실행계획표 정리',
+              '교육 결과 요약 및 개선 포인트 도출',
+              '대학 보고용 운영결과 정리 가능'
+            ]
+          }
+        ];
+      }
+
+      if (best.id === 'departmentCamp') {
+        return [
+          {
+            title: '1단계. 학과·직무 방향 설정',
+            items: [
+              '학과 진출직무 및 채용동향 파악',
+              '학생 수준에 맞는 취업준비 기준 정리',
+              '희망기업 및 직무 탐색 방향 제시'
+            ]
+          },
+          {
+            title: '2단계. 강점 표현 및 브랜딩 정리',
+            items: [
+              '전공·활동 경험을 강점으로 구조화',
+              '프로필 및 자기표현 방식 개선',
+              '학과 특성 기반 자기소개 방향 제시'
+            ]
+          },
+          {
+            title: '3단계. 서류·면접 실전 적용',
+            items: [
+              '자기소개서 및 포트폴리오 방향 제시',
+              '면접 질문별 답변 구조 설계',
+              '희망기업 맞춤 실행전략 연결'
+            ]
+          },
+          {
+            title: '4단계. 결과물 완성 및 마무리',
+            items: [
+              '학생용 취업전략 워크북 정리',
+              '핵심 메시지 및 실천계획 정리',
+              '학과 홍보 및 내부 보고용 활용 가능'
+            ]
+          }
+        ];
+      }
+
+      if (best.id === 'advisor') {
+        return [
+          {
+            title: '1단계. 학생지도 관점 정리',
+            items: [
+              '현재 학생 취업준비 특성 이해',
+              'LinkedIn과 AI를 활용한 지도 포인트 정리',
+              '지도자별 활용 가능 범위 설정'
+            ]
+          },
+          {
+            title: '2단계. 상담 구조 및 피드백 기준화',
+            items: [
+              '학생 상담 체크리스트 설계',
+              '프로필·서류·면접 지도 프레임 정리',
+              '반복 활용 가능한 피드백 구조 제공'
+            ]
+          },
+          {
+            title: '3단계. 실제 적용 예시 실습',
+            items: [
+              '학생 케이스 기반 지도 실습',
+              '상담 멘트와 질문 구조 정리',
+              '학과 및 대상별 지도 포인트 차별화'
+            ]
+          },
+          {
+            title: '4단계. 내부 확산 및 후속활용',
+            items: [
+              '실무자 공통활용 템플릿 제공',
+              '내부 공유용 가이드 정리',
+              '차년도 프로그램 연계 방향 제안'
+            ]
+          }
+        ];
+      }
+
+      return [
+        {
+          title: '1단계. 취업현황 진단 및 목표 설정',
+          items: [
+            '학생 수준과 준비현황 진단',
+            '희망직무·희망기업 기반 목표 설정',
+            '취업준비 우선순위 구조화'
+          ]
+        },
+        {
+          title: '2단계. 브랜딩·기업분석·서류 준비',
+          items: [
+            'LinkedIn 프로필 및 자기소개 정리',
+            '희망기업·직무 분석 프레임 실습',
+            '서류 작성 방향 및 포트폴리오 구조 정리'
+          ]
+        },
+        {
+          title: '3단계. 면접전략 및 실행전환',
+          items: [
+            '유형별 면접전략 및 답변 구조 훈련',
+            '지원 전략과 실행 계획 연결',
+            '개별 적용 포인트 도출'
+          ]
+        },
+        {
+          title: '4단계. 결과물 정리 및 후속활용',
+          items: [
+            '학생별 결과물 정리',
+            '희망기업 중심 실행계획표 작성',
+            '대학 보고 및 후속 프로그램 연계 가능'
+          ]
+        }
+      ];
+    }
+
+    function getCurriculumRows(best, choices, top3Modules) {
+      const rows = [];
+      const duration = choices.duration;
+
+      const shortMode = duration === '1day-short' || duration === '1day-full';
+      const mediumMode = duration === '2day' || duration === '4week';
+      const longMode = duration === '6day18' || duration === '6week18';
+
+      rows.push(['OT / 사전진단', '참여자 현황 파악, 목표 설정, 교육 방향 안내', '사전진단 결과 / 참여 기준 정리']);
+      rows.push(['핵심1', `${top3Modules[0]?.module || '취업전략'} 중심 실습`, '핵심 이해 및 적용 포인트 도출']);
+      rows.push(['핵심2', `${top3Modules[1]?.module || '기업분석'} 중심 실습`, '직무·기업 맞춤 관점 정리']);
+      rows.push(['핵심3', `${top3Modules[2]?.module || '면접전략'} 중심 실습`, '실행전환용 결과물 정리']);
+
+      if (!shortMode) {
+        rows.push(['심화실습', 'LinkedIn / 서류 / 면접 / 기업분석 중 심화 파트 운영', '개인 또는 팀별 결과물 고도화']);
+      }
+      if (mediumMode || longMode) {
+        rows.push(['피드백', '개별 또는 소그룹 피드백 운영', '수정 포인트 및 개선안']);
+      }
+      if (longMode) {
+        rows.push(['후속관리', '실행점검, 추적관리, 보고용 정리', '운영 결과보고 및 후속 활용']);
+      }
+
+      return rows;
+    }
+
+    function buildCopyText(best, choices, estimates, modules, top3, dynamicOutcomes, hooks) {
       const lines = [];
       lines.push(`[추천 프로그램] ${getRecommendationLabel(best, choices)}`);
       lines.push(`- 적합도: ${scoreProgram(best, choices)}점`);
@@ -1618,6 +1939,7 @@
       lines.push(`- 권장 금액(VAT 포함 / 결과보고서 및 운영비 포함): 기본형 ${formatMoney(estimates.base)} / 추천형 ${formatMoney(estimates.recommended)} / 확장형 ${formatMoney(estimates.premium)}`);
       lines.push(`- 글로벌 멘토 옵션: ${getMentorLabel(choices.mentor)}`);
       lines.push(`- 영문 지원 옵션: ${englishLabel[choices.english]}`);
+      lines.push(`- 홍보제목 추천: ${hooks.map(h => h[0]).join(' / ')}`);
       lines.push(`- 교육 특장점: ${best.strengths.join(' / ')}`);
       lines.push(`- 기존교육과의 차이점: ${best.differentiation.join(' / ')}`);
       lines.push(`- 최종 결과물: ${dynamicOutcomes.join(' / ')}`);
@@ -1663,7 +1985,11 @@
       const modules = priorityData.orderedModules;
       const top3 = priorityData.top3;
       const dynamicOutcomes = getDynamicOutcomes(best, choices);
-      const copyText = buildCopyText(best, choices, estimates, modules, top3, dynamicOutcomes);
+      const issueSummary = buildIssueSummary(choices);
+      const hooks = getPromotionHooks(best, choices);
+      const processExamples = getProcessExamples(best, choices);
+      const curriculumRows = getCurriculumRows(best, choices, top3);
+      const copyText = buildCopyText(best, choices, estimates, modules, top3, dynamicOutcomes, hooks);
 
       const alternativeCards = ranked.slice(1, 3).map(item => `
         <article class="mini-card">
@@ -1686,13 +2012,11 @@
         ? `선택 대상 프리미엄 ${formatMoney(estimates.audiencePremium)}이 추천형 이상 금액에 반영되었습니다.`
         : '선택 대상에 따른 별도 프리미엄은 반영되지 않았습니다.';
 
-      const issueSummary = buildIssueSummary(choices);
-
       resultsEl.innerHTML = `
         <div class="summary-card" id="printArea">
           <div class="brand-intro">
-            <strong>Linkedin Korea Partner와 함께하는 취업역량강화 교육</strong>
-            <div>글로벌 역량 및 국내취업역량을 채용담당자의 관점에서 볼 수 있는 교육입니다.</div>
+            <strong>컨설팅 제안 요약</strong>
+            <p>${getConsultingProposal(best, choices)}</p>
           </div>
 
           <div class="summary-head">
@@ -1724,6 +2048,17 @@
 
           <div class="section-title">현재 진단 요약</div>
           <div class="summary-box">${issueSummary}</div>
+
+          <div class="section-title">교육 홍보제목 추천</div>
+          <div class="hook-grid">
+            ${hooks.map(item => `
+              <div class="hook-card">
+                <strong>홍보제목 추천</strong>
+                <p class="hook-title">${item[0]}</p>
+                <div class="hook-sub">${item[1]}</div>
+              </div>
+            `).join('')}
+          </div>
 
           <div class="section-title">핵심구성 우선순위</div>
           <div class="priority-grid">
@@ -1760,21 +2095,34 @@
           </div>
 
           <div class="price-grid">
-            <div class="price-box">
+            <div class="price-box basic">
               <strong>기본형</strong>
               <div class="price">${formatMoney(estimates.base)}</div>
               <small>부가세 포함 · 결과보고서 및 운영비용 포함<br>${choices.duration === '1day-short' ? '단순 특강형 현실 예산 기준' : '기본 운영 패키지 기준'}</small>
             </div>
-            <div class="price-box">
+            <div class="price-box recommend">
               <strong>추천형</strong>
               <div class="price">${formatMoney(estimates.recommended)}</div>
               <small>부가세 포함 · 결과보고서 및 운영비용 포함<br>${selectedMentor === '없음' ? '기본 운영 심화형 기준' : `${selectedMentor} 포함`}</small>
             </div>
-            <div class="price-box">
+            <div class="price-box expand">
               <strong>확장형</strong>
               <div class="price">${formatMoney(estimates.premium)}</div>
               <small>부가세 포함 · 결과보고서 및 운영비용 포함<br>${selectedEnglish === '없음' ? '후속 피드백 및 추가지원 확장 가능' : `${selectedEnglish} 포함`}</small>
             </div>
+          </div>
+
+          <div class="section-title">과정 진행 예시</div>
+          <div class="process-grid">
+            ${processExamples.map(step => `
+              <div class="process-card">
+                <strong>진행 단계</strong>
+                <h4>${step.title}</h4>
+                <ul>
+                  ${step.items.map(i => `<li>${i}</li>`).join('')}
+                </ul>
+              </div>
+            `).join('')}
           </div>
 
           <div class="section-title">교육 핵심구성요소</div>
@@ -1783,7 +2131,33 @@
           </div>
 
           <div class="section-title">프로그램 요약</div>
-          <div class="summary-box">${best.proposal}</div>
+          <div class="proposal-box">${best.proposal}</div>
+
+          <div class="section-title">강의 커리큘럼 예시</div>
+          <table class="curriculum-table">
+            <thead>
+              <tr>
+                <th style="width:16%;">구분</th>
+                <th style="width:44%;">주요 내용</th>
+                <th style="width:40%;">기대 결과</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${curriculumRows.map(row => `
+                <tr>
+                  <td><strong>${row[0]}</strong></td>
+                  <td>${row[1]}</td>
+                  <td>${row[2]}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="custom-note">
+            <strong>커리큘럼 조정 가능 안내</strong><br>
+            본 커리큘럼은 대학의 대상, 학과 특성, 운영시간, 예산, 희망 결과물에 따라 조정 가능합니다.
+            필요 시 특강형, 실습형, 캠프형, 추적관리형 등으로 세부 구조를 수정하여 제안서에 맞게 커스터마이징할 수 있습니다.
+          </div>
 
           <div class="note">
             <strong>옵션 설계</strong><br>
