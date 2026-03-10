@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>대학교육 제안서 추천기</title>
+  <meta name="description" content="대학 교육 형태, 대상, 규모, 예산을 선택하면 AI·LinkedIn 기반 추천 프로그램과 권장 금액을 제안합니다." />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --line: #d9e2ec;
+      --text: #102a43;
+      --muted: #486581;
+      --brand: #0a66c2;
+      --brand-soft: #e8f3ff;
+      --green: #117864;
+      --green-soft: #eafaf1;
+      --gold: #8f5b00;
+      --gold-soft: #fff5db;
+      --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid #cfe5ff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.15;
+      margin: 0 0 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin: 0 0 18px;
+      font-size: 16px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .hero-box {
+      background: #fbfdff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .hero-box h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .hero-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid #cfe5ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    .panel-head h2,
+    .panel-head h3 {
+      margin: 0 0 4px;
+      font-size: 20px;
+    }
+
+    .panel-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .field + .field {
+      margin-top: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font: inherit;
+      color: var(--text);
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.12);
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .06s ease, opacity .15s ease;
+    }
+
+    button:hover { opacity: 0.96; }
+    button:active { transform: translateY(1px); }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(10, 102, 194, 0.18);
+    }
+
+    .btn-secondary {
+      background: #eef4fb;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .summary-card {
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .summary-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .summary-head h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--green);
+      background: var(--green-soft);
+      border: 1px solid #caead9;
+      white-space: nowrap;
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .price-box {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 16px;
+    }
+
+    .price-box strong {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .price-box .price {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .price-box small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .meta-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .meta-card strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .meta-card div {
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0 10px;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    ul.clean {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    ul.clean li + li {
+      margin-top: 8px;
+    }
+
+    .note {
+      border: 1px solid #f2ddb0;
+      background: var(--gold-soft);
+      color: #694100;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .secondary-results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .mini-card h4 {
+      margin: 0 0 6px;
+      font-size: 17px;
+    }
+
+    .mini-card p {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .mini-price {
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .footer {
+      margin-top: 26px;
+      padding: 20px 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .footer strong { color: var(--text); }
+
+    .copy-toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #102a43;
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: all .2s ease;
+      z-index: 10;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid,
+      .price-grid,
+      .meta-grid,
+      .secondary-results {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">✅ Made by Linkedin Korea Partner</div>
+      <h1>대학교육 제안서 추천기</h1>
+      <p class="sub">희망하는 교육형태, 대상, 인원, 예산, 운영기간을 선택하면 대학에 제안하기 좋은 프로그램과 권장 금액을 자동으로 추천합니다.</p>
+      <div class="hero-grid">
+        <div class="hero-box">
+          <h2>어떻게 활용하면 좋나요?</h2>
+          <p>대학일자리플러스센터, 취창업처, 학과, 국제처 등과 논의할 때 프로그램 방향과 예산안을 빠르게 잡는 용도로 설계했습니다. 결과는 그대로 제안서 초안 문구로 활용할 수 있습니다.</p>
+          <div class="chips">
+            <span class="chip">AI·LinkedIn 기반</span>
+            <span class="chip">대학용 교육 추천</span>
+            <span class="chip">예산 시뮬레이션</span>
+            <span class="chip">글로벌 멘토 옵션</span>
+          </div>
+        </div>
+        <div class="hero-box">
+          <h2>추천 대상 프로그램</h2>
+          <p>AI·LinkedIn 커리어 액셀러레이터, 졸업생 리부트 프로그램, 학과 맞춤 취업브랜딩 캠프, 교수·취업지원 실무자 LinkedIn Advisor Lab 중에서 가장 적합한 안을 보여줍니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>희망 조건 선택</h2>
+          <p>선택값을 바꾸면 대학에 제안하기 좋은 구성과 예산이 달라집니다.</p>
+        </div>
+        <div class="panel-body">
+          <div class="field">
+            <label for="programType">교육 형태</label>
+            <select id="programType">
+              <option value="turnkey">프로젝트형 / 턴키형</option>
+              <option value="bootcamp">실습형 부트캠프</option>
+              <option value="camp">집중 캠프형</option>
+              <option value="reboot">졸업생 집중형</option>
+              <option value="advisor">교수·실무자 연수형</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="audience">주요 대상</label>
+            <select id="audience">
+              <option value="students">재학생(3~4학년 중심)</option>
+              <option value="seniors">졸업예정자</option>
+              <option value="graduates">미취업 졸업생</option>
+              <option value="faculty">교수 / 취업지원 실무자</option>
+              <option value="mixed">학과 단위 혼합 참여</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="size">예상 인원</label>
+            <select id="size">
+              <option value="small">15명 이하</option>
+              <option value="mid">16~25명</option>
+              <option value="core" selected>26~40명</option>
+              <option value="large">41~60명</option>
+              <option value="xlarge">61명 이상</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="duration">운영 기간 / 규모</label>
+            <select id="duration">
+              <option value="1day-short">1일 / 3~4시간</option>
+              <option value="1day-full">1일 / 6시간</option>
+              <option value="2day">2일 / 6~8시간</option>
+              <option value="4week">4주 / 8~12시간</option>
+              <option value="6day18" selected>6일 / 총 18시간</option>
+              <option value="6week18">6주 / 총 18시간</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="budget">예상 예산</label>
+            <select id="budget">
+              <option value="under700">700만원 이하</option>
+              <option value="701to1000">701만~1,000만원</option>
+              <option value="1001to1500">1,001만~1,500만원</option>
+              <option value="1501to2000" selected>1,501만~2,000만원</option>
+              <option value="over2000">2,000만원 이상</option>
+            </select>
+            <div class="hint">권장 금액은 부가세 포함 총계약액 기준 예시로 계산합니다.</div>
+          </div>
+
+          <div class="field">
+            <label for="mentor">글로벌 멘토 옵션</label>
+            <select id="mentor">
+              <option value="none">없음</option>
+              <option value="online">온라인 특강 1회</option>
+              <option value="clinic">온라인 소그룹 클리닉</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="english">영문 지원 옵션</label>
+            <select id="english">
+              <option value="none" selected>없음</option>
+              <option value="profile">영문 LinkedIn 프로필 소그룹 코칭</option>
+              <option value="cv">영문 CV / 프로필 리뷰</option>
+              <option value="materials">국·영문 자료 이중화</option>
+            </select>
+            <div class="hint">영문 옵션은 기본과정에 필수로 넣지 않고, 필요할 때만 추가하는 구조입니다.</div>
+          </div>
+
+          <div class="field">
+            <label for="notes">추가 메모 (선택)</label>
+            <textarea id="notes" rows="4" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망"></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn-primary" id="runBtn">추천 교육 보기</button>
+            <button class="btn-secondary" id="sampleBtn" type="button">샘플 입력</button>
+            <button class="btn-secondary" id="resetBtn" type="button">초기화</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>추천 결과</h3>
+          <p>선택 조건에 가장 잘 맞는 프로그램과 금액, 제안 포인트를 보여줍니다.</p>
+        </div>
+        <div class="panel-body" id="results"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>교육을 위해 작성된 추천 결과이니 대학 상황에 맞게 조정하여 활용하시기 바랍니다.</div>
+      <div style="margin-top:8px;"><strong>© 대학교육 제안서 추천기</strong> (Made by Linkedin Korea Partner)</div>
+      <div style="margin-top:8px;">Made by 강원준_Linkedin Korea Partner HR Point(2026) · <a href="https://www.linkedin.com/in/ceohr" target="_blank" rel="noreferrer">LinkedIn</a></div>
+      <div style="margin-top:4px;">Made by Kang wonjun (Linkedin Korea Partner)</div>
+    </footer>
+  </main>
+
+  <div class="copy-toast" id="copyToast">추천 결과를 복사했습니다.</div>
+
+  <script>
+    const programs = [
+      {
+        id: 'accelerator',
+        name: 'AI·LinkedIn 커리어 액셀러레이터',
+        summary: '재학생·졸업예정자를 대상으로 자기표현, 직무탐색, LinkedIn 프로필, 지원 실행을 연결하는 대표 프로그램입니다.',
+        basePrice: 1720,
+        audience: ['students', 'seniors', 'mixed'],
+        types: ['turnkey', 'bootcamp', 'camp'],
+        durations: ['4week', '6day18'],
+        sponsor: ['대학일자리플러스센터', '취창업처', '학과', '단과대학'],
+        baseStructure: '6일 / 총 18시간 또는 4주 운영',
+        outputs: ['개인 LinkedIn 프로필 초안', '타깃 직무·기업 시트', '네트워킹 문안 3종', '지원 실행계획표', '운영 결과보고서'],
+        modules: ['자기강점 정리', 'JD 분석', 'LinkedIn 프로필 구조화', 'AI 활용 자기표현', '네트워킹 메시지 설계', '지원전략 발표'],
+        proposal: '본 프로그램은 AI와 LinkedIn을 활용해 학생의 취업브랜딩, 직무탐색, 지원실행을 연결하는 실습형 취업역량 강화 과정입니다.'
+      },
+      {
+        id: 'reboot',
+        name: '졸업생 리부트 프로그램',
+        summary: '미취업 졸업생의 재도전 전략, 구직 루틴, 프로필 개선, 지원 실행을 주간 단위로 관리하는 프로그램입니다.',
+        basePrice: 1880,
+        audience: ['graduates', 'seniors'],
+        types: ['turnkey', 'reboot'],
+        durations: ['6week18', '6day18'],
+        sponsor: ['대학일자리플러스센터', '졸업생 특화 담당', '취업지원부서'],
+        baseStructure: '6주 / 총 18시간 운영',
+        outputs: ['재도약 로드맵', '지원관리표', '프로필 개선안', '주간 과제 점검표', '최종 결과보고서'],
+        modules: ['구직 루틴 재설계', 'LinkedIn 재정비', 'JD 분석', 'AI 활용 자기소개 구조화', '면접 스토리라인 설계', '주간 실행 점검'],
+        proposal: '본 프로그램은 미취업 졸업생의 구직 재도전을 지원하기 위해 AI·LinkedIn 기반 브랜딩과 실행 루틴을 결합한 후속관리형 과정입니다.'
+      },
+      {
+        id: 'departmentCamp',
+        name: '학과 맞춤 취업브랜딩 캠프',
+        summary: '학과 단위 또는 다수 학생을 대상으로 짧고 밀도 있게 직무 이해, 강점 표현, 프로필 초안을 잡는 집중 캠프입니다.',
+        basePrice: 880,
+        audience: ['students', 'mixed', 'seniors'],
+        types: ['camp', 'bootcamp'],
+        durations: ['1day-full', '2day', '1day-short'],
+        sponsor: ['학과', '단과대학', '취창업처'],
+        baseStructure: '2일 / 6~8시간 또는 1일 집중형',
+        outputs: ['학과 맞춤 워크북', '직무맵', '프로필 초안', '실습 결과 요약'],
+        modules: ['학과 기반 직무맵', '강점 언어화', 'LinkedIn 프로필 작성', '지원서 구조화'],
+        proposal: '본 프로그램은 학과 특성과 학생 수준에 맞춰 직무탐색과 취업브랜딩을 단기간에 집중 지원하는 맞춤형 캠프입니다.'
+      },
+      {
+        id: 'advisor',
+        name: '교수·취업지원 실무자 LinkedIn Advisor Lab',
+        summary: '교수와 취업지원 실무자가 학생의 LinkedIn 프로필과 AI 활용 상담을 지도할 수 있도록 돕는 연수형 과정입니다.',
+        basePrice: 620,
+        audience: ['faculty'],
+        types: ['advisor'],
+        durations: ['1day-full', '1day-short'],
+        sponsor: ['취창업처', '교무처', '학생처'],
+        baseStructure: '1일 / 3~6시간 연수형 운영',
+        outputs: ['학생 지도 가이드', '상담 체크리스트', '학생 피드백 템플릿'],
+        modules: ['학생 프로필 지도법', 'AI 활용 상담 프롬프트', '학생 강점 언어화', 'LinkedIn 지도 포인트'],
+        proposal: '본 프로그램은 교수 및 취업지원 실무자의 학생 지도 역량을 높이기 위해 LinkedIn과 AI 활용법을 실무 중심으로 정리한 연수형 워크숍입니다.'
+      }
+    ];
+
+    const sizeAdjustments = {
+      small: { accelerator: -80, reboot: -100, departmentCamp: -100, advisor: -70 },
+      mid: { accelerator: -30, reboot: -50, departmentCamp: -50, advisor: -20 },
+      core: { accelerator: 0, reboot: 0, departmentCamp: 0, advisor: 0 },
+      large: { accelerator: 120, reboot: 100, departmentCamp: 100, advisor: 40 },
+      xlarge: { accelerator: 220, reboot: 180, departmentCamp: 180, advisor: 80 }
+    };
+
+    const mentorAdd = { none: 0, online: 250, clinic: 400 };
+    const mentorLabel = {
+      none: '없음',
+      online: '글로벌 멘토 온라인 특강 1회',
+      clinic: '글로벌 멘토 온라인 소그룹 클리닉'
+    };
+
+    const englishAdd = { none: 0, profile: 450, cv: 500, materials: 120 };
+    const englishLabel = {
+      none: '없음',
+      profile: '영문 LinkedIn 프로필 소그룹 코칭',
+      cv: '영문 CV / 프로필 리뷰',
+      materials: '국·영문 자료 이중화'
+    };
+
+    const budgetCaps = {
+      under700: 700,
+      '701to1000': 1000,
+      '1001to1500': 1500,
+      '1501to2000': 2000,
+      over2000: 9999
+    };
+
+    const budgetLabels = {
+      under700: '700만원 이하',
+      '701to1000': '701만~1,000만원',
+      '1001to1500': '1,001만~1,500만원',
+      '1501to2000': '1,501만~2,000만원',
+      over2000: '2,000만원 이상'
+    };
+
+    const form = {
+      programType: document.getElementById('programType'),
+      audience: document.getElementById('audience'),
+      size: document.getElementById('size'),
+      duration: document.getElementById('duration'),
+      budget: document.getElementById('budget'),
+      mentor: document.getElementById('mentor'),
+      english: document.getElementById('english'),
+      notes: document.getElementById('notes')
+    };
+
+    const resultsEl = document.getElementById('results');
+    const copyToast = document.getElementById('copyToast');
+
+    function formatMoney(v) {
+      return `${v.toLocaleString('ko-KR')}만원`;
+    }
+
+    function computeEstimate(program, size, mentor, english) {
+      const adjusted = program.basePrice + (sizeAdjustments[size]?.[program.id] || 0);
+      const mentorCost = (program.id === 'advisor') ? 0 : mentorAdd[mentor];
+      const englishCost = (program.id === 'advisor') ? 0 : englishAdd[english];
+      const base = adjusted;
+      const recommended = adjusted + mentorCost;
+      const premium = adjusted + mentorCost + englishCost;
+      return { base, recommended, premium, mentorCost, englishCost };
+    }
+
+    function scoreProgram(program, choices) {
+      let score = 45;
+
+      if (program.types.includes(choices.programType)) score += 22;
+      if (program.audience.includes(choices.audience)) score += 28;
+      if (program.durations.includes(choices.duration)) score += 18;
+
+      if (choices.audience === 'mixed' && program.id === 'departmentCamp') score += 10;
+      if (choices.audience === 'graduates' && program.id === 'reboot') score += 18;
+      if (choices.audience === 'faculty' && program.id === 'advisor') score += 25;
+      if (choices.duration === '6day18' && program.id === 'accelerator') score += 14;
+      if (choices.duration === '6week18' && program.id === 'reboot') score += 14;
+      if ((choices.duration === '1day-full' || choices.duration === '2day') && program.id === 'departmentCamp') score += 10;
+
+      if (choices.mentor !== 'none' && program.id === 'accelerator') score += 8;
+      if (choices.english !== 'none' && (program.id === 'accelerator' || program.id === 'reboot')) score += 6;
+
+      const estimates = computeEstimate(program, choices.size, choices.mentor, choices.english);
+      const cap = budgetCaps[choices.budget];
+
+      if (estimates.recommended <= cap) score += 16;
+      else if (estimates.base <= cap) score += 8;
+      else score -= Math.min(20, Math.round((estimates.base - cap) / 70));
+
+      if (choices.size === 'xlarge' && program.id === 'departmentCamp') score += 10;
+      if ((choices.size === 'small' || choices.size === 'mid') && program.id === 'reboot') score += 6;
+      if (choices.size === 'large' && program.id === 'accelerator') score += 6;
+      if (program.id === 'advisor' && choices.size !== 'xlarge' && choices.size !== 'large') score += 2;
+
+      return Math.max(0, Math.min(99, score));
+    }
+
+    function getRecommendationLabel(program, choices) {
+      if (program.id === 'accelerator' && choices.mentor !== 'none') {
+        return 'AI·LinkedIn 커리어 액셀러레이터 Plus';
+      }
+      return program.name;
+    }
+
+    function getStructure(program, choices) {
+      if (program.id === 'accelerator' && choices.duration === '6day18') {
+        return '6일 / 총 18시간 운영 · 실습형 메인 프로그램';
+      }
+      if (program.id === 'reboot') {
+        return '6주 / 총 18시간 운영 · 주간 실행점검 포함';
+      }
+      if (program.id === 'departmentCamp' && choices.duration === '1day-short') {
+        return '1일 / 3~4시간 집중 특강형 운영';
+      }
+      if (program.id === 'departmentCamp') {
+        return '2일 / 6~8시간 집중 캠프형 운영';
+      }
+      return program.baseStructure;
+    }
+
+    function getBudgetFitMessage(estimates, budgetKey) {
+      const cap = budgetCaps[budgetKey];
+      if (estimates.recommended <= cap) return '선택한 예산 안에서 추천형 패키지까지 구성 가능합니다.';
+      if (estimates.base <= cap) return '선택한 예산에서는 기본형 중심 제안이 적합합니다.';
+      return '선택한 예산보다 상회할 수 있어 범위 조정 또는 축약 운영이 필요합니다.';
+    }
+
+    function buildCopyText(best, choices, estimates) {
+      const lines = [];
+      lines.push(`[추천 프로그램] ${getRecommendationLabel(best, choices)}`);
+      lines.push(`- 적합도: ${scoreProgram(best, choices)}점`);
+      lines.push(`- 운영 형태: ${getStructure(best, choices)}`);
+      lines.push(`- 주요 대상: ${form.audience.options[form.audience.selectedIndex].text}`);
+      lines.push(`- 예상 인원: ${form.size.options[form.size.selectedIndex].text}`);
+      lines.push(`- 권장 예산: 기본형 ${formatMoney(estimates.base)} / 추천형 ${formatMoney(estimates.recommended)} / 확장형 ${formatMoney(estimates.premium)}`);
+      lines.push(`- 글로벌 멘토 옵션: ${mentorLabel[choices.mentor]}`);
+      lines.push(`- 영문 지원 옵션: ${englishLabel[choices.english]}`);
+      lines.push(`- 제안 문구: ${best.proposal}`);
+      lines.push(`- 핵심 모듈: ${best.modules.join(', ')}`);
+      lines.push(`- 산출물: ${best.outputs.join(', ')}`);
+      if (choices.notes.trim()) lines.push(`- 추가 메모 반영 포인트: ${choices.notes.trim()}`);
+      return lines.join('\n');
+    }
+
+    function renderResults() {
+      const choices = {
+        programType: form.programType.value,
+        audience: form.audience.value,
+        size: form.size.value,
+        duration: form.duration.value,
+        budget: form.budget.value,
+        mentor: form.mentor.value,
+        english: form.english.value,
+        notes: form.notes.value
+      };
+
+      const ranked = programs
+        .map(program => ({
+          program,
+          score: scoreProgram(program, choices),
+          estimates: computeEstimate(program, choices.size, choices.mentor, choices.english)
+        }))
+        .sort((a, b) => b.score - a.score || a.estimates.recommended - b.estimates.recommended);
+
+      const best = ranked[0].program;
+      const estimates = ranked[0].estimates;
+      const recommendationName = getRecommendationLabel(best, choices);
+      const budgetFit = getBudgetFitMessage(estimates, choices.budget);
+      const copyText = buildCopyText(best, choices, estimates);
+
+      const alternativeCards = ranked.slice(1, 3).map(item => `
+        <article class="mini-card">
+          <h4>${getRecommendationLabel(item.program, choices)}</h4>
+          <p>${item.program.summary}</p>
+          <div class="mini-price">${formatMoney(item.estimates.recommended)}</div>
+          <div style="margin-top:8px;font-size:13px;color:#486581;">적합도 ${item.score}점 · ${getStructure(item.program, choices)}</div>
+        </article>
+      `).join('');
+
+      const selectedMentor = mentorLabel[choices.mentor];
+      const selectedEnglish = englishLabel[choices.english];
+      const englishNote = selectedEnglish === '없음'
+        ? '영문 지원 옵션은 기본형에 필수로 넣지 않고, 필요 시에만 별도 add-on으로 제안하는 구성이 적합합니다.'
+        : `${selectedEnglish} 옵션을 확장형에만 포함하는 구성이 적합합니다.`;
+
+      resultsEl.innerHTML = `
+        <div class="summary-card">
+          <div class="summary-head">
+            <div>
+              <h3>${recommendationName}</h3>
+              <div style="margin-top:8px;color:#486581;">${best.summary}</div>
+            </div>
+            <div class="score-badge">적합도 ${ranked[0].score}점</div>
+          </div>
+
+          <div class="price-grid">
+            <div class="price-box">
+              <strong>기본형</strong>
+              <div class="price">${formatMoney(estimates.base)}</div>
+              <small>대표님 메인 운영 기준</small>
+            </div>
+            <div class="price-box">
+              <strong>추천형</strong>
+              <div class="price">${formatMoney(estimates.recommended)}</div>
+              <small>${selectedMentor === '없음' ? '운영형 패키지 기준' : selectedMentor + ' 포함'}</small>
+            </div>
+            <div class="price-box">
+              <strong>확장형</strong>
+              <div class="price">${formatMoney(estimates.premium)}</div>
+              <small>${selectedEnglish === '없음' ? '후속 피드백 확장 가능' : selectedEnglish + ' 포함'}</small>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-card">
+              <strong>권장 운영 구조</strong>
+              <div>${getStructure(best, choices)}</div>
+            </div>
+            <div class="meta-card">
+              <strong>추천 집행 부서</strong>
+              <div>${best.sponsor.join(' · ')}</div>
+            </div>
+            <div class="meta-card">
+              <strong>선택한 예산 구간</strong>
+              <div>${budgetLabels[choices.budget]}</div>
+            </div>
+            <div class="meta-card">
+              <strong>예산 적합도 코멘트</strong>
+              <div>${budgetFit}</div>
+            </div>
+          </div>
+
+          <div class="section-title">핵심 구성</div>
+          <ul class="clean">
+            ${best.modules.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+
+          <div class="section-title">예상 산출물</div>
+          <ul class="clean">
+            ${best.outputs.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+
+          <div class="section-title">제안서용 한 문장</div>
+          <div style="border:1px solid #d9e2ec;border-radius:16px;padding:14px;background:#fff;">${best.proposal}</div>
+
+          <div class="note">
+            <strong>옵션 설계</strong><br>
+            글로벌 멘토: <strong>${selectedMentor}</strong><br>
+            영문 지원: <strong>${selectedEnglish}</strong><br>
+            ${englishNote}
+          </div>
+
+          ${choices.notes.trim() ? `
+            <div class="section-title">추가 메모 반영 포인트</div>
+            <div style="border:1px solid #d9e2ec;border-radius:16px;padding:14px;background:#fff;">${choices.notes.trim()}</div>
+          ` : ''}
+
+          <div class="btn-row">
+            <button class="btn-primary" id="copyBtn" type="button">추천 결과 복사</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-title">다른 추천안</div>
+          <div class="secondary-results">${alternativeCards}</div>
+        </div>
+      `;
+
+      const copyBtn = document.getElementById('copyBtn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(copyText);
+            copyToast.classList.add('show');
+            setTimeout(() => copyToast.classList.remove('show'), 1600);
+          } catch (error) {
+            window.prompt('아래 내용을 복사하세요.', copyText);
+          }
+        });
+      }
+    }
+
+    function loadSample() {
+      form.programType.value = 'turnkey';
+      form.audience.value = 'students';
+      form.size.value = 'core';
+      form.duration.value = '6day18';
+      form.budget.value = '1501to2000';
+      form.mentor.value = 'online';
+      form.english.value = 'none';
+      form.notes.value = '국제처 또는 취창업처와 연계 가능한 글로벌 멘토 1회 포함 희망';
+      renderResults();
+    }
+
+    function resetForm() {
+      form.programType.value = 'turnkey';
+      form.audience.value = 'students';
+      form.size.value = 'core';
+      form.duration.value = '6day18';
+      form.budget.value = '1501to2000';
+      form.mentor.value = 'none';
+      form.english.value = 'none';
+      form.notes.value = '';
+      renderResults();
+    }
+
+    document.getElementById('runBtn').addEventListener('click', renderResults);
+    document.getElementById('sampleBtn').addEventListener('click', loadSample);
+    document.getElementById('resetBtn').addEventListener('click', resetForm);
+
+    Object.values(form).forEach(el => {
+      if (el && (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA')) {
+        el.addEventListener('change', renderResults);
+      }
+    });
+
+    renderResults();
+  </script>
+</body>
+</html>
