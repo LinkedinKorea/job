@@ -430,22 +430,11 @@
       border: 1px solid #cfe5ff;
       background: linear-gradient(180deg, #f6fbff 0%, #edf6ff 100%);
       border-radius: 16px;
-      padding: 14px 16px;
+      padding: 16px 18px;
       margin-bottom: 16px;
-    }
-
-    .brand-intro strong {
-      display: block;
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: var(--brand);
-    }
-
-    .brand-intro p {
-      margin: 0;
       color: #24517a;
-      font-size: 14px;
-      line-height: 1.7;
+      font-size: 15px;
+      line-height: 1.8;
     }
 
     .simple-layout,
@@ -750,7 +739,7 @@
     }
 
     .notice-grid {
-      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-columns: 1.1fr 0.9fr;
       margin-top: 20px;
     }
 
@@ -759,29 +748,55 @@
       background: linear-gradient(180deg, #fff7f6 0%, var(--red-soft) 100%);
       color: #7a271a;
       border-radius: 18px;
-      padding: 16px 18px;
+      padding: 18px 20px;
     }
 
     .notice-box strong {
       display: block;
       font-size: 16px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       color: var(--red);
+    }
+
+    .notice-contact {
+      font-size: 14px;
+      line-height: 1.85;
+      margin-bottom: 10px;
+    }
+
+    .notice-detail {
+      font-size: 13px;
+      color: #9a3a2a;
+      font-weight: 700;
     }
 
     .career-box-inline {
       border: 2px solid #cfe5ff;
       background: linear-gradient(180deg, #f5fbff 0%, #eaf4ff 100%);
-      color: var(--brand);
+      color: var(--text);
       border-radius: 18px;
-      padding: 16px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-size: 18px;
+      padding: 18px 20px;
+    }
+
+    .career-box-inline .career-title {
+      display: block;
+      font-size: 16px;
       font-weight: 900;
-      letter-spacing: -0.01em;
+      color: var(--brand);
+      margin-bottom: 10px;
+    }
+
+    .career-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #24517a;
+      font-size: 14px;
+      line-height: 1.8;
+      font-weight: 700;
+    }
+
+    .career-list li + li {
+      margin-top: 3px;
     }
 
     .mini-card h4 {
@@ -1739,12 +1754,7 @@
       const needText = getTagText(choices.needs, needLabels, '기본 취업역량 강화');
       const painText = getTagText(choices.pains, painLabels, '일반적인 교육 고도화 필요');
 
-      return `
-        제안드리는 <strong>${getRecommendationLabel(best, choices)}</strong> 과정은 <strong>${audience}</strong>을 대상으로,
-        현재 대학이 필요로 하는 <strong>${needText}</strong> 과제를 중심으로 설계된 취업역량 강화 프로그램입니다.<br><br>
-        특히 기존 교육에서 나타나는 <strong>${painText}</strong> 문제를 보완하기 위해,
-        단순 정보전달형 교육이 아니라 <strong>학생이 직접 결과물을 만들고 실행전략까지 연결하는 실습형 구조</strong>로 제안드립니다.
-      `;
+      return `제안드리는 ${getRecommendationLabel(best, choices)} 과정은 ${audience}을 대상으로 현재 대학이 필요로 하는 ${needText} 과제를 중심으로 설계된 취업역량 강화 프로그램입니다. 특히 기존 교육에서 나타나는 ${painText} 문제를 보완하기 위해 단순 정보전달형 교육이 아니라 학생이 직접 결과물을 만들고 실행전략까지 연결하는 실습형 구조로 제안드립니다.`;
     }
 
     function getProblemStatements(choices) {
@@ -1827,6 +1837,34 @@
       const effects = getExpectedEffects(choices, best);
 
       return { choices, ranked, best, estimates, modules, top3, outcomes, hooks, processExamples, curriculumRows, problems, effects };
+    }
+
+    function renderCareerProfileBox() {
+      return `
+        <div class="career-box-inline">
+          <span class="career-title">[대표강사 이력]</span>
+          <ul class="career-list">
+            <li>전원 취업 및 채용전략 교육경력 20년 이상</li>
+            <li>1만회 이상 특강 경력</li>
+            <li>30만회 이상 컨설팅 경력</li>
+            <li>전국 주요대학 겸임교수 및 특강 진행중</li>
+            <li>국내 10위 그룹 및 계열사 채용담당자 교육 진행중</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function renderInquiryBox() {
+      return `
+        <div class="notice-box">
+          <strong>운영문의</strong>
+          <div class="notice-contact">
+            연락처 : 02-6405-4446<br>
+            이메일 : help@hrpoint.co.kr
+          </div>
+          <div class="notice-detail">상세교육내용은 문의주시기 바랍니다.</div>
+        </div>
+      `;
     }
 
     function renderSimpleView(data) {
@@ -1924,11 +1962,8 @@
             ` : ''}
 
             <div class="notice-grid">
-              <div class="notice-box">
-                <strong>공지사항</strong>
-                교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
-              </div>
-              <div class="career-box-inline">강사전원 취업/채용 교육경력 20년 이상</div>
+              ${renderInquiryBox()}
+              ${renderCareerProfileBox()}
             </div>
 
             <div class="btn-row screen-only">
@@ -1969,8 +2004,7 @@
 
           <div class="section-title">제안배경</div>
           <div class="brand-intro">
-            <strong>프로그램 제안 배경</strong>
-            <p>${getConsultingProposal(best, choices)}</p>
+            ${getConsultingProposal(best, choices)}
           </div>
 
           <div class="summary-head">
@@ -2133,11 +2167,8 @@
 
           <div class="section-title">운영문의</div>
           <div class="notice-grid">
-            <div class="notice-box">
-              <strong>운영문의</strong>
-              교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
-            </div>
-            <div class="career-box-inline">강사전원 취업/채용 교육경력 20년 이상</div>
+            ${renderInquiryBox()}
+            ${renderCareerProfileBox()}
           </div>
 
           <div class="btn-row screen-only">
