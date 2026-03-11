@@ -23,6 +23,11 @@
       --violet: #6941c6;
       --navy-soft: #eef4ff;
       --teal-soft: #ecfffa;
+      --lavender-soft: #f5f3ff;
+      --mint-soft: #f2fffb;
+      --peach-soft: #fff7f2;
+      --sky-soft: #f4faff;
+      --rose-soft: #fff6f8;
       --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
       --radius: 18px;
     }
@@ -166,6 +171,28 @@
       margin-bottom: 22px;
     }
 
+    .section-block {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-block.basic { background: var(--sky-soft); }
+    .section-block.target { background: var(--mint-soft); }
+    .section-block.diagnosis { background: var(--lavender-soft); }
+    .section-block.memo { background: var(--peach-soft); }
+    .section-block.options { background: var(--rose-soft); }
+
+    .section-block-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 900;
+      margin: 0 0 12px;
+    }
+
     .top-form-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -241,7 +268,7 @@
     .check-card {
       border: 1px solid var(--line);
       border-radius: 16px;
-      background: #fff;
+      background: rgba(255,255,255,0.88);
       overflow: hidden;
       transition: border-color .15s ease, box-shadow .15s ease;
       min-height: 100%;
@@ -435,41 +462,14 @@
       gap: 12px;
     }
 
-    .simple-layout {
-      gap: 16px;
-    }
-
-    .simple-kpi {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .simple-content-grid {
-      grid-template-columns: 1.08fr 0.92fr;
-    }
-
-    .proposal-section-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .meta-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin: 16px 0;
-    }
-
-    .priority-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin: 12px 0 18px;
-    }
-
-    .hook-grid,
-    .process-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin: 12px 0 18px;
-    }
-
-    .secondary-results {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    .simple-layout { gap: 16px; }
+    .simple-kpi { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .simple-content-grid { grid-template-columns: 1.08fr 0.92fr; }
+    .proposal-section-grid { grid-template-columns: 1fr 1fr; }
+    .meta-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 16px 0; }
+    .priority-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 12px 0 18px; }
+    .hook-grid, .process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 12px 0 18px; }
+    .secondary-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .simple-hero-card,
     .simple-kpi-card,
@@ -892,7 +892,8 @@
       .notice-box,
       .career-box-inline,
       .brand-intro,
-      .module-grid {
+      .module-grid,
+      .section-block {
         box-shadow: none !important;
         break-inside: avoid;
         page-break-inside: avoid;
@@ -972,81 +973,92 @@
       </div>
 
       <div class="panel-body">
-        <div class="top-form-grid">
-          <div class="field">
-            <label class="block-label" for="programType">교육 형태</label>
-            <select id="programType">
-              <option value="turnkey">프로젝트형 / 턴키형</option>
-              <option value="bootcamp">실습형 부트캠프</option>
-              <option value="camp">집중 캠프형</option>
-              <option value="reboot">졸업생 집중형</option>
-              <option value="advisor">교수·실무자 연수형</option>
-            </select>
-          </div>
+        <div class="section-block basic">
+          <div class="section-block-title">기본 운영 조건</div>
+          <div class="top-form-grid">
+            <div class="field">
+              <label class="block-label" for="programType">교육 형태</label>
+              <select id="programType">
+                <option value="turnkey">프로젝트형 / 턴키형</option>
+                <option value="bootcamp">실습형 부트캠프</option>
+                <option value="camp">집중 캠프형</option>
+                <option value="reboot">졸업생 집중형</option>
+                <option value="advisor">교수·실무자 연수형</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="block-label" for="size">예상 인원</label>
-            <select id="size">
-              <option value="small">15명 이하</option>
-              <option value="mid">16~25명</option>
-              <option value="core" selected>26~40명</option>
-              <option value="large">41~60명</option>
-              <option value="xlarge">61명 이상</option>
-            </select>
-          </div>
+            <div class="field">
+              <label class="block-label" for="size">예상 인원</label>
+              <select id="size">
+                <option value="small">15명 이하</option>
+                <option value="mid">16~25명</option>
+                <option value="core" selected>26~40명</option>
+                <option value="large">41~60명</option>
+                <option value="xlarge">61명 이상</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="block-label" for="duration">운영 기간 / 규모</label>
-            <select id="duration">
-              <option value="1day-short">1일 / 3~4시간</option>
-              <option value="1day-full">1일 / 6시간</option>
-              <option value="2day">2일 / 6~8시간</option>
-              <option value="4week">4주 / 8~12시간</option>
-              <option value="6day18" selected>6일 / 총 18시간</option>
-              <option value="6week18">6주 / 총 18시간</option>
-            </select>
-          </div>
+            <div class="field">
+              <label class="block-label" for="duration">운영 기간 / 규모</label>
+              <select id="duration">
+                <option value="1day-short">1일 / 3~4시간</option>
+                <option value="1day-full">1일 / 6시간</option>
+                <option value="2day">2일 / 6~8시간</option>
+                <option value="4week">4주 / 8~12시간</option>
+                <option value="6day18" selected>6일 / 총 18시간</option>
+                <option value="6week18">6주 / 총 18시간</option>
+              </select>
+            </div>
 
-          <div class="field">
-            <label class="block-label" for="budget">예상 예산</label>
-            <select id="budget">
-              <option value="under300">300만원 이하</option>
-              <option value="301to700">301만~700만원</option>
-              <option value="701to1000">701만~1,000만원</option>
-              <option value="1001to1500">1,001만~1,500만원</option>
-              <option value="1501to2000" selected>1,501만~2,000만원</option>
-              <option value="over2000">2,000만원 이상</option>
-            </select>
-            <div class="hint">권장 금액은 부가세 포함 총계약액 기준이며, 결과보고서 및 운영비용 포함 예시입니다.</div>
+            <div class="field">
+              <label class="block-label" for="budget">예상 예산</label>
+              <select id="budget">
+                <option value="under300">300만원 이하</option>
+                <option value="301to700">301만~700만원</option>
+                <option value="701to1000">701만~1,000만원</option>
+                <option value="1001to1500">1,001만~1,500만원</option>
+                <option value="1501to2000" selected>1,501만~2,000만원</option>
+                <option value="over2000">2,000만원 이상</option>
+              </select>
+              <div class="hint">권장 금액은 부가세 포함 총계약액 기준이며, 결과보고서 및 운영비용 포함 예시입니다.</div>
+            </div>
           </div>
+        </div>
 
-          <div class="field">
-            <label class="block-label" for="mentor">글로벌 멘토 옵션</label>
-            <select id="mentor">
-              <option value="0">없음</option>
-              <option value="1">글로벌 멘토 1명</option>
-              <option value="2">글로벌 멘토 2명</option>
-              <option value="3">글로벌 멘토 3명</option>
-            </select>
-            <div class="hint">글로벌 멘토는 1명당 200만원씩 추가 반영됩니다.</div>
+        <div class="section-block options">
+          <div class="section-block-title">추가 운영 옵션</div>
+          <div class="top-form-grid">
+            <div class="field">
+              <label class="block-label" for="mentor">글로벌 멘토 옵션</label>
+              <select id="mentor">
+                <option value="0">없음</option>
+                <option value="1">글로벌 멘토 1명</option>
+                <option value="2">글로벌 멘토 2명</option>
+                <option value="3">글로벌 멘토 3명</option>
+              </select>
+              <div class="hint">글로벌 멘토는 1명당 200만원씩 추가 반영됩니다.</div>
+            </div>
+
+            <div class="field">
+              <label class="block-label" for="english">영문 지원 옵션</label>
+              <select id="english">
+                <option value="none" selected>없음</option>
+                <option value="profile">영문 LinkedIn 프로필 소그룹 코칭</option>
+                <option value="cv">영문 CV / 프로필 리뷰</option>
+                <option value="materials">국·영문 자료 이중화</option>
+              </select>
+              <div class="hint">영문 옵션은 확장형 add-on 구조입니다.</div>
+            </div>
+
+            <div class="field wide-2">
+              <label class="block-label" for="notes">추가 메모 (선택)</label>
+              <textarea id="notes" rows="2" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망 / 희망기업 중심 분석 포함"></textarea>
+            </div>
           </div>
+        </div>
 
-          <div class="field">
-            <label class="block-label" for="english">영문 지원 옵션</label>
-            <select id="english">
-              <option value="none" selected>없음</option>
-              <option value="profile">영문 LinkedIn 프로필 소그룹 코칭</option>
-              <option value="cv">영문 CV / 프로필 리뷰</option>
-              <option value="materials">국·영문 자료 이중화</option>
-            </select>
-            <div class="hint">영문 옵션은 확장형 add-on 구조입니다.</div>
-          </div>
-
-          <div class="field wide-2">
-            <label class="block-label" for="notes">추가 메모 (선택)</label>
-            <textarea id="notes" rows="2" placeholder="예: 국제처 예산 활용 희망 / 공과대학 중심 / 졸업생 사후관리 포함 희망 / 희망기업 중심 분석 포함"></textarea>
-          </div>
-
+        <div class="section-block target">
+          <div class="section-block-title">교육 대상 설정</div>
           <div class="field wide-4">
             <label class="block-label">주요 대상 (복수선택 가능)</label>
             <div class="check-grid">
@@ -1098,8 +1110,11 @@
             </div>
             <div class="hint">최소 1개 이상 선택해야 합니다.</div>
           </div>
+        </div>
 
-          <div class="field wide-4 subsection">
+        <div class="section-block diagnosis">
+          <div class="section-block-title">교육 진단 항목</div>
+          <div class="subsection">
             <div class="subsection-title">현재 가장 필요한 교육 <small>복수선택 가능</small></div>
             <div class="check-grid problem-grid">
               <div class="check-card">
@@ -1159,7 +1174,7 @@
             </div>
           </div>
 
-          <div class="field wide-4 subsection">
+          <div class="subsection">
             <div class="subsection-title">교육의 가장 큰 문제점 <small>복수선택 가능</small></div>
             <div class="check-grid problem-grid">
               <div class="check-card">
@@ -1732,6 +1747,30 @@
       `;
     }
 
+    function getProblemStatements(choices) {
+      const items = [];
+      if (choices.pains.includes('tooGeneral')) items.push('기존 교육이 정보 전달 중심으로 운영되어 학생의 실제 행동 변화로 이어지지 않는 문제가 있습니다.');
+      if (choices.pains.includes('lowExecution')) items.push('교육 이후 실제 지원, 프로필 수정, 서류 개선 등 실행 단계로 연결되는 비율이 낮은 문제가 있습니다.');
+      if (choices.pains.includes('noResults')) items.push('교육 종료 후 학생별 결과물이나 대학 내부 보고용 산출물이 부족해 성과를 설명하기 어려운 문제가 있습니다.');
+      if (choices.pains.includes('poorFit')) items.push('학과별 특성, 학생 수준, 대상군 차이를 반영한 맞춤형 운영이 부족한 문제가 있습니다.');
+      if (choices.pains.includes('weakGlobal')) items.push('글로벌 취업역량과 영문 프로필, 외국계 지원 관점이 충분히 반영되지 못한 한계가 있습니다.');
+      if (choices.pains.includes('reporting')) items.push('성과정리와 결과보고서 구성 포인트가 약해 차년도 제안 및 내부 공유에 활용하기 어려운 문제가 있습니다.');
+      if (!items.length) items.push('현재 입력 기준으로는 기본 취업역량 강화와 실행형 교육 고도화가 우선 과제로 판단됩니다.');
+      return items;
+    }
+
+    function getExpectedEffects(choices, best) {
+      const items = [];
+      items.push('학생이 취업준비의 전체 흐름과 우선순위를 명확하게 이해하고 실제 준비 행동으로 전환할 수 있습니다.');
+      if (choices.needs.includes('branding')) items.push('학생별 강점 표현과 LinkedIn 프로필 정리를 통해 대외적 취업브랜딩 경쟁력을 높일 수 있습니다.');
+      if (choices.needs.includes('documents')) items.push('자기소개서, 포트폴리오, 지원문서의 구조를 정리해 서류 완성도를 높일 수 있습니다.');
+      if (choices.needs.includes('interview')) items.push('유형별 면접전략과 답변 구조 훈련을 통해 면접 대응 자신감을 강화할 수 있습니다.');
+      if (choices.needs.includes('tracking') || best.id === 'reboot') items.push('사후관리와 추적관리 기반으로 교육 이후의 행동 변화와 지원현황 점검이 가능해집니다.');
+      if (choices.pains.includes('reporting')) items.push('운영 결과물과 보고 포인트가 정리되어 대학 내부 공유 및 차년도 제안자료로 활용할 수 있습니다.');
+      if (!items.length) items.push('학생 체감도와 대학 활용도가 모두 높은 실행형 취업역량 강화 프로그램 운영이 가능합니다.');
+      return items.slice(0, 6);
+    }
+
     function buildCopyText(best, choices, estimates, modules, top3, outcomes, hooks) {
       const lines = [];
       lines.push(`[추천 프로그램] ${getRecommendationLabel(best, choices)}`);
@@ -1784,8 +1823,10 @@
       const hooks = getPromotionHooks(best, choices);
       const processExamples = getProcessExamples(best);
       const curriculumRows = getCurriculumRows(top3, choices);
+      const problems = getProblemStatements(choices);
+      const effects = getExpectedEffects(choices, best);
 
-      return { choices, ranked, best, estimates, modules, top3, outcomes, hooks, processExamples, curriculumRows };
+      return { choices, ranked, best, estimates, modules, top3, outcomes, hooks, processExamples, curriculumRows, problems, effects };
     }
 
     function renderSimpleView(data) {
@@ -1914,7 +1955,7 @@
     }
 
     function renderProposalView(data) {
-      const { choices, ranked, best, estimates, modules, top3, outcomes, hooks, processExamples, curriculumRows } = data;
+      const { choices, ranked, best, estimates, modules, top3, outcomes, hooks, processExamples, curriculumRows, problems, effects } = data;
       const budgetFit = getBudgetFitMessage(estimates, choices.budget);
 
       return `
@@ -1926,8 +1967,9 @@
         <div class="summary-card" id="printArea">
           <div class="page-label">2~3페이지형 상세 제안서</div>
 
+          <div class="section-title">제안배경</div>
           <div class="brand-intro">
-            <strong>제안 배경</strong>
+            <strong>프로그램 제안 배경</strong>
             <p>${getConsultingProposal(best, choices)}</p>
           </div>
 
@@ -1941,7 +1983,7 @@
 
           <div class="proposal-section-grid">
             <div class="proposal-block">
-              <strong>운영 목표</strong>
+              <strong>운영목표</strong>
               <ul>
                 <li>학생이 취업준비의 방향을 명확하게 이해하도록 지원</li>
                 <li>브랜딩, 서류, 면접, 기업분석을 연결한 실행형 구조 제공</li>
@@ -1959,6 +2001,17 @@
             </div>
           </div>
 
+          <div class="section-title">현재 문제점</div>
+          <div class="proposal-block">
+            <strong>교육 운영상 보완 필요 항목</strong>
+            <ul>
+              ${problems.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="section-title">추천과정</div>
+          <div class="proposal-box">${best.proposal}</div>
+
           <div class="section-title">교육 홍보제목 추천</div>
           <div class="hook-grid">
             ${hooks.map(item => `
@@ -1970,6 +2023,7 @@
             `).join('')}
           </div>
 
+          <div class="section-title">예산안</div>
           <div class="price-grid">
             <div class="price-box basic">
               <strong>기본형</strong>
@@ -2001,9 +2055,9 @@
 
           <div class="proposal-page-divider"></div>
 
-          <div class="page-label">상세 구성안</div>
+          <div class="page-label">교육 운영 상세안</div>
 
-          <div class="section-title">과정 진행 예시</div>
+          <div class="section-title">교육 상세보기</div>
           <div class="process-grid">
             ${processExamples.map(step => `
               <div class="process-card">
@@ -2026,12 +2080,17 @@
             ${outcomes.map(item => `• ${item}`).join('<br>')}
           </div>
 
-          <div class="section-title">프로그램 요약</div>
-          <div class="proposal-box">${best.proposal}</div>
-
           <div class="proposal-page-divider"></div>
 
-          <div class="page-label">커리큘럼 및 운영 참고</div>
+          <div class="page-label">성과 및 운영 참고</div>
+
+          <div class="section-title">기대효과</div>
+          <div class="proposal-block">
+            <strong>교육 운영 후 기대되는 변화</strong>
+            <ul>
+              ${effects.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
 
           <div class="section-title">강의 커리큘럼 예시</div>
           <table class="curriculum-table">
@@ -2072,9 +2131,10 @@
             영문 지원 옵션: <strong>${englishLabel[choices.english]}</strong>
           </div>
 
+          <div class="section-title">운영문의</div>
           <div class="notice-grid">
             <div class="notice-box">
-              <strong>공지사항</strong>
+              <strong>운영문의</strong>
               교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
             </div>
             <div class="career-box-inline">강사전원 취업/채용 교육경력 20년 이상</div>
