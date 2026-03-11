@@ -21,7 +21,6 @@
       --red: #b42318;
       --red-soft: #fff1f0;
       --violet: #6941c6;
-      --violet-soft: #f4f0ff;
       --navy-soft: #eef4ff;
       --teal-soft: #ecfffa;
       --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
@@ -174,17 +173,9 @@
       align-items: start;
     }
 
-    .field {
-      min-width: 0;
-    }
-
-    .field.wide-2 {
-      grid-column: span 2;
-    }
-
-    .field.wide-4 {
-      grid-column: 1 / -1;
-    }
+    .field { min-width: 0; }
+    .field.wide-2 { grid-column: span 2; }
+    .field.wide-4 { grid-column: 1 / -1; }
 
     label.block-label {
       display: block;
@@ -194,9 +185,7 @@
       color: var(--text);
     }
 
-    select,
-    input,
-    textarea {
+    select, input, textarea {
       width: 100%;
       border: 1px solid var(--line);
       background: #fff;
@@ -208,9 +197,7 @@
       transition: border-color .15s ease, box-shadow .15s ease;
     }
 
-    select:focus,
-    input:focus,
-    textarea:focus {
+    select:focus, input:focus, textarea:focus {
       border-color: var(--brand);
       box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.12);
     }
@@ -434,20 +421,34 @@
       line-height: 1.7;
     }
 
-    .simple-grid,
+    .simple-layout,
+    .simple-kpi,
+    .simple-content-grid,
     .meta-grid,
     .priority-grid,
     .hook-grid,
     .process-grid,
     .secondary-results,
-    .notice-grid {
+    .notice-grid,
+    .proposal-section-grid {
       display: grid;
       gap: 12px;
     }
 
-    .simple-grid {
-      grid-template-columns: 1.1fr 0.9fr;
-      margin: 14px 0 18px;
+    .simple-layout {
+      gap: 16px;
+    }
+
+    .simple-kpi {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .simple-content-grid {
+      grid-template-columns: 1.08fr 0.92fr;
+    }
+
+    .proposal-section-grid {
+      grid-template-columns: 1fr 1fr;
     }
 
     .meta-grid {
@@ -470,6 +471,8 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .simple-hero-card,
+    .simple-kpi-card,
     .simple-card,
     .meta-card,
     .priority-card,
@@ -478,33 +481,63 @@
     .mini-card,
     .price-box,
     .summary-box,
-    .proposal-box {
+    .proposal-box,
+    .proposal-block {
       border: 1px solid var(--line);
       border-radius: 18px;
       background: #fff;
       padding: 16px;
     }
 
+    .simple-hero-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border-width: 2px;
+    }
+
+    .simple-hero-title {
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+
+    .simple-hero-desc {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .simple-kpi-card strong,
     .simple-card strong,
     .meta-card strong,
     .priority-card strong,
     .hook-card strong,
     .process-card strong,
-    .price-box strong {
+    .price-box strong,
+    .proposal-block strong {
       display: block;
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 8px;
     }
 
+    .simple-kpi-card .value {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
     .simple-card ul,
-    .process-card ul {
+    .process-card ul,
+    .proposal-block ul {
       margin: 0;
       padding-left: 18px;
     }
 
     .simple-card li + li,
-    .process-card li + li {
+    .process-card li + li,
+    .proposal-block li + li {
       margin-top: 7px;
     }
 
@@ -648,6 +681,25 @@
       background: linear-gradient(180deg, #fbfeff 0%, #f0f8ff 100%);
     }
 
+    .proposal-page-divider {
+      margin: 18px 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #cfe0f2 12%, #cfe0f2 88%, transparent);
+    }
+
+    .page-label {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid #cfe5ff;
+      margin-bottom: 10px;
+    }
+
     .curriculum-table {
       width: 100%;
       border-collapse: collapse;
@@ -789,14 +841,16 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .hero-grid,
-      .simple-grid,
+      .simple-kpi,
+      .simple-content-grid,
       .meta-grid,
       .priority-grid,
       .hook-grid,
       .process-grid,
       .price-grid,
       .secondary-results,
-      .notice-grid {
+      .notice-grid,
+      .proposal-section-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -823,6 +877,8 @@
       .hero,
       .panel,
       .summary-card,
+      .simple-hero-card,
+      .simple-kpi-card,
       .simple-card,
       .meta-card,
       .priority-card,
@@ -832,6 +888,7 @@
       .price-box,
       .summary-box,
       .proposal-box,
+      .proposal-block,
       .notice-box,
       .career-box-inline,
       .brand-intro,
@@ -864,9 +921,12 @@
         text-decoration: none;
       }
 
-      .summary-card > * {
-        break-inside: avoid;
-        page-break-inside: avoid;
+      .proposal-page-divider {
+        break-after: page;
+        page-break-after: always;
+        background: transparent;
+        height: 0;
+        margin: 0;
       }
 
       @page {
@@ -1403,7 +1463,6 @@
 
     const resultsEl = document.getElementById('results');
     const copyToast = document.getElementById('copyToast');
-
     let currentViewMode = null;
 
     function formatMoney(v) {
@@ -1466,8 +1525,8 @@
 
     function scoreProgram(program, choices) {
       let score = 42;
-
       if (program.types.includes(choices.programType)) score += 22;
+
       const audienceHits = choices.audiences.filter(a => program.audience.includes(a)).length;
       score += audienceHits * 12;
 
@@ -1559,6 +1618,7 @@
 
       const sorted = scores.sort((a, b) => b.score - a.score);
       const top3 = sorted.slice(0, 3);
+
       let displayCount = 12;
       if (choices.duration === '1day-short') displayCount = 6;
       else if (choices.duration === '1day-full') displayCount = 8;
@@ -1688,14 +1748,6 @@
       return lines.join('\n');
     }
 
-    function setViewButtons(mode) {
-      const simpleBtn = document.getElementById('viewSimpleBtn');
-      const proposalBtn = document.getElementById('viewProposalBtn');
-      if (!simpleBtn || !proposalBtn) return;
-      simpleBtn.classList.toggle('active', mode === 'simple');
-      proposalBtn.classList.toggle('active', mode === 'proposal');
-    }
-
     function collectChoices() {
       ensureAudienceSelected();
       return {
@@ -1747,101 +1799,101 @@
         </div>
 
         <div class="summary-card" id="printArea">
-          <div class="summary-head">
-            <div>
-              <h3>${getRecommendationLabel(best, choices)}</h3>
-              <div class="summary-top-copy">${best.summary}</div>
+          <div class="simple-layout">
+            <div class="simple-hero-card">
+              <div class="page-label">1페이지형 요약</div>
+              <h3 class="simple-hero-title">${getRecommendationLabel(best, choices)}</h3>
+              <div class="simple-hero-desc">${best.summary}</div>
             </div>
-            <div class="score-badge">적합도 ${ranked[0].score}점</div>
-          </div>
 
-          <div class="meta-grid">
-            <div class="meta-card">
-              <strong>운영 구조</strong>
-              <div>${getStructure(best, choices)}</div>
-            </div>
-            <div class="meta-card">
-              <strong>주요 대상</strong>
-              <div>${getAudienceText(choices.audiences)}</div>
-            </div>
-            <div class="meta-card">
-              <strong>예산 구간</strong>
-              <div>${budgetLabels[choices.budget]}</div>
-            </div>
-            <div class="meta-card">
-              <strong>예산 코멘트</strong>
-              <div>${budgetFit}</div>
-            </div>
-          </div>
-
-          <div class="price-grid">
-            <div class="price-box basic">
-              <strong>기본형</strong>
-              <div class="price">${formatMoney(estimates.base)}</div>
-              <small>부가세 포함 · 기본 운영 패키지 기준</small>
-            </div>
-            <div class="price-box recommend">
-              <strong>추천형</strong>
-              <div class="price">${formatMoney(estimates.recommended)}</div>
-              <small>부가세 포함 · 심화 운영 기준</small>
-            </div>
-            <div class="price-box expand">
-              <strong>확장형</strong>
-              <div class="price">${formatMoney(estimates.premium)}</div>
-              <small>부가세 포함 · 추가지원 확장 가능</small>
-            </div>
-          </div>
-
-          <div class="simple-grid">
-            <div class="simple-card">
-              <strong>추천 포인트</strong>
-              <ul>
-                <li>현재 가장 필요한 교육: ${getTagText(choices.needs, needLabels)}</li>
-                <li>교육의 가장 큰 문제점: ${getTagText(choices.pains, painLabels)}</li>
-                <li>글로벌 멘토 옵션: ${getMentorLabel(choices.mentor)}</li>
-                <li>영문 지원 옵션: ${englishLabel[choices.english]}</li>
-              </ul>
-            </div>
-            <div class="simple-card">
-              <strong>추천 결과물</strong>
-              <ul>
-                ${outcomes.map(item => `<li>${item}</li>`).join('')}
-              </ul>
-            </div>
-          </div>
-
-          <div class="section-title">핵심구성 우선순위</div>
-          <div class="priority-grid">
-            ${top3.map((item, idx) => `
-              <div class="priority-card">
-                <div class="priority-rank">${idx + 1}</div>
-                <div class="priority-name">${item.module}</div>
-                <div class="priority-desc">${moduleDescriptions[item.module] || ''}</div>
+            <div class="simple-kpi">
+              <div class="simple-kpi-card">
+                <strong>적합도</strong>
+                <div class="value">${ranked[0].score}점</div>
               </div>
-            `).join('')}
-          </div>
-
-          <div class="section-title">교육 핵심구성요소</div>
-          <div class="module-grid">
-            ${modules.map(item => `<div class="module-item">${item}</div>`).join('')}
-          </div>
-
-          ${choices.notes.trim() ? `
-            <div class="section-title">추가 메모 반영 포인트</div>
-            <div class="summary-box">${choices.notes.trim()}</div>
-          ` : ''}
-
-          <div class="notice-grid">
-            <div class="notice-box">
-              <strong>공지사항</strong>
-              교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
+              <div class="simple-kpi-card">
+                <strong>운영 구조</strong>
+                <div class="value" style="font-size:17px;">${getStructure(best, choices)}</div>
+              </div>
+              <div class="simple-kpi-card">
+                <strong>주요 대상</strong>
+                <div class="value" style="font-size:17px;">${getAudienceText(choices.audiences)}</div>
+              </div>
+              <div class="simple-kpi-card">
+                <strong>예산 코멘트</strong>
+                <div class="value" style="font-size:16px;">${budgetFit}</div>
+              </div>
             </div>
-            <div class="career-box-inline">강사전원 취업/채용 교육경력 20년 이상</div>
-          </div>
 
-          <div class="btn-row screen-only">
-            <button class="btn-primary" id="copyBtn" type="button">추천 결과 복사</button>
-            <button class="btn-print" id="innerPdfBtn" type="button">PDF로 저장</button>
+            <div class="price-grid">
+              <div class="price-box basic">
+                <strong>기본형</strong>
+                <div class="price">${formatMoney(estimates.base)}</div>
+                <small>부가세 포함 · 기본 운영 패키지 기준</small>
+              </div>
+              <div class="price-box recommend">
+                <strong>추천형</strong>
+                <div class="price">${formatMoney(estimates.recommended)}</div>
+                <small>부가세 포함 · 심화 운영 기준</small>
+              </div>
+              <div class="price-box expand">
+                <strong>확장형</strong>
+                <div class="price">${formatMoney(estimates.premium)}</div>
+                <small>부가세 포함 · 추가지원 확장 가능</small>
+              </div>
+            </div>
+
+            <div class="simple-content-grid">
+              <div class="simple-card">
+                <strong>핵심 추천 포인트</strong>
+                <ul>
+                  <li>현재 가장 필요한 교육: ${getTagText(choices.needs, needLabels)}</li>
+                  <li>교육의 가장 큰 문제점: ${getTagText(choices.pains, painLabels)}</li>
+                  <li>글로벌 멘토 옵션: ${getMentorLabel(choices.mentor)}</li>
+                  <li>영문 지원 옵션: ${englishLabel[choices.english]}</li>
+                </ul>
+              </div>
+              <div class="simple-card">
+                <strong>추천 결과물</strong>
+                <ul>
+                  ${outcomes.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+
+            <div class="section-title">핵심구성 우선순위</div>
+            <div class="priority-grid">
+              ${top3.map((item, idx) => `
+                <div class="priority-card">
+                  <div class="priority-rank">${idx + 1}</div>
+                  <div class="priority-name">${item.module}</div>
+                  <div class="priority-desc">${moduleDescriptions[item.module] || ''}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="section-title">교육 핵심구성요소</div>
+            <div class="module-grid">
+              ${modules.map(item => `<div class="module-item">${item}</div>`).join('')}
+            </div>
+
+            ${choices.notes.trim() ? `
+              <div class="section-title">추가 메모 반영 포인트</div>
+              <div class="summary-box">${choices.notes.trim()}</div>
+            ` : ''}
+
+            <div class="notice-grid">
+              <div class="notice-box">
+                <strong>공지사항</strong>
+                교육내용 및 비용에 대한 상세 문의는 <strong>02-6405-4446</strong> 또는 <strong>help@hrpoint.co.kr</strong> 로 문의주시기 바랍니다.
+              </div>
+              <div class="career-box-inline">강사전원 취업/채용 교육경력 20년 이상</div>
+            </div>
+
+            <div class="btn-row screen-only">
+              <button class="btn-primary" id="copyBtn" type="button">추천 결과 복사</button>
+              <button class="btn-print" id="innerPdfBtn" type="button">PDF로 저장</button>
+            </div>
           </div>
         </div>
 
@@ -1872,8 +1924,10 @@
         </div>
 
         <div class="summary-card" id="printArea">
+          <div class="page-label">2~3페이지형 상세 제안서</div>
+
           <div class="brand-intro">
-            <strong>컨설팅 제안 요약</strong>
+            <strong>제안 배경</strong>
             <p>${getConsultingProposal(best, choices)}</p>
           </div>
 
@@ -1885,22 +1939,23 @@
             <div class="score-badge">적합도 ${ranked[0].score}점</div>
           </div>
 
-          <div class="meta-grid">
-            <div class="meta-card">
-              <strong>권장 운영 구조</strong>
-              <div>${getStructure(best, choices)}</div>
+          <div class="proposal-section-grid">
+            <div class="proposal-block">
+              <strong>운영 목표</strong>
+              <ul>
+                <li>학생이 취업준비의 방향을 명확하게 이해하도록 지원</li>
+                <li>브랜딩, 서류, 면접, 기업분석을 연결한 실행형 구조 제공</li>
+                <li>교육 종료 후에도 활용 가능한 결과물을 확보</li>
+              </ul>
             </div>
-            <div class="meta-card">
-              <strong>주요 대상</strong>
-              <div>${getAudienceText(choices.audiences)}</div>
-            </div>
-            <div class="meta-card">
-              <strong>예산 구간</strong>
-              <div>${budgetLabels[choices.budget]}</div>
-            </div>
-            <div class="meta-card">
-              <strong>예산 적합도</strong>
-              <div>${budgetFit}</div>
+            <div class="proposal-block">
+              <strong>운영 조건 요약</strong>
+              <ul>
+                <li>주요 대상: ${getAudienceText(choices.audiences)}</li>
+                <li>운영 구조: ${getStructure(best, choices)}</li>
+                <li>예산 구간: ${budgetLabels[choices.budget]}</li>
+                <li>예산 적합도: ${budgetFit}</li>
+              </ul>
             </div>
           </div>
 
@@ -1944,6 +1999,10 @@
             `).join('')}
           </div>
 
+          <div class="proposal-page-divider"></div>
+
+          <div class="page-label">상세 구성안</div>
+
           <div class="section-title">과정 진행 예시</div>
           <div class="process-grid">
             ${processExamples.map(step => `
@@ -1969,6 +2028,10 @@
 
           <div class="section-title">프로그램 요약</div>
           <div class="proposal-box">${best.proposal}</div>
+
+          <div class="proposal-page-divider"></div>
+
+          <div class="page-label">커리큘럼 및 운영 참고</div>
 
           <div class="section-title">강의 커리큘럼 예시</div>
           <table class="curriculum-table">
@@ -2070,7 +2133,6 @@
       const data = getRecommendationData();
       resultsEl.innerHTML = mode === 'proposal' ? renderProposalView(data) : renderSimpleView(data);
       bindResultActions(data);
-      setViewButtons(mode);
     }
 
     function setAudience(values) {
